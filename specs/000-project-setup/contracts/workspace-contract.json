@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Angular Workspace Contract",
+  "description": "Contract defining the expected structure and configuration of the Angular workspace",
+  "type": "object",
+  "required": [
+    "version",
+    "projects",
+    "defaultProject"
+  ],
+  "properties": {
+    "version": {
+      "type": "number",
+      "description": "Angular workspace schema version",
+      "const": 1
+    },
+      "projects": {
+        "type": "object",
+        "description": "Project configurations",
+        "required": [
+          "d3-dashboards"
+        ],
+      "properties": {
+        "d3-dashboards": {
+          "type": "object",
+          "description": "Library project configuration",
+          "required": [
+            "projectType",
+            "root",
+            "sourceRoot",
+            "prefix",
+            "architect"
+          ],
+          "properties": {
+            "projectType": {
+              "type": "string",
+              "const": "library"
+            },
+            "root": {
+              "type": "string",
+              "const": "projects/d3-dashboards"
+            },
+            "sourceRoot": {
+              "type": "string",
+              "const": "projects/d3-dashboards/src"
+            },
+            "prefix": {
+              "type": "string",
+              "const": "lib"
+            },
+            "architect": {
+              "type": "object",
+              "required": [
+                "build",
+                "test",
+                "lint"
+              ],
+              "properties": {
+                "build": {
+                  "type": "object",
+                  "description": "ng-packagr build configuration"
+                },
+                "test": {
+                  "type": "object",
+                  "description": "Jest test configuration"
+                },
+                "lint": {
+                  "type": "object",
+                  "description": "ESLint configuration"
+                }
+              }
+            }
+          }
+        },
+        "default": {
+          "type": "object",
+          "description": "Application project configuration (root level)",
+          "required": [
+            "projectType",
+            "root",
+            "sourceRoot",
+            "prefix",
+            "architect"
+          ],
+          "properties": {
+            "projectType": {
+              "type": "string",
+              "const": "application"
+            },
+            "root": {
+              "type": "string",
+              "const": ""
+            },
+            "sourceRoot": {
+              "type": "string",
+              "const": "src"
+            },
+            "prefix": {
+              "type": "string",
+              "const": "app"
+            },
+            "architect": {
+              "type": "object",
+              "required": [
+                "build",
+                "serve",
+                "test",
+                "lint"
+              ],
+              "properties": {
+                "build": {
+                  "type": "object",
+                  "description": "Angular CLI build configuration"
+                },
+                "serve": {
+                  "type": "object",
+                  "description": "Development server configuration"
+                },
+                "test": {
+                  "type": "object",
+                  "description": "Jest test configuration"
+                },
+                "lint": {
+                  "type": "object",
+                  "description": "ESLint configuration"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "defaultProject": {
+      "type": "string",
+      "description": "Default project name (root application)",
+      "enum": [
+        ""
+      ]
+    }
+  }
+}
+

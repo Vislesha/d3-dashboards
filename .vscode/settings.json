@@ -1,0 +1,15 @@
+{
+  "git.autoRepositoryDetection": false,
+  "git.detectSubmodules": false,
+  "git.scanRepositories": [
+    "${workspaceFolder}"
+  ],
+  "git.ignoreLimitWarning": true,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/out-tsc": true,
+    "**/.angular": true
+  }
+}
+

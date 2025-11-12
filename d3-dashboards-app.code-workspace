@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "D3 Dashboards App"
+    }
+  ],
+  "settings": {
+    "git.autoRepositoryDetection": true,
+    "git.detectSubmodules": false,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/out-tsc": true,
+      "**/.angular": true
+    }
+  }
+}
+
