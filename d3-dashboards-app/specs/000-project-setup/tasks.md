@@ -136,16 +136,16 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T026 [US4] Install production dependencies using npm: @angular/core@20.2.0, @angular/common@20.2.0, @angular/platform-browser@20.2.0, @angular/platform-browser-dynamic@20.2.0, @angular/router@20.2.0, @angular/forms@20.2.0, @angular/animations@20.2.0, @angular/compiler@20.2.0
-- [ ] T027 [US4] Install production dependencies using npm: d3@^7.8.5, rxjs@~7.8.0, zone.js@~0.15.1, tslib@^2.0.0
-- [ ] T028 [US4] Install production dependencies using npm: primeng@20.0.0, @primeng/themes@20.0.0, primeflex@^4.0.0, primeicons@^7.0.0
-- [ ] T029 [US4] Install production dependencies using npm: angular-gridster2@^20.0.0, lodash-es@^4.17.21, uuid@^9.0.0
-- [ ] T030 [US4] Install development dependencies using npm: @angular/cli@20.2.0, @angular-devkit/build-angular@20.2.0, ng-packagr@20.2.0
-- [ ] T031 [US4] Install development dependencies using npm: jest@^29.7.0, jest-preset-angular@^14.6.1, @types/jest@^29.5.0, @types/node@^20.0.0
-- [ ] T032 [US4] Install development dependencies using npm: typescript@~5.8.0, @types/d3@^7.4.0, @types/lodash-es@^4.17.12, @types/uuid@^9.0.0
-- [ ] T033 [US4] Install development dependencies using npm: eslint@^8.57.0, @typescript-eslint/parser@^7.0.0, @typescript-eslint/eslint-plugin@^7.0.0, prettier@^3.0.0
-- [ ] T034 [US4] Verify all installed dependency versions match constitution requirements in package.json
-- [ ] T035 [US4] Run npm install to ensure all dependencies are properly resolved
+- [X] T026 [US4] Install production dependencies using npm: @angular/core@20.2.0, @angular/common@20.2.0, @angular/platform-browser@20.2.0, @angular/platform-browser-dynamic@20.2.0, @angular/router@20.2.0, @angular/forms@20.2.0, @angular/animations@20.2.0, @angular/compiler@20.2.0
+- [X] T027 [US4] Install production dependencies using npm: d3@^7.8.5, rxjs@~7.8.0, zone.js@~0.15.1, tslib@^2.0.0
+- [X] T028 [US4] Install production dependencies using npm: primeng@20.0.0, @primeng/themes@20.0.0, primeflex@^4.0.0, primeicons@^7.0.0
+- [X] T029 [US4] Install production dependencies using npm: angular-gridster2@^20.0.0, lodash-es@^4.17.21, uuid@^9.0.0
+- [X] T030 [US4] Install development dependencies using npm: @angular/cli@20.2.0, @angular-devkit/build-angular@20.2.0, ng-packagr@20.2.0
+- [X] T031 [US4] Install development dependencies using npm: jest@^29.7.0, jest-preset-angular@^14.6.1, @types/jest@^29.5.0, @types/node@^20.0.0
+- [X] T032 [US4] Install development dependencies using npm: typescript@~5.8.0, @types/d3@^7.4.0, @types/lodash-es@^4.17.12, @types/uuid@^9.0.0
+- [X] T033 [US4] Install development dependencies using npm: eslint@^8.57.0, @typescript-eslint/parser@^7.0.0, @typescript-eslint/eslint-plugin@^7.0.0, prettier@^3.0.0
+- [X] T034 [US4] Verify all installed dependency versions match constitution requirements in package.json
+- [X] T035 [US4] Run npm install to ensure all dependencies are properly resolved
 
 ## Phase 7: User Story 5 - Configure Build Tools
 
