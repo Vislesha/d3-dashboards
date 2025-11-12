@@ -3,3 +3,11 @@
  */
 
 export * from './lib/d3-dashboards.component';
+
+// Abstract classes
+export * from './lib/abstract/abstract-dashboard-container';
+
+// Entities/Interfaces
+export * from './lib/entities/widget.interface';
+export * from './lib/entities/filter.interface';
+export * from './lib/entities/dashboard.interface';

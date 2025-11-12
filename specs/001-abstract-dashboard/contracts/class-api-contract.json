@@ -1,0 +1,348 @@
+{
+  "contractType": "TypeScript Class API",
+  "feature": "001-abstract-dashboard",
+  "version": "1.0.0",
+  "date": "2025-01-27",
+  "className": "AbstractDashboardContainer",
+  "description": "Public API contract for AbstractDashboardContainer abstract base class",
+  "location": "projects/d3-dashboards/src/lib/abstract/abstract-dashboard-container.ts",
+  "exports": {
+    "class": {
+      "name": "AbstractDashboardContainer",
+      "type": "abstract class",
+      "accessModifier": "public",
+      "description": "Base class providing common functionality for dashboard implementations",
+      "methods": {
+        "abstract": [
+          {
+            "name": "initializeDashboard",
+            "signature": "initializeDashboard(): void | Promise<void>",
+            "description": "Initialize the dashboard. Must be implemented by derived classes.",
+            "parameters": [],
+            "returnType": "void | Promise<void>",
+            "throws": [],
+            "requirements": ["MUST be implemented by derived classes"]
+          },
+          {
+            "name": "getWidgets",
+            "signature": "getWidgets(): ID3Widget[]",
+            "description": "Get current widgets in the dashboard. Must be implemented by derived classes.",
+            "parameters": [],
+            "returnType": "ID3Widget[]",
+            "throws": [],
+            "requirements": ["MUST be implemented by derived classes"]
+          },
+          {
+            "name": "addWidget",
+            "signature": "addWidget(widget: ID3Widget): void",
+            "description": "Add a widget to the dashboard. Must be implemented by derived classes.",
+            "parameters": [
+              {
+                "name": "widget",
+                "type": "ID3Widget",
+                "required": true,
+                "description": "Widget to add to the dashboard"
+              }
+            ],
+            "returnType": "void",
+            "throws": [],
+            "requirements": ["MUST be implemented by derived classes", "MUST call onWidgetInit hook after adding"]
+          },
+          {
+            "name": "removeWidget",
+            "signature": "removeWidget(widgetId: string): void",
+            "description": "Remove a widget from the dashboard. Must be implemented by derived classes.",
+            "parameters": [
+              {
+                "name": "widgetId",
+                "type": "string",
+                "required": true,
+                "description": "Unique identifier of widget to remove"
+              }
+            ],
+            "returnType": "void",
+            "throws": [],
+            "requirements": ["MUST be implemented by derived classes", "MUST call onWidgetDestroy hook before removing"]
+          },
+          {
+            "name": "updateWidget",
+            "signature": "updateWidget(widget: ID3Widget): void",
+            "description": "Update an existing widget in the dashboard. Must be implemented by derived classes.",
+            "parameters": [
+              {
+                "name": "widget",
+                "type": "ID3Widget",
+                "required": true,
+                "description": "Updated widget configuration"
+              }
+            ],
+            "returnType": "void",
+            "throws": [],
+            "requirements": ["MUST be implemented by derived classes", "MUST call onWidgetUpdate hook after updating"]
+          }
+        ],
+        "public": [
+          {
+            "name": "addFilter",
+            "signature": "addFilter(filter: IFilterValues): void",
+            "description": "Add a filter to the dashboard. Filter is validated and added to the filter state. Widgets are notified of the filter change after debouncing.",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "IFilterValues",
+                "required": true,
+                "description": "Filter to add. Must have valid key and value."
+              }
+            ],
+            "returnType": "void",
+            "throws": [
+              {
+                "type": "Error",
+                "condition": "Filter validation fails",
+                "message": "Invalid filter: key and value are required"
+              }
+            ],
+            "performance": "Completes within 200ms",
+            "sideEffects": ["Updates filter state", "Notifies widgets after debounce"]
+          },
+          {
+            "name": "removeFilter",
+            "signature": "removeFilter(filterKey: string): void",
+            "description": "Remove a filter by key. Widgets are notified of the filter change after debouncing.",
+            "parameters": [
+              {
+                "name": "filterKey",
+                "type": "string",
+                "required": true,
+                "description": "Key of filter to remove"
+              }
+            ],
+            "returnType": "void",
+            "throws": [],
+            "performance": "Completes within 200ms",
+            "sideEffects": ["Updates filter state", "Notifies widgets after debounce"]
+          },
+          {
+            "name": "updateFilter",
+            "signature": "updateFilter(filter: IFilterValues): void",
+            "description": "Update an existing filter. If filter with same key exists, it is updated. Otherwise, filter is added. Widgets are notified after debouncing.",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "IFilterValues",
+                "required": true,
+                "description": "Updated filter configuration"
+              }
+            ],
+            "returnType": "void",
+            "throws": [
+              {
+                "type": "Error",
+                "condition": "Filter validation fails",
+                "message": "Invalid filter: key and value are required"
+              }
+            ],
+            "performance": "Completes within 200ms",
+            "sideEffects": ["Updates filter state", "Notifies widgets after debounce"]
+          },
+          {
+            "name": "getFilters",
+            "signature": "getFilters(): IFilterValues[]",
+            "description": "Get current filter values synchronously.",
+            "parameters": [],
+            "returnType": "IFilterValues[]",
+            "throws": [],
+            "performance": "Completes within 100ms"
+          },
+          {
+            "name": "getFilters$",
+            "signature": "getFilters$(): Observable<IFilterValues[]>",
+            "description": "Get observable stream of filter values. Subscribers are notified when filters change (after debouncing).",
+            "parameters": [],
+            "returnType": "Observable<IFilterValues[]>",
+            "throws": [],
+            "performance": "Returns immediately",
+            "notes": "Remember to unsubscribe to prevent memory leaks"
+          },
+          {
+            "name": "clearFilters",
+            "signature": "clearFilters(): void",
+            "description": "Clear all filters from the dashboard. Widgets are notified after debouncing.",
+            "parameters": [],
+            "returnType": "void",
+            "throws": [],
+            "performance": "Completes within 200ms",
+            "sideEffects": ["Updates filter state", "Notifies widgets after debounce"]
+          },
+          {
+            "name": "navigateToDashboard",
+            "signature": "navigateToDashboard(dashboardId: string, params?: Record<string, any>): Promise<boolean>",
+            "description": "Navigate to another dashboard. Returns false if Router is not available or navigation fails.",
+            "parameters": [
+              {
+                "name": "dashboardId",
+                "type": "string",
+                "required": true,
+                "description": "Identifier of dashboard to navigate to"
+              },
+              {
+                "name": "params",
+                "type": "Record<string, any>",
+                "required": false,
+                "description": "Optional route parameters"
+              }
+            ],
+            "returnType": "Promise<boolean>",
+            "throws": [],
+            "performance": "Completes within navigation time",
+            "notes": "Returns false if Router is not injected"
+          },
+          {
+            "name": "getCurrentDashboard",
+            "signature": "getCurrentDashboard(): IDashboardNavigationInfo | null",
+            "description": "Get current dashboard navigation information. Returns null if Router is not available.",
+            "parameters": [],
+            "returnType": "IDashboardNavigationInfo | null",
+            "throws": [],
+            "performance": "Completes within 100ms"
+          },
+          {
+            "name": "canNavigate",
+            "signature": "canNavigate(): boolean",
+            "description": "Check if navigation is available (Router is injected).",
+            "parameters": [],
+            "returnType": "boolean",
+            "throws": [],
+            "performance": "Completes within 100ms"
+          },
+          {
+            "name": "cleanup",
+            "signature": "cleanup(): void",
+            "description": "Clean up resources and subscriptions. Should be called in derived class destroy lifecycle.",
+            "parameters": [],
+            "returnType": "void",
+            "throws": [],
+            "requirements": ["MUST be called in ngOnDestroy or equivalent"]
+          }
+        ],
+        "protected": [
+          {
+            "name": "onWidgetInit",
+            "signature": "protected onWidgetInit(widget: ID3Widget): void",
+            "description": "Lifecycle hook called when widget is initialized. Can be overridden by derived classes.",
+            "parameters": [
+              {
+                "name": "widget",
+                "type": "ID3Widget",
+                "required": true,
+                "description": "Widget that was initialized"
+              }
+            ],
+            "returnType": "void",
+            "defaultImplementation": "Empty (no-op)",
+            "notes": "Can be overridden for custom widget initialization logic"
+          },
+          {
+            "name": "onWidgetUpdate",
+            "signature": "protected onWidgetUpdate(widget: ID3Widget): void",
+            "description": "Lifecycle hook called when widget is updated. Can be overridden by derived classes.",
+            "parameters": [
+              {
+                "name": "widget",
+                "type": "ID3Widget",
+                "required": true,
+                "description": "Widget that was updated"
+              }
+            ],
+            "returnType": "void",
+            "defaultImplementation": "Empty (no-op)",
+            "notes": "Can be overridden for custom widget update logic"
+          },
+          {
+            "name": "onWidgetDestroy",
+            "signature": "protected onWidgetDestroy(widgetId: string): void",
+            "description": "Lifecycle hook called when widget is destroyed. Can be overridden by derived classes.",
+            "parameters": [
+              {
+                "name": "widgetId",
+                "type": "string",
+                "required": true,
+                "description": "Unique identifier of widget being destroyed"
+              }
+            ],
+            "returnType": "void",
+            "defaultImplementation": "Empty (no-op)",
+            "notes": "Can be overridden for custom widget cleanup logic"
+          },
+          {
+            "name": "validateFilter",
+            "signature": "protected validateFilter(filter: IFilterValues): boolean",
+            "description": "Validate filter before adding or updating. Returns true if valid, false otherwise.",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "IFilterValues",
+                "required": true,
+                "description": "Filter to validate"
+              }
+            ],
+            "returnType": "boolean",
+            "notes": "Can be overridden for custom validation logic"
+          }
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "imports": [
+      {
+        "module": "@angular/core",
+        "items": ["Optional", "Inject"]
+      },
+      {
+        "module": "@angular/router",
+        "items": ["Router"]
+      },
+      {
+        "module": "rxjs",
+        "items": ["Observable", "BehaviorSubject", "Subject"]
+      },
+      {
+        "module": "rxjs/operators",
+        "items": ["debounceTime", "takeUntil"]
+      },
+      {
+        "module": "../entities/widget.interface",
+        "items": ["ID3Widget"]
+      },
+      {
+        "module": "../entities/filter.interface",
+        "items": ["IFilterValues"]
+      },
+      {
+        "module": "../entities/dashboard.interface",
+        "items": ["IDashboardNavigationInfo"]
+      }
+    ]
+  },
+  "usage": {
+    "extending": "Derived classes must implement all abstract methods",
+    "constructor": "Should inject Router with @Optional() decorator",
+    "cleanup": "Must call cleanup() in ngOnDestroy or equivalent lifecycle hook",
+    "filters": "Use getFilters$() to subscribe to filter changes reactively",
+    "lifecycle": "Override protected lifecycle hooks for custom widget management"
+  },
+  "testing": {
+    "unitTests": "Required for all public methods",
+    "coverage": "Minimum 80% code coverage",
+    "mocking": "Use mock derived class to test abstract class functionality",
+    "scenarios": [
+      "Filter management operations",
+      "Widget lifecycle hooks",
+      "Navigation helpers",
+      "Error handling",
+      "Memory leak prevention"
+    ]
+  }
+}
+

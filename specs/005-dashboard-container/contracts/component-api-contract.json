@@ -1,0 +1,447 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dashboard Container Component API Contract",
+  "description": "Contract defining the public API (inputs, outputs, methods) for DashboardContainerComponent",
+  "type": "object",
+  "required": [
+    "componentName",
+    "selector",
+    "inputs",
+    "outputs",
+    "methods"
+  ],
+  "properties": {
+    "componentName": {
+      "type": "string",
+      "const": "DashboardContainerComponent",
+      "description": "Angular component class name"
+    },
+    "selector": {
+      "type": "string",
+      "const": "lib-dashboard-container",
+      "description": "Component CSS selector"
+    },
+    "standalone": {
+      "type": "boolean",
+      "const": true,
+      "description": "Component is standalone (no NgModule)"
+    },
+    "changeDetection": {
+      "type": "string",
+      "const": "OnPush",
+      "description": "Change detection strategy"
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Component input properties",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "required",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Input property name"
+          },
+          "type": {
+            "type": "string",
+            "description": "TypeScript type"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether input is required"
+          },
+          "description": {
+            "type": "string",
+            "description": "Input property description"
+          },
+          "default": {
+            "description": "Default value if optional"
+          }
+        }
+      },
+      "default": [
+        {
+          "name": "widgets",
+          "type": "ID3Widget[]",
+          "required": true,
+          "description": "Array of dashboard widgets to display"
+        },
+        {
+          "name": "gridConfig",
+          "type": "IGridConfiguration",
+          "required": false,
+          "description": "Grid layout configuration. If not provided, uses default configuration.",
+          "default": "DEFAULT_GRID_CONFIG"
+        },
+        {
+          "name": "isEditMode",
+          "type": "boolean",
+          "required": false,
+          "description": "Edit mode toggle. When true, enables drag-and-drop and resizing. Default: false.",
+          "default": false
+        },
+        {
+          "name": "filterValues",
+          "type": "IFilterValues[]",
+          "required": false,
+          "description": "Global filter values to propagate to all widgets. Default: empty array.",
+          "default": []
+        }
+      ]
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Component output events",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Output event name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Event payload type"
+          },
+          "description": {
+            "type": "string",
+            "description": "Event description and when it's emitted"
+          }
+        }
+      },
+      "default": [
+        {
+          "name": "widgetChange",
+          "type": "EventEmitter<ID3Widget[]>",
+          "description": "Emitted when widgets array changes (add, remove, update, position change). Emits the updated widgets array."
+        },
+        {
+          "name": "widgetSelect",
+          "type": "EventEmitter<ID3Widget>",
+          "description": "Emitted when a widget is selected (clicked). Emits the selected widget."
+        },
+        {
+          "name": "filterChange",
+          "type": "EventEmitter<IFilterValues[]>",
+          "description": "Emitted when filter values change. Emits the updated filter values array (debounced)."
+        }
+      ]
+    },
+    "methods": {
+      "type": "array",
+      "description": "Public component methods",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "returnType",
+          "description",
+          "parameters"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Method name"
+          },
+          "returnType": {
+            "type": "string",
+            "description": "Return type"
+          },
+          "description": {
+            "type": "string",
+            "description": "Method description"
+          },
+          "parameters": {
+            "type": "array",
+            "description": "Method parameters",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "type",
+                "required",
+                "description"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+      },
+      "default": [
+        {
+          "name": "addWidget",
+          "returnType": "void",
+          "description": "Adds a new widget to the dashboard at a default position",
+          "parameters": [
+            {
+              "name": "widget",
+              "type": "ID3Widget",
+              "required": true,
+              "description": "Widget to add"
+            }
+          ]
+        },
+        {
+          "name": "removeWidget",
+          "returnType": "void",
+          "description": "Removes a widget from the dashboard",
+          "parameters": [
+            {
+              "name": "widgetId",
+              "type": "string",
+              "required": true,
+              "description": "ID of widget to remove"
+            }
+          ]
+        },
+        {
+          "name": "updateWidget",
+          "returnType": "void",
+          "description": "Updates a widget's configuration",
+          "parameters": [
+            {
+              "name": "widget",
+              "type": "ID3Widget",
+              "required": true,
+              "description": "Updated widget"
+            }
+          ]
+        },
+        {
+          "name": "exportConfiguration",
+          "returnType": "IDashboardExport",
+          "description": "Exports the current dashboard configuration as JSON",
+          "parameters": []
+        },
+        {
+          "name": "importConfiguration",
+          "returnType": "void",
+          "description": "Imports a dashboard configuration from JSON",
+          "parameters": [
+            {
+              "name": "config",
+              "type": "IDashboardExport",
+              "required": true,
+              "description": "Dashboard configuration to import"
+            }
+          ]
+        },
+        {
+          "name": "print",
+          "returnType": "void",
+          "description": "Triggers print functionality for the dashboard",
+          "parameters": []
+        },
+        {
+          "name": "toggleEditMode",
+          "returnType": "void",
+          "description": "Toggles edit mode on/off",
+          "parameters": []
+        }
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Component dependencies (imports)",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "source"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Dependency name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "module",
+              "component",
+              "service",
+              "interface",
+              "type"
+            ],
+            "description": "Type of dependency"
+          },
+          "source": {
+            "type": "string",
+            "description": "Import source path"
+          }
+        }
+      },
+      "default": [
+        {
+          "name": "GridsterModule",
+          "type": "module",
+          "source": "angular-gridster2"
+        },
+        {
+          "name": "CommonModule",
+          "type": "module",
+          "source": "@angular/common"
+        },
+        {
+          "name": "ID3Widget",
+          "type": "interface",
+          "source": "../entities/widget.interface"
+        },
+        {
+          "name": "IGridConfiguration",
+          "type": "interface",
+          "source": "../entities/grid-config.interface"
+        },
+        {
+          "name": "IFilterValues",
+          "type": "interface",
+          "source": "../entities/filter-values.interface"
+        }
+      ]
+    },
+    "validationRules": {
+      "type": "object",
+      "description": "Validation rules for component API",
+      "properties": {
+        "widgetsValidation": {
+          "type": "object",
+          "description": "Widgets array validation",
+          "properties": {
+            "mustNotBeNull": {
+              "type": "boolean",
+              "const": true
+            },
+            "uniqueIds": {
+              "type": "boolean",
+              "const": true,
+              "description": "All widget IDs must be unique"
+            },
+            "validPositions": {
+              "type": "boolean",
+              "const": true,
+              "description": "All widget positions must be valid"
+            }
+          }
+        },
+        "gridConfigValidation": {
+          "type": "object",
+          "description": "Grid configuration validation",
+          "properties": {
+            "columnsRange": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "default": [1, 24],
+              "description": "Columns must be between 1 and 24"
+            },
+            "rowHeightMin": {
+              "type": "number",
+              "const": 1,
+              "description": "Row height must be > 0"
+            }
+          }
+        },
+        "filterValuesValidation": {
+          "type": "object",
+          "description": "Filter values validation",
+          "properties": {
+            "keyRequired": {
+              "type": "boolean",
+              "const": true,
+              "description": "Filter key must not be empty"
+            },
+            "operatorRequired": {
+              "type": "boolean",
+              "const": true,
+              "description": "Filter operator must be valid"
+            }
+          }
+        }
+      }
+    },
+    "performanceRequirements": {
+      "type": "object",
+      "description": "Performance requirements for component",
+      "properties": {
+        "renderTime": {
+          "type": "object",
+          "description": "Render time requirements",
+          "properties": {
+            "maxWidgets": {
+              "type": "number",
+              "const": 50
+            },
+            "maxTimeMs": {
+              "type": "number",
+              "const": 2000,
+              "description": "Must render 50 widgets within 2 seconds"
+            }
+          }
+        },
+        "dragResponseTime": {
+          "type": "object",
+          "description": "Drag operation response time",
+          "properties": {
+            "maxTimeMs": {
+              "type": "number",
+              "const": 100,
+              "description": "Drag operations must respond within 100ms"
+            }
+          }
+        },
+        "filterPropagationTime": {
+          "type": "object",
+          "description": "Filter propagation time",
+          "properties": {
+            "maxTimeMs": {
+              "type": "number",
+              "const": 500,
+              "description": "Filter changes must propagate within 500ms"
+            },
+            "debounceMs": {
+              "type": "number",
+              "const": 300,
+              "description": "Filter updates debounced to 300ms"
+            }
+          }
+        },
+        "layoutAdaptationTime": {
+          "type": "object",
+          "description": "Layout adaptation time",
+          "properties": {
+            "maxTimeMs": {
+              "type": "number",
+              "const": 300,
+              "description": "Layout must adapt to screen size within 300ms"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

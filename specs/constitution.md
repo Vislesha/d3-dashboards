@@ -197,17 +197,19 @@ d3-dashboards-app/
 - **Mandatory**: Charts MUST validate configuration and provide sensible defaults
 
 ### Section 6.4: Required Chart Types
-The following chart types MUST be implemented:
-1. Line Chart
-2. Bar Chart
-3. Pie/Donut Chart
-4. Scatter Plot
-5. Area Chart
-6. Heatmap
-7. Tree Map
-8. Force-Directed Graph
-9. Geographic Map
-10. Gauge
+The following chart types MUST be implemented for v1:
+1. Line Chart *(Required for v1)*
+2. Bar Chart *(Required for v1)*
+
+The following chart types are OPTIONAL for v1 and will be implemented on a need basis:
+3. Pie/Donut Chart *(Optional for v1 - Future Implementation)*
+4. Scatter Plot *(Optional for v1 - Future Implementation)*
+5. Area Chart *(Optional for v1 - Future Implementation)*
+6. Heatmap *(Optional for v1 - Future Implementation)*
+7. Tree Map *(Optional for v1 - Future Implementation)*
+8. Force-Directed Graph *(Optional for v1 - Future Implementation)*
+9. Geographic Map *(Optional for v1 - Future Implementation)*
+10. Gauge *(Optional for v1 - Future Implementation)*
 
 ---
 
@@ -222,7 +224,9 @@ The following chart types MUST be implemented:
 
 ### Section 7.2: Widget Types
 The following widget types MUST be supported:
-- Chart widgets (all 10 chart types)
+- Chart widgets:
+  - Required for v1: Line chart, Bar chart
+  - Optional for v1 (future implementation): Pie/Donut, Scatter Plot, Area Chart, Heatmap, Tree Map, Force-Directed Graph, Geographic Map, Gauge
 - Table widget
 - Filter widget
 - Tile widget (KPI display)
@@ -487,6 +491,8 @@ This constitution is adopted by the development team and shall govern all aspect
 ```typescript
 interface ID3Widget {
   id: string;
+  // Required for v1: 'line' | 'bar'
+  // Optional for v1 (future implementation): 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge'
   type: 'line' | 'bar' | 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge' | 'table' | 'filter' | 'tile' | 'markdown';
   position: GridsterItem;
   title: string;

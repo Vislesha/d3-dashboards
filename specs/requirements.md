@@ -151,56 +151,64 @@ All charts should be implemented using D3.js v7. Each chart should be a standalo
 - Category and value axes
 - Interactive tooltips
 
-#### 3. Pie/Donut Chart Component
+#### 3. Pie/Donut Chart Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/pie-chart/`
 - Pie and donut variants
 - Interactive segments
 - Legend support
 - Percentage labels
+- **Status**: Will be implemented on a need basis
 
-#### 4. Scatter Plot Component
+#### 4. Scatter Plot Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/scatter-plot/`
 - Multiple data series
 - Color coding
 - Size scaling
 - Interactive brushing
+- **Status**: Will be implemented on a need basis
 
-#### 5. Area Chart Component
+#### 5. Area Chart Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/area-chart/`
 - Stacked area support
 - Smooth curves
 - Time-series support
+- **Status**: Will be implemented on a need basis
 
-#### 6. Heatmap Component
+#### 6. Heatmap Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/heatmap/`
 - Color scale mapping
 - Row and column labels
 - Interactive cells
+- **Status**: Will be implemented on a need basis
 
-#### 7. Tree Map Component
+#### 7. Tree Map Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/treemap/`
 - Hierarchical data visualization
 - Nested rectangles
 - Interactive zoom
+- **Status**: Will be implemented on a need basis
 
-#### 8. Force-Directed Graph Component
+#### 8. Force-Directed Graph Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/force-graph/`
 - Node-link diagrams
 - Interactive dragging
 - Collapsible nodes
+- **Status**: Will be implemented on a need basis
 
-#### 9. Geographic Map Component
+#### 9. Geographic Map Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/geo-map/`
 - GeoJSON support
 - Choropleth mapping
 - Interactive regions
 - Projection support (Mercator, Albers, etc.)
+- **Status**: Will be implemented on a need basis
 
-#### 10. Gauge Component
+#### 10. Gauge Component *(Optional for v1 - Future Implementation)*
 **Path**: `projects/d3-dashboards/src/lib/charts/gauge/`
 - Circular gauge
 - Value indicators
 - Color zones
+- **Status**: Will be implemented on a need basis
 
 ### Additional Widget Types
 
@@ -258,6 +266,8 @@ All charts should be implemented using D3.js v7. Each chart should be a standalo
 ```typescript
 interface ID3Widget {
   id: string;
+  // Required for v1: 'line' | 'bar'
+  // Optional for v1 (future implementation): 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge'
   type: 'line' | 'bar' | 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge' | 'table' | 'filter' | 'tile' | 'markdown';
   position: GridsterItem;
   title: string;
@@ -422,15 +432,14 @@ const routes: Routes = [
 #### 1. Sales Dashboard
 - Revenue line chart
 - Product category bar chart
-- Regional pie chart
 - Sales table
 - KPI tiles
+- *(Note: Pie chart and other optional charts will be added as needed)*
 
 #### 2. Analytics Dashboard
-- Time-series area chart
-- Scatter plot with correlation
-- Heatmap for performance metrics
-- Geographic map for regional data
+- Time-series line chart
+- Bar chart for comparisons
+- *(Note: Area chart, scatter plot, heatmap, and geo-map are optional for v1 and will be added as needed)*
 
 #### 3. Custom Dashboard
 - User-configurable widgets
@@ -589,11 +598,11 @@ const routes: Routes = [
 
 ### Phase 3: Chart Components
 1. Implement base chart component
-2. Create line chart
-3. Create bar chart
-4. Create pie/donut chart
-5. Create scatter plot
-6. Create remaining chart types
+2. Create line chart *(Required for v1)*
+3. Create bar chart *(Required for v1)*
+4. *(Optional for v1 - Future)*: Create pie/donut chart
+5. *(Optional for v1 - Future)*: Create scatter plot
+6. *(Optional for v1 - Future)*: Create remaining chart types (area, heatmap, treemap, force-graph, geo-map, gauge) on a need basis
 
 ### Phase 4: Services & Utilities
 1. Implement data service
@@ -618,7 +627,7 @@ const routes: Routes = [
 
 1. ✅ Library can be built and published as npm package
 2. ✅ Application can run and display dashboards
-3. ✅ All chart types render correctly with D3.js
+3. ✅ Required chart types (line and bar) render correctly with D3.js
 4. ✅ Widgets can be dragged, resized, and configured
 5. ✅ Data can be fetched from APIs and bound to charts
 6. ✅ Filters work across dashboard widgets
@@ -626,6 +635,7 @@ const routes: Routes = [
 8. ✅ Code is well-documented and tested
 9. ✅ Application is responsive and performant
 10. ✅ All dependencies are compatible with Angular v20
+11. *(Future)*: Optional chart types (pie, scatter, area, heatmap, treemap, force-graph, geo-map, gauge) will be implemented on a need basis
 
 ## Notes
 
