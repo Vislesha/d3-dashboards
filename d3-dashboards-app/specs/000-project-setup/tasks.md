@@ -76,11 +76,11 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T008 [US1] Initialize Angular workspace with Angular CLI v20.2.0 using `ng new` command
-- [ ] T009 [US1] Verify angular.json exists and contains valid workspace configuration
-- [ ] T010 [US1] Verify package.json exists with Angular v20.2.0 dependencies
-- [ ] T011 [US1] Verify tsconfig.json exists at root level
-- [ ] T012 [US1] Validate Angular version in package.json matches v20.2.0 exactly
+- [X] T008 [US1] Initialize Angular workspace with Angular CLI v20.2.0 using `ng new` command
+- [X] T009 [US1] Verify angular.json exists and contains valid workspace configuration
+- [X] T010 [US1] Verify package.json exists with Angular v20.2.0 dependencies
+- [X] T011 [US1] Verify tsconfig.json exists at root level
+- [X] T012 [US1] Validate Angular version in package.json matches v20.2.0 exactly
 
 ## Phase 4: User Story 2 - Create Library Project
 
