@@ -9,7 +9,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "lint": "eslint . --ext .ts,.html --ignore-path .eslintignore --max-warnings=0",
-    "format": "prettier --write \"{src,projects}/**/*.{ts,html,scss,css,json,md}\""
+    "format": "prettier --write \"{src,projects}/**/*.{ts,html,scss,css,json,md}\"",
+    "serve": "ng serve",
+    "clean": "node -e \"const fs=require('fs');['dist','out-tsc','coverage'].forEach((p)=>fs.rmSync(p,{recursive:true,force:true}));\""
   },
   "prettier": {
     "printWidth": 100,

@@ -1,59 +1,58 @@
-# D3DashboardsApp
+# D3 Dashboards Workspace
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+Monorepo bootstrap for the D3 dashboards initiative. The workspace contains:
 
-## Development server
+- `projects/d3-dashboards` – reusable Angular library for widgets, layouts, and utilities.
+- `src/` – demonstration and validation application that consumes the library.
 
-To start a local development server, run:
+## Requirements
 
-```bash
-ng serve
-```
+- Node.js **20.13.0** or newer
+- npm **11.x**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Validate your environment with:
 
 ```bash
-ng generate component component-name
+node --version
+npm --version
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+You can also run `pwsh ./scripts/setup/validate-environment.ps1` for an automated prerequisite check.
+
+## Getting Started
 
 ```bash
-ng generate --help
+npm install
+npm run build          # builds the application
+npm run build:lib      # builds the dashboard library package
 ```
 
-## Building
-
-To build the project run:
+Launch the dev server:
 
 ```bash
-ng build
+npm run serve
+# visit http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Development Toolkit
 
-## Running unit tests
+| Command             | Description                                             |
+| ------------------- | ------------------------------------------------------- |
+| `npm run lint`      | ESLint with Angular + TypeScript rules                  |
+| `npm run format`    | Prettier auto-format for `src/` and `projects/` sources |
+| `npm test`          | Jest unit tests via `jest-preset-angular`               |
+| `npm run build`     | Production build of the showcase application            |
+| `npm run build:lib` | Production build of the dashboard library (ng-packagr)  |
+| `npm run serve`     | Angular dev server for the example application          |
+| `npm run clean`     | Remove `dist/`, `out-tsc/`, and `coverage/` artifacts   |
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Library artifacts are emitted in `dist/d3-dashboards`.
 
-```bash
-ng test
-```
+## Documentation
 
-## Running end-to-end tests
+Feature specifications and implementation notes live under `specs/`. Key documents:
 
-For end-to-end (e2e) testing, run:
+- `specs/constitution.md` – architectural and coding standards.
+- `specs/000-project-setup/` – detailed plan, research, and implementation tasks.
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Refer to these documents before changing tooling or dependency versions.
