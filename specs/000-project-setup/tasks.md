@@ -160,11 +160,11 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T036 [US5] Configure ng-packagr in projects/d3-dashboards/ng-package.json with tree shaking and proper entry points
-- [ ] T037 [US5] Verify angular.json contains library build configuration for d3-dashboards project
-- [ ] T038 [US5] Verify angular.json contains application build configuration with development and production environments
-- [ ] T039 [US5] Test library build using `ng build d3-dashboards` command
-- [ ] T040 [US5] Test application build using `ng build` command
+- [X] T036 [US5] Configure ng-packagr in projects/d3-dashboards/ng-package.json with tree shaking and proper entry points
+- [X] T037 [US5] Verify angular.json contains library build configuration for d3-dashboards project
+- [X] T038 [US5] Verify angular.json contains application build configuration with development and production environments
+- [X] T039 [US5] Test library build using `ng build d3-dashboards` command
+- [X] T040 [US5] Test application build using `ng build` command
 
 ## Phase 8: User Story 6 - Establish Folder Structure
 
