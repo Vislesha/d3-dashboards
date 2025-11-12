@@ -59,9 +59,9 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T005 Create root .gitignore file with Angular workspace patterns
-- [ ] T006 Create root .editorconfig file for consistent editor settings
-- [ ] T007 Create root .npmrc file for npm configuration
+- [X] T005 Create root .gitignore file with Angular workspace patterns
+- [X] T006 Create root .editorconfig file for consistent editor settings
+- [X] T007 Create root .npmrc file for npm configuration
 
 ## Phase 3: User Story 1 - Create Angular Workspace
 
