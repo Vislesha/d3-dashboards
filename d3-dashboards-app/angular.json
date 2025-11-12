@@ -6,5 +6,31 @@
   },
   "newProjectRoot": "projects",
   "projects": {
+    "d3-dashboards": {
+      "projectType": "library",
+      "root": "projects/d3-dashboards",
+      "sourceRoot": "projects/d3-dashboards/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/d3-dashboards/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/d3-dashboards/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/d3-dashboards/tsconfig.spec.json"
+          }
+        }
+      }
+    }
   }
 }
