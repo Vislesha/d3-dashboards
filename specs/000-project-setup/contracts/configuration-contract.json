@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Configuration Files Contract",
+  "description": "Contract defining required configuration files and their validation rules",
+  "type": "object",
+  "required": [
+    "requiredFiles",
+    "validationRules"
+  ],
+  "properties": {
+    "requiredFiles": {
+      "type": "array",
+      "description": "List of required configuration files",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "type",
+          "description"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "File path relative to workspace root"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "json",
+              "typescript",
+              "javascript",
+              "markdown",
+              "other"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "Purpose of the configuration file"
+          },
+          "mandatory": {
+            "type": "boolean",
+            "description": "Whether file is mandatory",
+            "default": true
+          }
+        }
+      },
+      "default": [
+        {
+          "path": "angular.json",
+          "type": "json",
+          "description": "Angular workspace configuration",
+          "mandatory": true
+        },
+        {
+          "path": "package.json",
+          "type": "json",
+          "description": "npm package configuration with dependencies",
+          "mandatory": true
+        },
+        {
+          "path": "tsconfig.json",
+          "type": "json",
+          "description": "Root TypeScript configuration",
+          "mandatory": true
+        },
+        {
+          "path": "tsconfig.base.json",
+          "type": "json",
+          "description": "Base TypeScript configuration",
+          "mandatory": true
+        },
+        {
+          "path": "projects/d3-dashboards/ng-package.json",
+          "type": "json",
+          "description": "ng-packagr library packaging configuration",
+          "mandatory": true
+        },
+        {
+          "path": "projects/d3-dashboards/tsconfig.lib.json",
+          "type": "json",
+          "description": "Library TypeScript configuration",
+          "mandatory": true
+        },
+        {
+          "path": "tsconfig.app.json",
+          "type": "json",
+          "description": "Application TypeScript configuration",
+          "mandatory": true
+        },
+        {
+          "path": "jest.config.js",
+          "type": "javascript",
+          "description": "Jest testing framework configuration",
+          "mandatory": true
+        },
+        {
+          "path": ".eslintrc.json",
+          "type": "json",
+          "description": "ESLint linting configuration",
+          "mandatory": true
+        },
+        {
+          "path": ".prettierrc",
+          "type": "json",
+          "description": "Prettier code formatting configuration",
+          "mandatory": true
+        },
+        {
+          "path": "projects/d3-dashboards/src/lib/public-api.ts",
+          "type": "typescript",
+          "description": "Library public API exports",
+          "mandatory": true
+        },
+        {
+          "path": "README.md",
+          "type": "markdown",
+          "description": "Workspace README with setup instructions",
+          "mandatory": true
+        }
+      ]
+    },
+    "validationRules": {
+      "type": "object",
+      "description": "Validation rules for configuration files",
+      "properties": {
+        "typescriptStrictMode": {
+          "type": "object",
+          "description": "TypeScript strict mode validation",
+          "properties": {
+            "required": {
+              "type": "boolean",
+              "const": true
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "tsconfig.json",
+                "tsconfig.base.json",
+                "projects/d3-dashboards/tsconfig.lib.json",
+                "tsconfig.app.json"
+              ]
+            }
+          }
+        },
+        "dependencyVersions": {
+          "type": "object",
+          "description": "Dependency version validation",
+          "properties": {
+            "mustMatchConstitution": {
+              "type": "boolean",
+              "const": true
+            },
+            "validationFile": {
+              "type": "string",
+              "const": "package.json"
+            }
+          }
+        },
+        "folderStructure": {
+          "type": "object",
+          "description": "Folder structure validation",
+          "properties": {
+            "mustMatchConstitution": {
+              "type": "boolean",
+              "const": true
+            },
+            "requiredFolders": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "projects/d3-dashboards/src/lib/components",
+                "projects/d3-dashboards/src/lib/services",
+                "projects/d3-dashboards/src/lib/entities",
+                "projects/d3-dashboards/src/lib/charts",
+                "projects/d3-dashboards/src/lib/abstract",
+                "projects/d3-dashboards/src/lib/utils",
+                "src/app/components",
+                "src/app/services",
+                "src/app/models"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

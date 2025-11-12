@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dependencies Contract",
+  "description": "Contract defining required dependencies and their exact versions per constitution",
+  "type": "object",
+  "required": [
+    "dependencies",
+    "devDependencies"
+  ],
+  "properties": {
+    "dependencies": {
+      "type": "object",
+      "description": "Production dependencies",
+      "required": [
+        "@angular/animations",
+        "@angular/common",
+        "@angular/compiler",
+        "@angular/core",
+        "@angular/forms",
+        "@angular/platform-browser",
+        "@angular/platform-browser-dynamic",
+        "@angular/router",
+        "angular-gridster2",
+        "d3",
+        "lodash-es",
+        "primeng",
+        "@primeng/themes",
+        "primeflex",
+        "primeicons",
+        "rxjs",
+        "tslib",
+        "uuid",
+        "zone.js"
+      ],
+      "properties": {
+        "@angular/animations": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/common": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/compiler": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/core": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/forms": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/platform-browser": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/platform-browser-dynamic": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/router": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "angular-gridster2": {
+          "type": "string",
+          "pattern": "^20\\.0\\.0"
+        },
+        "d3": {
+          "type": "string",
+          "pattern": "^7\\.8\\.5"
+        },
+        "lodash-es": {
+          "type": "string",
+          "pattern": "^4\\.17\\.21"
+        },
+        "primeng": {
+          "type": "string",
+          "pattern": "^20\\.0\\.0"
+        },
+        "@primeng/themes": {
+          "type": "string",
+          "pattern": "^20\\.0\\.0"
+        },
+        "primeflex": {
+          "type": "string",
+          "pattern": "^4\\.0\\.0"
+        },
+        "primeicons": {
+          "type": "string",
+          "pattern": "^7\\.0\\.0"
+        },
+        "rxjs": {
+          "type": "string",
+          "pattern": "~7\\.8\\.0"
+        },
+        "tslib": {
+          "type": "string",
+          "pattern": "^2\\.6\\.0"
+        },
+        "uuid": {
+          "type": "string",
+          "pattern": "^11\\.0\\.0"
+        },
+        "zone.js": {
+          "type": "string",
+          "pattern": "~0\\.15\\.1"
+        }
+      }
+    },
+    "devDependencies": {
+      "type": "object",
+      "description": "Development dependencies",
+      "required": [
+        "@angular-devkit/build-angular",
+        "@angular/cli",
+        "@angular/compiler-cli",
+        "@types/d3",
+        "@types/lodash-es",
+        "@types/uuid",
+        "jest",
+        "jest-preset-angular",
+        "ng-packagr",
+        "typescript"
+      ],
+      "properties": {
+        "@angular-devkit/build-angular": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/cli": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@angular/compiler-cli": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "@types/d3": {
+          "type": "string",
+          "pattern": "^7\\.4\\.3"
+        },
+        "@types/lodash-es": {
+          "type": "string",
+          "pattern": "^4\\.17\\.12"
+        },
+        "@types/uuid": {
+          "type": "string",
+          "pattern": "^10\\.0\\.0"
+        },
+        "jest": {
+          "type": "string",
+          "pattern": "^29\\.7\\.0"
+        },
+        "jest-preset-angular": {
+          "type": "string",
+          "pattern": "^14\\.6\\.1"
+        },
+        "ng-packagr": {
+          "type": "string",
+          "pattern": "^20\\.2\\.0"
+        },
+        "typescript": {
+          "type": "string",
+          "pattern": "~5\\.8\\.0"
+        }
+      }
+    }
+  }
+}
+
