@@ -179,16 +179,16 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T041 [US6] Create projects/d3-dashboards/src/lib/components/ directory
-- [ ] T042 [US6] Create projects/d3-dashboards/src/lib/services/ directory
-- [ ] T043 [US6] Create projects/d3-dashboards/src/lib/entities/ directory
-- [ ] T044 [US6] Create projects/d3-dashboards/src/lib/charts/ directory
-- [ ] T045 [US6] Create projects/d3-dashboards/src/lib/abstract/ directory
-- [ ] T046 [US6] Create projects/d3-dashboards/src/lib/utils/ directory
-- [ ] T047 [US6] Create projects/d3-dashboards/src/lib/public-api.ts file with initial exports
-- [ ] T048 [US6] Create src/app/components/ directory
-- [ ] T049 [US6] Create src/app/services/ directory
-- [ ] T050 [US6] Create src/app/models/ directory
+- [X] T041 [US6] Create projects/d3-dashboards/src/lib/components/ directory
+- [X] T042 [US6] Create projects/d3-dashboards/src/lib/services/ directory
+- [X] T043 [US6] Create projects/d3-dashboards/src/lib/entities/ directory
+- [X] T044 [US6] Create projects/d3-dashboards/src/lib/charts/ directory
+- [X] T045 [US6] Create projects/d3-dashboards/src/lib/abstract/ directory
+- [X] T046 [US6] Create projects/d3-dashboards/src/lib/utils/ directory
+- [X] T047 [US6] Create projects/d3-dashboards/src/lib/public-api.ts file with initial exports
+- [X] T048 [US6] Create src/app/components/ directory
+- [X] T049 [US6] Create src/app/services/ directory
+- [X] T050 [US6] Create src/app/models/ directory
 
 ## Phase 9: User Story 7 - Configure Development Tools
 
