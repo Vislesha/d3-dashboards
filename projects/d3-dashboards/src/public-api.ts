@@ -11,3 +11,7 @@ export * from './lib/abstract/abstract-dashboard-container';
 export * from './lib/entities/widget.interface';
 export * from './lib/entities/filter.interface';
 export * from './lib/entities/dashboard.interface';
+export * from './lib/entities/data-source.interface';
+
+// Services
+export * from './lib/services/data.service';
