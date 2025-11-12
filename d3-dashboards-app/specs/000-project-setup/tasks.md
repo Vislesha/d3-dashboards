@@ -115,13 +115,13 @@ Phase 1 (Setup)
 
 ### Tasks
 
-- [ ] T019 [US3] Verify application project structure exists in src/ at root level
-- [ ] T020 [US3] Verify src/app/ directory exists with app.component files
-- [ ] T021 [US3] Verify src/assets/ directory exists
-- [ ] T022 [US3] Verify src/main.ts exists as application entry point
-- [ ] T023 [US3] Verify src/index.html exists
-- [ ] T024 [US3] Verify src/styles.scss exists
-- [ ] T025 [US3] Verify app.config.ts exists in src/app/
+- [X] T019 [US3] Verify application project structure exists in src/ at root level
+- [X] T020 [US3] Verify src/app/ directory exists with app.component files
+- [X] T021 [US3] Verify src/assets/ directory exists
+- [X] T022 [US3] Verify src/main.ts exists as application entry point
+- [X] T023 [US3] Verify src/index.html exists
+- [X] T024 [US3] Verify src/styles.scss exists
+- [X] T025 [US3] Verify app.config.ts exists in src/app/
 
 ## Phase 6: User Story 4 - Install Dependencies
 
