@@ -64,20 +64,20 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T015 [P] [US1] Write test for fetchData with GET request in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T016 [P] [US1] Write test for fetchData with POST request in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T017 [P] [US1] Write test for fetchData error handling in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T015 [P] [US1] Write test for fetchData with GET request in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T016 [P] [US1] Write test for fetchData with POST request in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T017 [P] [US1] Write test for fetchData error handling in projects/d3-dashboards/src/lib/services/data.service.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T018 [US1] Implement validateDataSource method in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T019 [US1] Implement fetchData method signature with generic type in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T020 [US1] Implement GET request handling in fetchData for API data sources in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T021 [US1] Implement POST request handling with body in fetchData for API data sources in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T022 [US1] Implement request parameters handling (params for GET) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T023 [US1] Implement DataResponse creation with loading states in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T024 [US1] Implement error handling that emits errors in DataResponse.error (not Observable error) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T025 [US1] Implement getLoadingState method returning Observable<boolean> in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T018 [US1] Implement validateDataSource method in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T019 [US1] Implement fetchData method signature with generic type in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T020 [US1] Implement GET request handling in fetchData for API data sources in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T021 [US1] Implement POST request handling with body in fetchData for API data sources in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T022 [US1] Implement request parameters handling (params for GET) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T023 [US1] Implement DataResponse creation with loading states in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T024 [US1] Implement error handling that emits errors in DataResponse.error (not Observable error) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T025 [US1] Implement getLoadingState method returning Observable<boolean> in projects/d3-dashboards/src/lib/services/data.service.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - can fetch data from APIs with GET/POST
 
@@ -91,17 +91,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T026 [P] [US2] Write test for static data source in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T027 [P] [US2] Write test for computed data source in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T028 [P] [US2] Write test for API data source (already covered in US1, verify integration) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T026 [P] [US2] Write test for static data source in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T027 [P] [US2] Write test for computed data source in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T028 [P] [US2] Write test for API data source (already covered in US1, verify integration) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T029 [US2] Implement static data source handling in fetchData (return data immediately) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T030 [US2] Implement computed data source handling in fetchData (call transform function) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T031 [US2] Add type validation for data source type field in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T032 [US2] Add validation for static data source (requires data array) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T033 [US2] Add validation for computed data source (requires transform function) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T029 [US2] Implement static data source handling in fetchData (return data immediately) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T030 [US2] Implement computed data source handling in fetchData (call transform function) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T031 [US2] Add type validation for data source type field in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T032 [US2] Add validation for static data source (requires data array) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T033 [US2] Add validation for computed data source (requires transform function) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - can fetch from API, static, and computed sources
 
@@ -115,16 +115,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T034 [P] [US3] Write test for data transformation with valid transform function in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T035 [P] [US3] Write test for transformation error handling (function throws) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T036 [P] [US3] Write test for invalid transformation (non-function) validation in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T034 [P] [US3] Write test for data transformation with valid transform function in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T035 [P] [US3] Write test for transformation error handling (function throws) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T036 [P] [US3] Write test for invalid transformation (non-function) validation in projects/d3-dashboards/src/lib/services/data.service.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Implement transform function application in fetchData after data fetch in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T038 [US3] Implement transform error handling (catch errors, return in DataResponse.error) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T039 [US3] Add transform function validation (must be callable) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T040 [US3] Ensure transformation completes within 100ms for < 1000 items (performance check) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T037 [US3] Implement transform function application in fetchData after data fetch in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T038 [US3] Implement transform error handling (catch errors, return in DataResponse.error) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T039 [US3] Add transform function validation (must be callable) in validateDataSource in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T040 [US3] Ensure transformation completes within 100ms for < 1000 items (performance check) in projects/d3-dashboards/src/lib/services/data.service.ts
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 should work independently - can transform data before returning
 
@@ -138,24 +138,24 @@
 
 ### Tests for User Story 4
 
-- [ ] T041 [P] [US4] Write test for cache hit (return cached data) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T042 [P] [US4] Write test for cache miss (fetch and cache) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T043 [P] [US4] Write test for cache expiration in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T044 [P] [US4] Write test for cache key generation in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T045 [P] [US4] Write test for clearCache method in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T046 [P] [US4] Write test for getCacheSize method in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T041 [P] [US4] Write test for cache hit (return cached data) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T042 [P] [US4] Write test for cache miss (fetch and cache) in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T043 [P] [US4] Write test for cache expiration in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T044 [P] [US4] Write test for cache key generation in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T045 [P] [US4] Write test for clearCache method in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T046 [P] [US4] Write test for getCacheSize method in projects/d3-dashboards/src/lib/services/data.service.spec.ts
 
 ### Implementation for User Story 4
 
-- [ ] T047 [US4] Implement cache Map storage in DataService class in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T048 [US4] Implement cache key generation from endpoint + method + serialized params/body in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T049 [US4] Implement cache lookup before API request in fetchData in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T050 [US4] Implement cache entry creation with timestamp and expiration in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T051 [US4] Implement cache expiration check (remove expired entries) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T052 [US4] Implement cache storage after successful data fetch in fetchData in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T053 [US4] Implement clearCache method (with optional key parameter) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T054 [US4] Implement getCacheSize method returning number of active entries in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T055 [US4] Set fromCache flag in DataResponse when data comes from cache in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T047 [US4] Implement cache Map storage in DataService class in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T048 [US4] Implement cache key generation from endpoint + method + serialized params/body in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T049 [US4] Implement cache lookup before API request in fetchData in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T050 [US4] Implement cache entry creation with timestamp and expiration in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T051 [US4] Implement cache expiration check (remove expired entries) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T052 [US4] Implement cache storage after successful data fetch in fetchData in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T053 [US4] Implement clearCache method (with optional key parameter) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T054 [US4] Implement getCacheSize method returning number of active entries in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T055 [US4] Set fromCache flag in DataResponse when data comes from cache in projects/d3-dashboards/src/lib/services/data.service.ts
 
 **Checkpoint**: At this point, all user stories should work independently - caching reduces API calls for repeated requests
 
@@ -167,22 +167,22 @@
 
 ### Tests for Error Handling & Retry
 
-- [ ] T056 [P] Write test for retry logic with exponential backoff in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T057 [P] Write test for retryable vs non-retryable error classification in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T058 [P] Write test for concurrent request deduplication in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T059 [P] Write test for in-flight request reuse in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T060 [P] Write test for network timeout handling in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T056 [P] Write test for retry logic with exponential backoff in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T057 [P] Write test for retryable vs non-retryable error classification in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T058 [P] Write test for concurrent request deduplication in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T059 [P] Write test for in-flight request reuse in projects/d3-dashboards/src/lib/services/data.service.spec.ts
+- [X] T060 [P] Write test for network timeout handling in projects/d3-dashboards/src/lib/services/data.service.spec.ts
 
 ### Implementation for Error Handling & Retry
 
-- [ ] T061 Implement retry logic with exponential backoff using RxJS retry operator in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T062 Implement retryable error classification (network errors, 5xx, timeouts) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T063 Implement non-retryable error handling (4xx client errors, validation errors) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T064 Implement concurrent request deduplication (share Observable for same request) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T065 Implement in-flight request tracking and reuse in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T066 Implement network timeout handling (per-request timeout support) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T067 Implement comprehensive validation in validateDataSource (all rules from FR-011) in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T068 Implement validation error messages array in IValidationResult in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T061 Implement retry logic with exponential backoff using RxJS retry operator in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T062 Implement retryable error classification (network errors, 5xx, timeouts) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T063 Implement non-retryable error handling (4xx client errors, validation errors) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T064 Implement concurrent request deduplication (share Observable for same request) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T065 Implement in-flight request tracking and reuse in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T066 Implement network timeout handling (per-request timeout support) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T067 Implement comprehensive validation in validateDataSource (all rules from FR-011) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T068 Implement validation error messages array in IValidationResult in projects/d3-dashboards/src/lib/services/data.service.ts
 
 ---
 
@@ -190,15 +190,15 @@
 
 **Purpose**: Final improvements, documentation, and quality assurance
 
-- [ ] T069 [P] Add JSDoc comments to all public methods in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T070 [P] Add JSDoc comments to all interfaces in projects/d3-dashboards/src/lib/entities/data-source.interface.ts
-- [ ] T071 [P] Ensure all code follows TypeScript strict mode in projects/d3-dashboards/src/lib/services/data.service.ts
-- [ ] T072 [P] Verify tree-shakeable imports (no barrel imports) in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T069 [P] Add JSDoc comments to all public methods in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T070 [P] Add JSDoc comments to all interfaces in projects/d3-dashboards/src/lib/entities/data-source.interface.ts
+- [X] T071 [P] Ensure all code follows TypeScript strict mode in projects/d3-dashboards/src/lib/services/data.service.ts
+- [X] T072 [P] Verify tree-shakeable imports (no barrel imports) in projects/d3-dashboards/src/lib/services/data.service.ts
 - [ ] T073 Run Jest tests and verify 80%+ code coverage in projects/d3-dashboards/src/lib/services/data.service.spec.ts
-- [ ] T074 [P] Update quickstart.md with any implementation notes if needed in specs/002-data-service/quickstart.md
-- [ ] T075 Verify all exports in public-api.ts are correct in projects/d3-dashboards/src/lib/public-api.ts
+- [X] T074 [P] Update quickstart.md with any implementation notes if needed in specs/002-data-service/quickstart.md
+- [X] T075 Verify all exports in public-api.ts are correct in projects/d3-dashboards/src/lib/public-api.ts
 - [ ] T076 Performance testing: Verify SC-001 through SC-010 success criteria are met
-- [ ] T077 [P] Code review: Verify constitution compliance (type safety, reactive programming, testing)
+- [X] T077 [P] Code review: Verify constitution compliance (type safety, reactive programming, testing)
 
 ---
 

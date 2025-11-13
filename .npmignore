@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+tmp/
+out-tsc/
+.angular/
+.idea/
+.vscode/
+specs/
+*.log
+.env
+.env.*
