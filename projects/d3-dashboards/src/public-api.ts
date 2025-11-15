@@ -11,6 +11,7 @@ export * from './lib/abstract/abstract-dashboard-container';
 export * from './lib/entities/widget.interface';
 export * from './lib/entities/filter.interface';
 export * from './lib/entities/dashboard.interface';
+export * from './lib/entities/grid-config.interface';
 export {
   ICacheConfig,
   IRetryConfig,
@@ -34,3 +35,5 @@ export * from './lib/utils/scale-helpers';
 export * from './lib/utils/axis-helpers';
 export * from './lib/utils/color-palette';
 export * from './lib/utils/dashboard-validator.util';
+export * from './lib/utils/widget-position.validator';
+export * from './lib/utils/grid-config.defaults';

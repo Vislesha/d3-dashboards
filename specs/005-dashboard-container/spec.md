@@ -14,6 +14,18 @@
 - Q: Should edit mode and export functionality be included? → A: No, removed from current version scope - edit mode, drag-and-drop, resizing, widget management (add/remove/update), print, and export/import features are out of scope
 - Q: What happens when filter values are invalid or incompatible with widget data sources? → A: Widget shows unfiltered data and logs warning
 - Q: How should invalid widget positions be handled? → A: Auto-correct position to nearest valid position
+- Q: How should dashboard-level filters interact with widget-level filters when both are present? → A: Dashboard filters merge with widget filters (both applied)
+- Q: What should "widget selection" mean in this read-only dashboard? → A: Selection is not needed in read-only mode (removed FR-004)
+- Q: What should be displayed when the dashboard has an empty widget array? → A: Show a simple message with icon indicating no widgets
+- Q: What should be displayed for widget loading and error states? → A: Loading: spinner/skeleton; Error: error message with retry option (if applicable)
+- Q: What should be the default grid configuration values? → A: Custom defaults: 12 columns, 30px row height, 5px margins
+- Q: What should be the component's @Input() and @Output() properties? → A: Inputs: widgets, filters, gridConfig (optional); Outputs: filterChange
+- Q: Should the filter debounce timing be configurable? → A: Fixed 300ms (not configurable)
+- Q: How should widgets be rendered in the grid? → A: Use a widget component wrapper that dynamically loads the appropriate widget type component
+- Q: What makes a widget position "invalid" and how should "nearest valid position" be calculated? → A: Invalid: outside grid bounds (x < 0, x+cols > 12, y < 0) or overlapping widgets. Nearest valid: move to closest valid x,y within bounds, then adjust if overlap remains
+- Q: What are the exact responsive breakpoints for mobile, tablet, and desktop? → A: Use angular-gridster2's built-in responsive configuration (no custom breakpoints)
+- Q: How should filters be passed to individual widgets? → A: Pass merged filters (dashboard + widget) as an @Input() property to each widget component
+- Q: When a widget has invalid data, what should happen? → A: Show widget with error state (error message visible to user)
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -30,7 +42,7 @@ As a dashboard user, I want to view a dashboard with multiple widgets arranged i
 1. **Given** a dashboard container with an array of widgets, **When** the container is rendered, **Then** all widgets are displayed in a grid layout according to their position configuration
 2. **Given** a dashboard container with widgets of different types, **When** the container is rendered, **Then** each widget renders its appropriate component (chart, table, tile, etc.)
 3. **Given** a dashboard container with empty widget array, **When** the container is rendered, **Then** an empty dashboard is displayed with appropriate messaging
-4. **Given** a dashboard container with invalid widget data, **When** the container attempts to render, **Then** errors are handled gracefully and invalid widgets are skipped or shown with error state
+4. **Given** a dashboard container with invalid widget data, **When** the container attempts to render, **Then** invalid widgets are shown with error state (error message visible to user)
 
 ---
 
@@ -81,15 +93,14 @@ As a dashboard user, I want filters applied at the dashboard level to propagate 
 ### Functional Requirements
 
 - **FR-001**: System MUST display widgets in a grid-based layout using a 12-column grid system
-- **FR-002**: System MUST propagate filter values to all widgets in the dashboard. If a widget cannot apply a filter (invalid or incompatible), it MUST show unfiltered data and log a warning
+- **FR-002**: System MUST propagate filter values to all widgets in the dashboard. Dashboard-level filters MUST merge with widget-level filters (both applied). If a widget cannot apply a filter (invalid or incompatible), it MUST show unfiltered data and log a warning
 - **FR-003**: System MUST emit events when filters change
-- **FR-004**: System MUST emit events when a widget is selected
-- **FR-005**: System MUST support responsive grid layout that adapts to different screen sizes
-- **FR-006**: System MUST handle empty widget arrays gracefully
-- **FR-007**: System MUST handle widget loading states appropriately
-- **FR-008**: System MUST handle widget error states appropriately
-- **FR-009**: System MUST validate widget positions and prevent invalid configurations. Invalid positions MUST be auto-corrected to nearest valid position
-- **FR-010**: System MUST debounce filter updates to prevent excessive data fetching
+- **FR-004**: System MUST support responsive grid layout that adapts to different screen sizes
+- **FR-005**: System MUST handle empty widget arrays gracefully by displaying a simple message with icon indicating no widgets
+- **FR-006**: System MUST handle widget loading states appropriately by displaying a spinner or skeleton loader
+- **FR-007**: System MUST handle widget error states appropriately by displaying an error message with retry option (if applicable)
+- **FR-008**: System MUST validate widget positions and prevent invalid configurations. Invalid positions MUST be auto-corrected to nearest valid position
+- **FR-009**: System MUST debounce filter updates to prevent excessive data fetching
 
 ### Key Entities *(include if feature involves data)*
 
@@ -97,7 +108,7 @@ As a dashboard user, I want filters applied at the dashboard level to propagate 
 
 - **Widget**: Represents a single dashboard widget with properties including id, type, position (grid coordinates), title, configuration, data source, filters, and styling.
 
-- **Grid Configuration**: Defines the grid layout properties including column count, row height, margins, and responsive breakpoints.
+- **Grid Configuration**: Defines the grid layout properties including column count (default: 12), row height (default: 30px), margins (default: 5px), and responsive breakpoints.
 
 - **Filter Values**: Array of filter objects that contain key-value pairs with operators for filtering data across widgets.
 
