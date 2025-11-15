@@ -6,6 +6,7 @@ export * from './lib/d3-dashboards.component';
 
 // Components
 export * from './lib/components/dashboard-container/dashboard-container.component';
+export * from './lib/components/widget/widget.component';
 
 // Abstract classes
 export * from './lib/abstract/abstract-dashboard-container';
@@ -15,6 +16,9 @@ export * from './lib/entities/widget.interface';
 export * from './lib/entities/filter.interface';
 export * from './lib/entities/dashboard.interface';
 export * from './lib/entities/grid-config.interface';
+export * from './lib/entities/widget-state.interface';
+export * from './lib/entities/widget-action-event.interface';
+export * from './lib/entities/widget-config-change-event.interface';
 export {
   ICacheConfig,
   IRetryConfig,
@@ -40,3 +44,4 @@ export * from './lib/utils/color-palette';
 export * from './lib/utils/dashboard-validator.util';
 export * from './lib/utils/widget-position.validator';
 export * from './lib/utils/grid-config.defaults';
+export * from './lib/utils/widget-loader.util';

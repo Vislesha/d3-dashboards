@@ -16,7 +16,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { BehaviorSubject, Subject, Observable, firstValueFrom } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -156,7 +156,7 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
       this.configDialogRef = this.dialogService.open(module.WidgetConfigPanelComponent, {
         header: `Configure ${this.widget.title}`,
         width: '80%',
-        maxWidth: '800px',
+        style: { 'max-width': '800px' },
         data: {
           widget: { ...this.widget },
           config: { ...this.widget.config },
@@ -166,36 +166,38 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
         closable: true,
       });
 
-      this.configDialogRef.onClose.subscribe((result) => {
-        if (result) {
-          // Validate new configuration
-          const updatedWidget: ID3Widget = {
-            ...this.widget,
-            config: result.config,
-          };
+      this.configDialogRef.onClose
+        .pipe(debounceTime(300), takeUntil(this.destroy$))
+        .subscribe((result) => {
+          if (result) {
+            // Validate new configuration
+            const updatedWidget: ID3Widget = {
+              ...this.widget,
+              config: result.config,
+            };
 
-      // Update widget title if changed
-      if (result.title && result.title !== this.widget.title) {
-        updatedWidget.title = result.title;
-      }
+            // Update widget title if changed
+            if (result.title && result.title !== this.widget.title) {
+              updatedWidget.title = result.title;
+            }
 
-      // Re-validate widget with new config
-      const tempWidget = this.widget;
-      this.widget = updatedWidget;
-      if (this.validateWidget()) {
-        // Emit update event
-        this.widgetUpdate.emit(updatedWidget);
-        // Update component inputs if component is loaded
-        this.updateComponentInputs();
-      } else {
-        // Revert if validation fails
-        this.widget = tempWidget;
-        console.error('Configuration validation failed');
-      }
-        }
-        this.configDialogRef = null;
-        this.cdr.markForCheck();
-      });
+            // Re-validate widget with new config
+            const tempWidget = this.widget;
+            this.widget = updatedWidget;
+            if (this.validateWidget()) {
+              // Emit update event
+              this.widgetUpdate.emit(updatedWidget);
+              // Update component inputs if component is loaded
+              this.updateComponentInputs();
+            } else {
+              // Revert if validation fails
+              this.widget = tempWidget;
+              console.error('Configuration validation failed');
+            }
+          }
+          this.configDialogRef = null;
+          this.cdr.markForCheck();
+        });
     }).catch((error) => {
       console.error('Failed to load configuration panel:', error);
       // Fallback: emit action event for parent to handle

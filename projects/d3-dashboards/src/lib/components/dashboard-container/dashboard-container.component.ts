@@ -16,9 +16,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ID3Widget } from '../../entities/widget.interface';
 import { IFilterValues } from '../../entities/filter.interface';
+import { IWidgetActionEvent } from '../../entities/widget-action-event.interface';
 import { IGridConfiguration } from '../../entities/grid-config.interface';
 import { DEFAULT_GRID_CONFIG } from '../../utils/grid-config.defaults';
 import { validateWidgetPosition } from '../../utils/widget-position.validator';
+import { WidgetComponent } from '../widget/widget.component';
 
 /**
  * Dashboard Container Component
@@ -45,7 +47,7 @@ import { validateWidgetPosition } from '../../utils/widget-position.validator';
   templateUrl: './dashboard-container.component.html',
   styleUrls: ['./dashboard-container.component.scss'],
   standalone: true,
-  imports: [GridsterModule],
+  imports: [GridsterModule, WidgetComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy {
@@ -313,6 +315,46 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
    */
   getWidgetFilters(widgetId: string): IFilterValues[] {
     return this.mergedFilters.get(widgetId) || [];
+  }
+
+  /**
+   * Handle widget update event
+   */
+  onWidgetUpdate(updatedWidget: ID3Widget): void {
+    // Update widget in the widgets array
+    const index = this._validatedWidgets.findIndex((w) => w.id === updatedWidget.id);
+    if (index !== -1) {
+      this._validatedWidgets[index] = updatedWidget;
+      this.cdr.markForCheck();
+    }
+  }
+
+  /**
+   * Handle widget delete event
+   */
+  onWidgetDelete(widgetId: string): void {
+    // Remove widget from the widgets array
+    this._validatedWidgets = this._validatedWidgets.filter((w) => w.id !== widgetId);
+    this.updateMergedFilters();
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Handle widget action event
+   */
+  onWidgetAction(event: IWidgetActionEvent): void {
+    // Handle widget actions (edit, delete, refresh, export, configure)
+    // Most actions are handled by the widget component itself
+    // This method can be extended for dashboard-level action handling
+    console.log('Widget action:', event);
+  }
+
+  /**
+   * Handle widget data load event
+   */
+  onWidgetDataLoad(data: any): void {
+    // Handle data load event if needed
+    // This can be used for dashboard-level data tracking
   }
 }
 

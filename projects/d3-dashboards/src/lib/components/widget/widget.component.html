@@ -7,35 +7,40 @@
         type="button"
         class="action-button"
         (click)="onActionClick('edit')"
-        [attr.aria-label]="'Edit widget ' + widget.title">
+        [attr.aria-label]="'Edit widget ' + widget.title"
+        tabindex="0">
         <i class="pi pi-pencil" aria-hidden="true"></i>
       </button>
       <button
         type="button"
         class="action-button"
         (click)="onActionClick('delete')"
-        [attr.aria-label]="'Delete widget ' + widget.title">
+        [attr.aria-label]="'Delete widget ' + widget.title"
+        tabindex="0">
         <i class="pi pi-trash" aria-hidden="true"></i>
       </button>
       <button
         type="button"
         class="action-button"
         (click)="onActionClick('refresh')"
-        [attr.aria-label]="'Refresh widget ' + widget.title">
+        [attr.aria-label]="'Refresh widget ' + widget.title"
+        tabindex="0">
         <i class="pi pi-refresh" aria-hidden="true"></i>
       </button>
       <button
         type="button"
         class="action-button"
         (click)="onActionClick('export')"
-        [attr.aria-label]="'Export widget ' + widget.title">
+        [attr.aria-label]="'Export widget ' + widget.title"
+        tabindex="0">
         <i class="pi pi-download" aria-hidden="true"></i>
       </button>
       <button
         type="button"
         class="action-button"
         (click)="onActionClick('configure')"
-        [attr.aria-label]="'Configure widget ' + widget.title">
+        [attr.aria-label]="'Configure widget ' + widget.title"
+        tabindex="0">
         <i class="pi pi-cog" aria-hidden="true"></i>
       </button>
     </div>
