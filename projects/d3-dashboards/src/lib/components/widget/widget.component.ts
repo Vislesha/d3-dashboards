@@ -25,6 +25,7 @@ import { IFilterValues } from '../../entities/filter.interface';
 import { IWidgetState } from '../../entities/widget-state.interface';
 import { IWidgetActionEvent } from '../../entities/widget-action-event.interface';
 import { DataService } from '../../services/data.service';
+import { WidgetHeaderComponent } from '../widget-header/widget-header.component';
 import { loadWidgetComponent } from '../../utils/widget-loader.util';
 
 /**
@@ -41,7 +42,7 @@ import { loadWidgetComponent } from '../../utils/widget-loader.util';
   templateUrl: './widget.component.html',
   styleUrls: ['./widget.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, WidgetHeaderComponent],
   providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -542,6 +543,28 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
       widgetId: this.widget.id,
       payload: { format: 'csv' }, // Default format
     });
+  }
+
+  /**
+   * Handles filter removal from widget header
+   */
+  onFilterRemove(filterKey: string): void {
+    // Remove filter from widget filters
+    if (this.widget.filters) {
+      this.widget.filters = this.widget.filters.filter(f => f.key !== filterKey);
+      // Emit update to parent
+      this.widgetUpdate.emit(this.widget);
+    }
+  }
+
+  /**
+   * Handles error click from widget header
+   */
+  onErrorClick(): void {
+    // Retry loading data if error occurred
+    if (this.currentState.error && this.widget.dataSource) {
+      this.refresh();
+    }
   }
 
   /**

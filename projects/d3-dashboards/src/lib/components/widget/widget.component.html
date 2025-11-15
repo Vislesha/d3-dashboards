@@ -1,50 +1,15 @@
 <div class="widget-container" [attr.data-widget-id]="widget.id" [attr.data-widget-type]="widget.type">
   <!-- Widget Header -->
-  <div class="widget-header" *ngIf="widget.title">
-    <h3 class="widget-title">{{ widget.title }}</h3>
-    <div class="widget-actions" *ngIf="isEditMode">
-      <button
-        type="button"
-        class="action-button"
-        (click)="onActionClick('edit')"
-        [attr.aria-label]="'Edit widget ' + widget.title"
-        tabindex="0">
-        <i class="pi pi-pencil" aria-hidden="true"></i>
-      </button>
-      <button
-        type="button"
-        class="action-button"
-        (click)="onActionClick('delete')"
-        [attr.aria-label]="'Delete widget ' + widget.title"
-        tabindex="0">
-        <i class="pi pi-trash" aria-hidden="true"></i>
-      </button>
-      <button
-        type="button"
-        class="action-button"
-        (click)="onActionClick('refresh')"
-        [attr.aria-label]="'Refresh widget ' + widget.title"
-        tabindex="0">
-        <i class="pi pi-refresh" aria-hidden="true"></i>
-      </button>
-      <button
-        type="button"
-        class="action-button"
-        (click)="onActionClick('export')"
-        [attr.aria-label]="'Export widget ' + widget.title"
-        tabindex="0">
-        <i class="pi pi-download" aria-hidden="true"></i>
-      </button>
-      <button
-        type="button"
-        class="action-button"
-        (click)="onActionClick('configure')"
-        [attr.aria-label]="'Configure widget ' + widget.title"
-        tabindex="0">
-        <i class="pi pi-cog" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
+  <lib-widget-header
+    [widget]="widget"
+    [isEditMode]="isEditMode"
+    [filters]="filters"
+    [loading]="currentState.loading"
+    [error]="currentState.error"
+    (widgetAction)="onActionClick($event.action)"
+    (filterRemove)="onFilterRemove($event)"
+    (errorClick)="onErrorClick()">
+  </lib-widget-header>
 
   <!-- Widget Content -->
   <div class="widget-content">
