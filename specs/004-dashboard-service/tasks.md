@@ -69,26 +69,26 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T019 [P] [US1] Create unit test for create with valid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T020 [P] [US1] Create unit test for create with invalid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T021 [P] [US1] Create unit test for create with missing title in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T022 [P] [US1] Create unit test for create with widgets in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T023 [P] [US1] Create unit test for create save failure handling in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T024 [P] [US1] Create unit test for validateDashboard with valid config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T025 [P] [US1] Create unit test for validateDashboard with invalid config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T019 [P] [US1] Create unit test for create with valid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T020 [P] [US1] Create unit test for create with invalid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T021 [P] [US1] Create unit test for create with missing title in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T022 [P] [US1] Create unit test for create with widgets in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T023 [P] [US1] Create unit test for create save failure handling in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T024 [P] [US1] Create unit test for validateDashboard with valid config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T025 [P] [US1] Create unit test for validateDashboard with invalid config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T026 [US1] Implement UUID generation utility function in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
-- [ ] T027 [US1] Implement validateDashboard method in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
-- [ ] T028 [US1] Implement DashboardValidationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T029 [US1] Implement create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T030 [US1] Add storage initialization in DashboardService constructor in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T031 [US1] Implement storage.save method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T032 [US1] Implement storage.save method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T033 [US1] Add error handling for validation errors in create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T034 [US1] Add error handling for save failures in create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T035 [US1] Export DashboardService from projects/d3-dashboards/src/lib/public-api.ts
+- [X] T026 [US1] Implement UUID generation utility function in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
+- [X] T027 [US1] Implement validateDashboard method in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
+- [X] T028 [US1] Implement DashboardValidationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T029 [US1] Implement create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T030 [US1] Add storage initialization in DashboardService constructor in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T031 [US1] Implement storage.save method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T032 [US1] Implement storage.save method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T033 [US1] Add error handling for validation errors in create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T034 [US1] Add error handling for save failures in create method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T035 [US1] Export DashboardService from projects/d3-dashboards/src/lib/public-api.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently. Dashboards can be created and saved.
 

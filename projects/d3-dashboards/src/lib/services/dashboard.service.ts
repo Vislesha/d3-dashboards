@@ -12,11 +12,13 @@ import { IDashboard, IDashboardConfig, IDashboardState } from '../entities/dashb
 import { ID3Widget } from '../entities/widget.interface';
 import {
   DashboardServiceError,
+  DashboardValidationError,
   IDashboardStorage,
   InMemoryDashboardStorage,
   LocalStorageDashboardStorage,
 } from './dashboard.service.types';
-import { validateDashboard, validateWidget } from '../utils/dashboard-validator.util';
+import { validateDashboard, validateWidget, generateUUID } from '../utils/dashboard-validator.util';
+import { IValidationResult } from '../entities/data-source.interface';
 
 /**
  * Dashboard Service
@@ -45,8 +47,64 @@ export class DashboardService {
     });
   }
 
+  /**
+   * Creates a new dashboard with the provided configuration
+   * @param config Dashboard configuration
+   * @returns Observable that emits the created dashboard ID
+   */
+  create(config: IDashboardConfig): Observable<string> {
+    // Create dashboard object with generated ID and timestamps
+    const now = new Date();
+    const dashboard: IDashboard = {
+      id: generateUUID(),
+      title: config.title,
+      description: config.description,
+      widgets: config.widgets || [],
+      layout: config.layout,
+      filters: config.filters || [],
+      version: 1,
+      createdAt: now,
+      updatedAt: now,
+      metadata: config.metadata || {},
+    };
+
+    // Validate dashboard
+    const validation = validateDashboard(dashboard);
+    if (!validation.valid) {
+      return throwError(() => new DashboardValidationError(validation.errors));
+    }
+
+    // Save to storage
+    return this.storage.save(dashboard).pipe(
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to save dashboard: ${error instanceof Error ? error.message : String(error)}`,
+              'SAVE_ERROR',
+              true,
+              dashboard.id,
+            ),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Validates a dashboard configuration
+   * @param dashboard Dashboard to validate
+   * @returns Validation result
+   */
+  validateDashboard(dashboard: IDashboard | IDashboardConfig): IValidationResult {
+    return validateDashboard(dashboard);
+  }
+
   // State management methods will be implemented in Phase 6
-  // CRUD methods will be implemented in Phases 3, 4, 7
+  // Load/List methods will be implemented in Phase 4
+  // Update/Delete methods will be implemented in Phase 7
   // Widget management methods will be implemented in Phase 5
 }
 
