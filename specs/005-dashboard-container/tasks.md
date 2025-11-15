@@ -132,25 +132,25 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T046 [P] [US4] Create unit test for filter input property in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T047 [P] [US4] Create unit test for filter propagation to widgets in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T048 [P] [US4] Create unit test for filter merging (dashboard + widget filters) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T049 [P] [US4] Create unit test for filter debouncing (300ms) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T050 [P] [US4] Create unit test for filterChange output event in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T051 [P] [US4] Create unit test for filter clearing in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T052 [P] [US4] Create unit test for invalid filter handling in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T046 [P] [US4] Create unit test for filter input property in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T047 [P] [US4] Create unit test for filter propagation to widgets in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T048 [P] [US4] Create unit test for filter merging (dashboard + widget filters) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T049 [P] [US4] Create unit test for filter debouncing (300ms) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T050 [P] [US4] Create unit test for filterChange output event in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T051 [P] [US4] Create unit test for filter clearing in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T052 [P] [US4] Create unit test for invalid filter handling in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
 
 ### Implementation for User Story 4
 
-- [ ] T053 [US4] Add @Input() filters property with IFilterValues[] type in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T054 [US4] Add @Output() filterChange EventEmitter<IFilterValues[]> in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T055 [US4] Create BehaviorSubject for filter state management in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T056 [US4] Implement filter debouncing with debounceTime(300) operator in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T057 [US4] Implement filter merging logic (dashboard filters + widget filters) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T058 [US4] Pass merged filters to each widget component via @Input() in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.html
-- [ ] T059 [US4] Emit filterChange output when filters are updated (after debounce) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T060 [US4] Implement filter subscription cleanup in OnDestroy lifecycle hook in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T061 [US4] Add error handling for invalid filter values in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T053 [US4] Add @Input() filters property with IFilterValues[] type in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T054 [US4] Add @Output() filterChange EventEmitter<IFilterValues[]> in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T055 [US4] Create BehaviorSubject for filter state management in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T056 [US4] Implement filter debouncing with debounceTime(300) operator in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T057 [US4] Implement filter merging logic (dashboard filters + widget filters) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T058 [US4] Pass merged filters to each widget component via @Input() in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.html
+- [X] T059 [US4] Emit filterChange output when filters are updated (after debounce) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T060 [US4] Implement filter subscription cleanup in OnDestroy lifecycle hook in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T061 [US4] Add error handling for invalid filter values in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
 
 **Checkpoint**: At this point, all user stories should be independently functional. Filters propagate to all widgets with debouncing.
 

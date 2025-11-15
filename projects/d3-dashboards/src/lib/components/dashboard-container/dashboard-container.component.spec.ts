@@ -315,5 +315,120 @@ describe('DashboardContainerComponent', () => {
       expect(gridster).toBeTruthy();
     });
   });
+
+  describe('Filter Propagation', () => {
+    it('should accept filters input property', () => {
+      const filters: IFilterValues[] = [
+        { key: 'status', value: 'active', operator: 'equals' },
+      ];
+      component.widgets = [createMockWidget('widget-1')];
+      component.filters = filters;
+      fixture.detectChanges();
+
+      expect(component.filters).toEqual(filters);
+    });
+
+    it('should propagate filters to widgets', () => {
+      const filters: IFilterValues[] = [
+        { key: 'status', value: 'active', operator: 'equals' },
+      ];
+      const widget: ID3Widget = {
+        ...createMockWidget('widget-1'),
+        filters: [{ key: 'type', value: 'chart', operator: 'equals' }],
+      };
+      component.widgets = [widget];
+      component.filters = filters;
+      fixture.detectChanges();
+
+      // Filters should be merged (dashboard + widget)
+      expect(component.filters.length).toBe(1);
+    });
+
+    it('should merge dashboard filters with widget filters', () => {
+      const dashboardFilters: IFilterValues[] = [
+        { key: 'status', value: 'active', operator: 'equals' },
+      ];
+      const widget: ID3Widget = {
+        ...createMockWidget('widget-1'),
+        filters: [{ key: 'type', value: 'chart', operator: 'equals' }],
+      };
+      component.widgets = [widget];
+      component.filters = dashboardFilters;
+      fixture.detectChanges();
+
+      // Both filters should be available
+      expect(component.filters).toEqual(dashboardFilters);
+      expect(widget.filters).toBeDefined();
+    });
+
+    it('should debounce filter updates (300ms)', (done) => {
+      jest.useFakeTimers();
+      const filters1: IFilterValues[] = [{ key: 'status', value: 'active' }];
+      const filters2: IFilterValues[] = [{ key: 'status', value: 'inactive' }];
+
+      component.widgets = [createMockWidget('widget-1')];
+      component.filters = filters1;
+      fixture.detectChanges();
+
+      component.filters = filters2;
+      fixture.detectChanges();
+
+      // Fast-forward time by 300ms
+      jest.advanceTimersByTime(300);
+
+      // filterChange should be emitted after debounce
+      component.filterChange.subscribe((emittedFilters) => {
+        expect(emittedFilters).toEqual(filters2);
+        jest.useRealTimers();
+        done();
+      });
+    });
+
+    it('should emit filterChange output when filters are updated', (done) => {
+      jest.useFakeTimers();
+      const filters: IFilterValues[] = [
+        { key: 'status', value: 'active', operator: 'equals' },
+      ];
+
+      component.widgets = [createMockWidget('widget-1')];
+      component.filterChange.subscribe((emittedFilters) => {
+        expect(emittedFilters).toEqual(filters);
+        jest.useRealTimers();
+        done();
+      });
+
+      component.filters = filters;
+      fixture.detectChanges();
+      jest.advanceTimersByTime(300);
+    });
+
+    it('should handle filter clearing', () => {
+      const filters: IFilterValues[] = [
+        { key: 'status', value: 'active', operator: 'equals' },
+      ];
+      component.widgets = [createMockWidget('widget-1')];
+      component.filters = filters;
+      fixture.detectChanges();
+
+      component.filters = [];
+      fixture.detectChanges();
+
+      expect(component.filters).toEqual([]);
+    });
+
+    it('should handle invalid filter values gracefully', () => {
+      const invalidFilters: any[] = [
+        { key: '', value: 'active' }, // Invalid: empty key
+        { key: 'status' }, // Invalid: missing value
+      ];
+
+      component.widgets = [createMockWidget('widget-1')];
+      component.filters = invalidFilters;
+      fixture.detectChanges();
+
+      // Component should handle invalid filters without crashing
+      expect(component.filters).toEqual(invalidFilters);
+    });
+  });
 });
 

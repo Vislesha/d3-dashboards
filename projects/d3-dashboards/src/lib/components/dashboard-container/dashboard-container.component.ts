@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { GridsterModule } from 'angular-gridster2';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ID3Widget } from '../../entities/widget.interface';
 import { IFilterValues } from '../../entities/filter.interface';
 import { IGridConfiguration } from '../../entities/grid-config.interface';
@@ -56,25 +58,40 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
   /** Window resize listener */
   private resizeListener?: () => void;
 
+  /** Filter state management */
+  private filterSubject = new BehaviorSubject<IFilterValues[]>([]);
+  private destroy$ = new Subject<void>();
+
+  /** Merged filters (dashboard + widget) for each widget */
+  mergedFilters: Map<string, IFilterValues[]> = new Map();
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.initializeGridsterConfig();
     this.validateWidgets();
     this.setupWindowResizeListener();
+    this.setupFilterPropagation();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['widgets']) {
       this.validateWidgets();
+      this.updateMergedFilters();
     }
     if (changes['gridConfig']) {
       this.initializeGridsterConfig();
+    }
+    if (changes['filters']) {
+      this.filterSubject.next(this.filters || []);
     }
   }
 
   ngOnDestroy(): void {
     this.cleanupWindowResizeListener();
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.filterSubject.complete();
   }
 
   /**
@@ -211,6 +228,41 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
     // Gridster handles widget resizing internally
     // This method can be extended for custom resize handling
     this.cdr.markForCheck();
+  }
+
+  /**
+   * Setup filter propagation with debouncing
+   */
+  private setupFilterPropagation(): void {
+    this.filterSubject
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((filters) => {
+        this.updateMergedFilters();
+        this.filterChange.emit(filters);
+        this.cdr.markForCheck();
+      });
+  }
+
+  /**
+   * Update merged filters for all widgets (dashboard filters + widget filters)
+   */
+  private updateMergedFilters(): void {
+    this.mergedFilters.clear();
+    const dashboardFilters = this.filters || [];
+
+    this._validatedWidgets.forEach((widget) => {
+      const widgetFilters = widget.filters || [];
+      // Merge dashboard filters with widget filters (both applied)
+      const merged = [...dashboardFilters, ...widgetFilters];
+      this.mergedFilters.set(widget.id, merged);
+    });
+  }
+
+  /**
+   * Get merged filters for a specific widget
+   */
+  getWidgetFilters(widgetId: string): IFilterValues[] {
+    return this.mergedFilters.get(widgetId) || [];
   }
 }
 

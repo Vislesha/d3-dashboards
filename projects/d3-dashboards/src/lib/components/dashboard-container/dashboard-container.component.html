@@ -12,6 +12,7 @@
         <gridster-item [item]="widget.position">
           <div class="widget-wrapper">
             <!-- Widget component will be dynamically loaded here -->
+            <!-- Filters are passed via getWidgetFilters(widget.id) -->
             <div class="widget-placeholder">
               <div class="widget-header">
                 <h3>{{ widget.title }}</h3>
@@ -19,6 +20,11 @@
               </div>
               <div class="widget-content">
                 <p>Widget component for {{ widget.type }} will be rendered here</p>
+                @if (getWidgetFilters(widget.id).length > 0) {
+                  <div class="widget-filters">
+                    <small>Filters: {{ getWidgetFilters(widget.id).length }}</small>
+                  </div>
+                }
               </div>
             </div>
           </div>
