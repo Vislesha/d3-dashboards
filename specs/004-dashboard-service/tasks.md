@@ -204,23 +204,23 @@
 
 ### Tests for Update and Delete
 
-- [ ] T086 [P] Create unit test for update with valid dashboard in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T087 [P] Create unit test for update with version mismatch (concurrent modification) in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T088 [P] Create unit test for update with invalid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T089 [P] Create unit test for delete with valid dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T090 [P] Create unit test for delete with non-existent dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T086 [P] Create unit test for update with valid dashboard in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T087 [P] Create unit test for update with version mismatch (concurrent modification) in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T088 [P] Create unit test for update with invalid dashboard config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T089 [P] Create unit test for delete with valid dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T090 [P] Create unit test for delete with non-existent dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
 
 ### Implementation for Update and Delete
 
-- [ ] T091 Implement ConcurrentModificationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T092 Implement update method with optimistic locking in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T093 Add version increment logic in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T094 Add version mismatch detection in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T095 Add updatedAt timestamp update in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T096 Implement delete method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T097 Implement storage.delete method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T098 Implement storage.delete method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T099 Add error handling for ConcurrentModificationError in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T091 Implement ConcurrentModificationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T092 Implement update method with optimistic locking in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T093 Add version increment logic in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T094 Add version mismatch detection in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T095 Add updatedAt timestamp update in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T096 Implement delete method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T097 Implement storage.delete method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T098 Implement storage.delete method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T099 Add error handling for ConcurrentModificationError in update method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
 
 ---
 

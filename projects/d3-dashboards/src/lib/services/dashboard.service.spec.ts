@@ -258,5 +258,131 @@ describe('DashboardService', () => {
       });
     });
   });
+
+  describe('Phase 7 - Update and Delete Operations', () => {
+    let createdDashboardId: string;
+    let createdDashboard: IDashboard;
+
+    beforeEach((done) => {
+      const config: IDashboardConfig = {
+        title: 'Dashboard for Update/Delete',
+        description: 'Test description',
+        widgets: [],
+      };
+
+      service.create(config).subscribe({
+        next: (id) => {
+          createdDashboardId = id;
+          service.load(id).subscribe({
+            next: (dashboard) => {
+              createdDashboard = dashboard;
+              done();
+            },
+            error: () => {
+              done();
+            },
+          });
+        },
+        error: () => {
+          done();
+        },
+      });
+    });
+
+    describe('update', () => {
+      it('should update a dashboard with valid dashboard', (done) => {
+        const updated = {
+          ...createdDashboard,
+          title: 'Updated Title',
+          description: 'Updated description',
+        };
+
+        service.update(updated).subscribe({
+          next: (dashboard) => {
+            expect(dashboard.title).toBe('Updated Title');
+            expect(dashboard.description).toBe('Updated description');
+            expect(dashboard.version).toBe(createdDashboard.version + 1);
+            expect(dashboard.updatedAt.getTime()).toBeGreaterThanOrEqual(createdDashboard.updatedAt.getTime());
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should reject update with version mismatch (concurrent modification)', (done) => {
+        const updated = {
+          ...createdDashboard,
+          title: 'Updated Title',
+          version: 999, // Wrong version
+        };
+
+        service.update(updated).subscribe({
+          next: () => {
+            done.fail('Expected ConcurrentModificationError but got success');
+          },
+          error: (error) => {
+            expect(error.code).toBe('CONCURRENT_MODIFICATION');
+            done();
+          },
+        });
+      });
+
+      it('should reject update with invalid dashboard config', (done) => {
+        const updated = {
+          ...createdDashboard,
+          title: '', // Invalid
+        };
+
+        service.update(updated).subscribe({
+          next: () => {
+            done.fail('Expected validation error but got success');
+          },
+          error: (error) => {
+            expect(error).toBeInstanceOf(DashboardValidationError);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('delete', () => {
+      it('should delete a dashboard with valid dashboard ID', (done) => {
+        service.delete(createdDashboardId).subscribe({
+          next: (deleted) => {
+            expect(deleted).toBe(true);
+            // Verify dashboard is actually deleted
+            service.load(createdDashboardId).subscribe({
+              next: () => {
+                done.fail('Dashboard should be deleted but was found');
+              },
+              error: (error) => {
+                expect(error).toBeInstanceOf(DashboardNotFoundError);
+                done();
+              },
+            });
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should return false for non-existent dashboard ID', (done) => {
+        const nonExistentId = '550e8400-e29b-41d4-a716-446655440000';
+
+        service.delete(nonExistentId).subscribe({
+          next: (deleted) => {
+            expect(deleted).toBe(false);
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected false but got error: ${error.message}`);
+          },
+        });
+      });
+    });
+  });
 });
 

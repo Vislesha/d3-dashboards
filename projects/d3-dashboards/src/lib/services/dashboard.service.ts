@@ -7,13 +7,14 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { IDashboard, IDashboardConfig, IDashboardState } from '../entities/dashboard.interface';
 import { ID3Widget } from '../entities/widget.interface';
 import {
   DashboardServiceError,
   DashboardValidationError,
   DashboardNotFoundError,
+  ConcurrentModificationError,
   IDashboardStorage,
   InMemoryDashboardStorage,
   LocalStorageDashboardStorage,
@@ -166,8 +167,92 @@ export class DashboardService {
     );
   }
 
+  /**
+   * Updates an existing dashboard
+   * @param dashboard Dashboard object with updated configuration
+   * @returns Observable that emits the updated dashboard
+   */
+  update(dashboard: IDashboard): Observable<IDashboard> {
+    // Validate dashboard configuration
+    const validation = validateDashboard(dashboard);
+    if (!validation.valid) {
+      return throwError(() => new DashboardValidationError(validation.errors));
+    }
+
+    // Load existing dashboard to check version
+    return this.storage.load(dashboard.id).pipe(
+      map((existing) => {
+        if (!existing) {
+          throw new DashboardNotFoundError(dashboard.id);
+        }
+
+        // Check for concurrent modifications (version mismatch)
+        if (existing.version !== dashboard.version) {
+          throw new ConcurrentModificationError(
+            dashboard.id,
+            existing.version,
+            dashboard.version,
+          );
+        }
+
+        // Increment version and update timestamp
+        const now = new Date();
+        const updated: IDashboard = {
+          ...dashboard,
+          version: existing.version + 1,
+          updatedAt: now,
+        };
+
+        return updated;
+      }),
+      switchMap((updated) => {
+        // Save updated dashboard and return it
+        return this.storage.save(updated).pipe(map(() => updated));
+      }),
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to update dashboard: ${error instanceof Error ? error.message : String(error)}`,
+              'UPDATE_ERROR',
+              true,
+              dashboard.id,
+            ),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Deletes a dashboard by ID
+   * @param id Dashboard ID
+   * @returns Observable that emits true if deleted, false if not found
+   */
+  delete(id: string): Observable<boolean> {
+    return this.storage.delete(id).pipe(
+      map((deleted) => {
+        // Update state if deleted dashboard was active (will be implemented in Phase 6)
+        // For now, just return the deletion result
+        return deleted;
+      }),
+      catchError((error) => {
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to delete dashboard: ${error instanceof Error ? error.message : String(error)}`,
+              'DELETE_ERROR',
+              true,
+              id,
+            ),
+        );
+      }),
+    );
+  }
+
   // State management methods will be implemented in Phase 6
-  // Update/Delete methods will be implemented in Phase 7
   // Widget management methods will be implemented in Phase 5
 }
 
