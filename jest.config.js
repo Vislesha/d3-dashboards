@@ -30,7 +30,7 @@ module.exports = {
     ]
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@angular|d3-.*|internmap|delaunator|robust-predicates)/)'
+    'node_modules/(?!(@angular|d3-.*|internmap|delaunator|robust-predicates|primeng|@primeuix)/)'
   ]
 };
 

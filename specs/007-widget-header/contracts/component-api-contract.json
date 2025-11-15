@@ -1,0 +1,294 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Widget Header Component API Contract",
+  "description": "API contract for the Widget Header Component (007-widget-header)",
+  "version": "1.0.0",
+  "component": {
+    "name": "WidgetHeaderComponent",
+    "selector": "lib-widget-header",
+    "path": "projects/d3-dashboards/src/lib/components/widget-header/widget-header.component.ts",
+    "type": "Angular Component",
+    "standalone": true,
+    "changeDetection": "OnPush"
+  },
+  "inputs": {
+    "widget": {
+      "type": "ID3Widget",
+      "required": true,
+      "description": "Widget configuration and metadata",
+      "validation": {
+        "nonNull": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "required": true
+          },
+          "title": {
+            "type": "string",
+            "required": true,
+            "maxLength": 200,
+            "default": "Untitled Widget"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "line",
+              "bar",
+              "pie",
+              "scatter",
+              "area",
+              "heatmap",
+              "treemap",
+              "force-graph",
+              "geo-map",
+              "gauge",
+              "table",
+              "filter",
+              "tile",
+              "markdown"
+            ],
+            "required": true
+          }
+        }
+      }
+    },
+    "isEditMode": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "Whether the widget is in edit mode (controls action menu visibility)"
+    },
+    "filters": {
+      "type": "IFilterValues[]",
+      "required": false,
+      "default": [],
+      "description": "Active filters applied to the widget",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "required": true
+          },
+          "value": {
+            "type": "any",
+            "required": true
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["equals", "contains", "greaterThan", "lessThan", "between"],
+            "required": false
+          }
+        }
+      },
+      "maxItems": 10
+    },
+    "loading": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "Whether the widget is currently loading data"
+    },
+    "error": {
+      "type": "string | null",
+      "required": false,
+      "default": null,
+      "description": "Error message if the widget encountered an error (takes precedence over loading)"
+    }
+  },
+  "outputs": {
+    "widgetAction": {
+      "type": "EventEmitter<IWidgetActionEvent>",
+      "description": "Emitted when a widget action is triggered (edit, delete, refresh, export)",
+      "event": {
+        "type": "IWidgetActionEvent",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": ["edit", "delete", "refresh", "export", "configure"],
+            "required": true
+          },
+          "widgetId": {
+            "type": "string",
+            "format": "uuid",
+            "required": true
+          },
+          "payload": {
+            "type": "any",
+            "required": false,
+            "description": "Optional payload for action-specific data (e.g., export format)"
+          }
+        }
+      }
+    },
+    "filterRemove": {
+      "type": "EventEmitter<string>",
+      "description": "Emitted when a filter indicator is clicked to remove the filter",
+      "event": {
+        "type": "string",
+        "description": "The filter key to remove"
+      }
+    }
+  },
+  "methods": {
+    "public": [],
+    "private": [
+      {
+        "name": "emitAction",
+        "parameters": ["action: 'edit' | 'delete' | 'refresh' | 'export' | 'configure'"],
+        "description": "Emits widgetAction event with specified action"
+      },
+      {
+        "name": "onFilterRemove",
+        "parameters": ["filterKey: string"],
+        "description": "Emits filterRemove event with filter key"
+      },
+      {
+        "name": "getMenuItems",
+        "returns": "IMenuItem[]",
+        "description": "Returns menu items array based on edit mode"
+      },
+      {
+        "name": "getVisibleFilters",
+        "returns": "IFilterValues[]",
+        "description": "Returns visible filter indicators (max 5)"
+      },
+      {
+        "name": "getHiddenFilters",
+        "returns": "IFilterValues[]",
+        "description": "Returns hidden filter indicators (beyond 5)"
+      }
+    ]
+  },
+  "dependencies": {
+    "external": [
+      {
+        "name": "@angular/core",
+        "version": "^20.2.0",
+        "imports": ["Component", "Input", "Output", "EventEmitter", "Signal", "computed", "effect"]
+      },
+      {
+        "name": "@angular/common",
+        "version": "^20.2.0",
+        "imports": ["CommonModule"]
+      },
+      {
+        "name": "primeng/menu",
+        "version": "^20.0.0",
+        "imports": ["MenuModule"]
+      },
+      {
+        "name": "primeng/badge",
+        "version": "^20.0.0",
+        "imports": ["BadgeModule"]
+      },
+      {
+        "name": "primeng/tooltip",
+        "version": "^20.0.0",
+        "imports": ["TooltipModule"]
+      },
+      {
+        "name": "primeng/progressspinner",
+        "version": "^20.0.0",
+        "imports": ["ProgressSpinnerModule"]
+      },
+      {
+        "name": "primeng/message",
+        "version": "^20.0.0",
+        "imports": ["MessageModule"]
+      }
+    ],
+    "internal": [
+      {
+        "name": "ID3Widget",
+        "path": "projects/d3-dashboards/src/lib/entities/widget.interface.ts"
+      },
+      {
+        "name": "IFilterValues",
+        "path": "projects/d3-dashboards/src/lib/entities/filter.interface.ts"
+      },
+      {
+        "name": "IWidgetActionEvent",
+        "path": "projects/d3-dashboards/src/lib/entities/widget-action-event.interface.ts"
+      }
+    ]
+  },
+  "performance": {
+    "renderTime": {
+      "target": 50,
+      "unit": "ms",
+      "description": "Widget header must render within 50ms of widget data being available (SC-001)"
+    },
+    "menuOpenTime": {
+      "target": 100,
+      "unit": "ms",
+      "description": "Action menu must open within 100ms of trigger (SC-002)"
+    },
+    "filterUpdateTime": {
+      "target": 200,
+      "unit": "ms",
+      "description": "Filter indicators must update within 200ms of filter changes (SC-003)"
+    },
+    "loadingIndicatorTime": {
+      "target": 50,
+      "unit": "ms",
+      "description": "Loading indicators must appear within 50ms of loading state initiation (SC-004)"
+    },
+    "rapidStateChanges": {
+      "target": 10,
+      "unit": "changes per second",
+      "description": "Header component must maintain performance with rapid state changes (SC-010)"
+    }
+  },
+  "accessibility": {
+    "ariaLabels": {
+      "required": true,
+      "description": "All interactive elements must have ARIA labels (FR-010)"
+    },
+    "keyboardNavigation": {
+      "required": true,
+      "description": "Action menu and filter indicators must support keyboard navigation"
+    },
+    "screenReaderSupport": {
+      "required": true,
+      "description": "State changes must be announced to screen readers via ARIA live regions"
+    },
+    "touchTargets": {
+      "minimumSize": "44x44px",
+      "description": "All interactive elements must have minimum 44x44px touch targets"
+    }
+  },
+  "responsiveness": {
+    "breakpoints": {
+      "mobile": "320px - 767px",
+      "tablet": "768px - 1023px",
+      "desktop": "1024px+",
+      "4k": "3840px+"
+    },
+    "adaptations": {
+      "mobile": "Full-width menu, scrollable filter indicators, larger touch targets",
+      "tablet": "Standard menu, visible filter indicators (max 3)",
+      "desktop": "Standard menu, visible filter indicators (max 5)",
+      "4k": "Standard menu, all filter indicators visible"
+    }
+  },
+  "constraints": {
+    "titleLength": {
+      "max": 200,
+      "unit": "characters",
+      "description": "Title truncation must handle titles up to 200 characters gracefully (SC-007)"
+    },
+    "filterCount": {
+      "max": 10,
+      "unit": "filters",
+      "description": "Filter indicators must display correctly for up to 10 active filters (SC-009)"
+    },
+    "visibleFilters": {
+      "max": 5,
+      "unit": "indicators",
+      "description": "Maximum number of filter indicators shown inline (remaining in tooltip)"
+    }
+  }
+}
+

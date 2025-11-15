@@ -7,6 +7,7 @@ export * from './lib/d3-dashboards.component';
 // Components
 export * from './lib/components/dashboard-container/dashboard-container.component';
 export * from './lib/components/widget/widget.component';
+export * from './lib/components/widget-header/widget-header.component';
 
 // Abstract classes
 export * from './lib/abstract/abstract-dashboard-container';

@@ -1,0 +1,82 @@
+<div class="widget-header" [attr.data-widget-id]="widget.id">
+  <!-- Title Section -->
+  <div class="header-title">
+    <h3
+      class="widget-title"
+      [pTooltip]="titleSignal().length > 50 ? titleSignal() : undefined"
+      [attr.aria-label]="'Widget title: ' + titleSignal()">
+      {{ titleSignal() }}
+    </h3>
+  </div>
+
+  <!-- Filter Indicators -->
+  <div class="header-filters" *ngIf="hasFiltersSignal()">
+    <div class="filter-indicators" [class.scrollable]="filters.length > 5">
+      <span
+        *ngFor="let filter of visibleFiltersSignal()"
+        class="filter-badge"
+        [pTooltip]="getFilterDisplayText(filter)"
+        (click)="onFilterRemove(filter.key)"
+        [attr.aria-label]="'Remove filter: ' + getFilterDisplayText(filter)"
+        role="button"
+        tabindex="0">
+        <p-badge [value]="getFilterDisplayText(filter)" severity="info"></p-badge>
+        <i class="pi pi-times" aria-hidden="true"></i>
+      </span>
+      <span
+        *ngIf="hiddenFiltersSignal().length > 0"
+        class="filter-more"
+        [pTooltip]="getHiddenFiltersTooltip()"
+        [attr.aria-label]="hiddenFiltersSignal().length + ' more filters'">
+        +{{ hiddenFiltersSignal().length }} more
+      </span>
+    </div>
+  </div>
+
+  <!-- State Indicators -->
+  <div class="header-indicators">
+    <!-- Loading Indicator -->
+    <div
+      *ngIf="loading && !error"
+      class="loading-indicator"
+      role="status"
+      aria-live="polite"
+      [attr.aria-label]="'Loading widget ' + titleSignal()">
+      <p-progressSpinner [style]="{ width: '16px', height: '16px' }"></p-progressSpinner>
+    </div>
+
+    <!-- Error Indicator -->
+    <div
+      *ngIf="error"
+      class="error-indicator"
+      role="alert"
+      aria-live="assertive"
+      [pTooltip]="error"
+      (click)="onErrorClick()"
+      [attr.aria-label]="'Error: ' + error"
+      role="button"
+      tabindex="0">
+      <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <!-- Action Menu -->
+  <div class="header-actions">
+    <p-menu
+      #menu
+      [model]="menuItemsSignal()"
+      [popup]="true"
+      [appendTo]="'body'">
+    </p-menu>
+    <button
+      type="button"
+      class="action-menu-button"
+      (click)="menu.toggle($event)"
+      [attr.aria-label]="'Widget actions for ' + titleSignal()"
+      [attr.aria-expanded]="menu.visible"
+      tabindex="0">
+      <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+

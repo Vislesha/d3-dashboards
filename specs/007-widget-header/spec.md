@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Widget Header Component - Widget title display, action menu (edit, delete, refresh, export), filter indicators, and loading indicators"
 
+## Clarifications
+
+### Session 2025-01-27
+
+- Q: What format should filter indicators display? → A: "Key: Value" format with operator if present (e.g., "Status: Active", "Date > 2024-01-01")
+- Q: Should filter indicators support removal, modification, or both? → A: Remove only - Header component emits filterRemove event, parent handles removal
+- Q: What default title text should be displayed when widget has no title? → A: "Untitled Widget"
+- Q: How should action menu behave when widget is loading? → A: Actions enabled, but refresh action disabled during loading
+- Q: Can users interact with error indicator? → A: Clickable - emits errorClick event to parent, tooltip shows full error message
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Display Widget Title (Priority: P1)
@@ -18,7 +28,7 @@ As a dashboard user, I want to see the widget title in the header so that I can 
 **Acceptance Scenarios**:
 
 1. **Given** a widget with a title, **When** the widget header renders, **Then** the title is displayed prominently in the header
-2. **Given** a widget without a title, **When** the widget header renders, **Then** a default title or placeholder is displayed
+2. **Given** a widget without a title, **When** the widget header renders, **Then** the default title "Untitled Widget" is displayed
 3. **Given** a widget with a very long title, **When** the widget header renders, **Then** the title is truncated or wrapped appropriately
 
 ---
@@ -37,6 +47,7 @@ As a dashboard administrator, I want to access widget actions (edit, delete, ref
 2. **Given** a widget not in edit mode, **When** the action menu is opened, **Then** only appropriate actions (refresh, export) are available
 3. **Given** an action menu item is clicked, **When** the action is triggered, **Then** the appropriate event is emitted to the parent component
 4. **Given** a delete action is triggered, **When** confirmation is required, **Then** a confirmation dialog is displayed before deletion
+5. **Given** a widget is loading data, **When** the action menu is opened, **Then** all actions are available except refresh (which is disabled to prevent duplicate requests)
 
 ---
 
@@ -50,10 +61,10 @@ As a dashboard user, I want to see filter indicators in the widget header so tha
 
 **Acceptance Scenarios**:
 
-1. **Given** a widget with active filters, **When** the widget header renders, **Then** filter indicators are displayed showing active filter keys
+1. **Given** a widget with active filters, **When** the widget header renders, **Then** filter indicators are displayed in "Key: Value" format (e.g., "Status: Active", "Date > 2024-01-01") showing active filter information
 2. **Given** a widget with multiple active filters, **When** the widget header renders, **Then** all filter indicators are displayed
 3. **Given** a widget with no active filters, **When** the widget header renders, **Then** no filter indicators are displayed
-4. **Given** a filter indicator is clicked, **When** the indicator is selected, **Then** the filter can be removed or modified
+4. **Given** a filter indicator is clicked, **When** the indicator is selected, **Then** the filterRemove event is emitted to the parent component for removal (modification is handled by parent or separate filter configuration component)
 
 ---
 
@@ -69,7 +80,8 @@ As a dashboard user, I want to see loading indicators in the widget header so th
 
 1. **Given** a widget is loading data, **When** the widget header renders, **Then** a loading indicator is displayed
 2. **Given** a widget finishes loading, **When** data is received, **Then** the loading indicator is removed
-3. **Given** a widget encounters an error, **When** the error occurs, **Then** the loading indicator is replaced with an error indicator
+3. **Given** a widget encounters an error, **When** the error occurs, **Then** the loading indicator is replaced with an error indicator that is clickable and shows full error message in tooltip
+4. **Given** an error indicator is clicked, **When** the indicator is selected, **Then** an errorClick event is emitted to the parent component for handling (retry, show details, etc.)
 
 ---
 
@@ -79,18 +91,18 @@ As a dashboard user, I want to see loading indicators in the widget header so th
 - How does the system handle action menu overflow on small screens?
 - What happens when multiple filters are active and indicators don't fit?
 - How does the system handle rapid state changes (loading to loaded to error)?
-- What happens when action menu is clicked while widget is loading?
+- What happens when action menu is clicked while widget is loading? → Actions remain enabled, but refresh action is disabled to prevent duplicate requests
 - How does the system handle action menu interactions on touch devices?
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: System MUST display widget title prominently in the header
+- **FR-001**: System MUST display widget title prominently in the header (or "Untitled Widget" if no title is provided)
 - **FR-002**: System MUST provide action menu with edit, delete, refresh, and export options
 - **FR-003**: System MUST show/hide action menu items based on edit mode state
 - **FR-004**: System MUST emit events when action menu items are clicked
-- **FR-005**: System MUST display filter indicators when filters are active
+- **FR-005**: System MUST display filter indicators when filters are active in "Key: Value" format with operator if present (e.g., "Status: Active", "Date > 2024-01-01")
 - **FR-006**: System MUST display loading indicator when widget is loading data
 - **FR-007**: System MUST display error indicator when widget encounters errors
 - **FR-008**: System MUST handle title truncation for long titles
@@ -98,6 +110,9 @@ As a dashboard user, I want to see loading indicators in the widget header so th
 - **FR-010**: System MUST provide accessible labels for all interactive elements
 - **FR-011**: System MUST handle action menu positioning to prevent overflow
 - **FR-012**: System MUST update indicators when widget state changes
+- **FR-013**: System MUST emit filterRemove event when filter indicator is clicked (removal only, modification handled by parent)
+- **FR-014**: System MUST disable refresh action in menu when widget is loading (other actions remain enabled)
+- **FR-015**: System MUST make error indicator clickable, emit errorClick event to parent, and show full error message in tooltip
 
 ### Key Entities *(include if feature involves data)*
 
@@ -105,9 +120,11 @@ As a dashboard user, I want to see loading indicators in the widget header so th
 
 - **Action Menu**: Collection of actions available for the widget including edit, delete, refresh, and export. Visibility depends on edit mode and widget state.
 
-- **Filter Indicator**: Visual representation of active filters applied to the widget. Shows filter keys and allows filter removal.
+- **Filter Indicator**: Visual representation of active filters applied to the widget. Displays filters in "Key: Value" format with operator if present (e.g., "Status: Active", "Date > 2024-01-01") and allows filter removal.
 
 - **Loading Indicator**: Visual feedback showing widget data loading state. Replaced with error indicator on failure.
+
+- **Error Indicator**: Visual feedback showing widget error state. Clickable, emits errorClick event to parent, and displays full error message in tooltip.
 
 ## Success Criteria *(mandatory)*
 
