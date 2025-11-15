@@ -30,10 +30,93 @@ import {
 })
 export class ChartService {
   /**
+   * Chart factory registry - maps chart types to their factory functions
+   */
+  private readonly chartFactories: Record<
+    ChartType,
+    (config: IChartConfig) => IChartInstance
+  >;
+
+  /**
    * Creates a new instance of ChartService
    */
   constructor() {
-    // Service initialization will be added in later phases
+    // Initialize chart factory registry
+    this.chartFactories = {
+      line: (config) => this.createLineChart(config),
+      bar: (config) => this.createBarChart(config),
+      pie: (config) => this.createPieChart(config),
+      scatter: (config) => this.createScatterPlot(config),
+      area: (config) => this.createAreaChart(config),
+      heatmap: (config) => this.createHeatmap(config),
+      treemap: (config) => this.createTreemap(config),
+      'force-graph': (config) => this.createForceGraph(config),
+      'geo-map': (config) => this.createGeoMap(config),
+      gauge: (config) => this.createGauge(config)
+    };
+  }
+
+  /**
+   * Validates if a chart type is supported
+   * @param chartType Chart type to validate
+   * @returns True if chart type is valid, false otherwise
+   */
+  private isValidChartType(chartType: string): chartType is ChartType {
+    const validTypes: ChartType[] = [
+      'line',
+      'bar',
+      'pie',
+      'scatter',
+      'area',
+      'heatmap',
+      'treemap',
+      'force-graph',
+      'geo-map',
+      'gauge'
+    ];
+    return validTypes.includes(chartType as ChartType);
+  }
+
+  /**
+   * Validates a chart configuration before creation
+   * @param config Chart configuration to validate
+   * @returns Validation result with errors array
+   */
+  validateChartConfig(config: IChartConfig): IValidationResult {
+    const errors: string[] = [];
+
+    // Validate chart type
+    if (!config.type) {
+      errors.push('Chart type is required');
+    } else if (!this.isValidChartType(config.type)) {
+      errors.push(`Invalid chart type: ${config.type}`);
+    }
+
+    // Validate data if provided
+    if (config.data !== undefined && !Array.isArray(config.data)) {
+      errors.push('Data must be an array if provided');
+    }
+
+    // Validate options if provided
+    if (config.options) {
+      if (config.options.width !== undefined && config.options.width <= 0) {
+        errors.push('Width must be a positive number');
+      }
+      if (config.options.height !== undefined && config.options.height <= 0) {
+        errors.push('Height must be a positive number');
+      }
+      if (config.options.margin) {
+        const margin = config.options.margin;
+        if (margin.top < 0 || margin.right < 0 || margin.bottom < 0 || margin.left < 0) {
+          errors.push('All margin values must be non-negative');
+        }
+      }
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
   }
 
   /**
@@ -44,18 +127,153 @@ export class ChartService {
    * @throws InvalidChartConfigError if configuration is invalid
    */
   createChart(config: IChartConfig): IChartInstance {
-    // Implementation will be added in Phase 3
-    throw new Error('Not implemented yet');
+    // Validate chart type first (before other validation)
+    if (!config.type || !this.isValidChartType(config.type)) {
+      throw new InvalidChartTypeError(config.type || 'undefined');
+    }
+
+    // Validate rest of configuration
+    const validation = this.validateChartConfig(config);
+    if (!validation.valid) {
+      throw new InvalidChartConfigError(validation.errors.join('; '));
+    }
+
+    // Route to appropriate factory
+    const factory = this.chartFactories[config.type];
+    if (!factory) {
+      throw new InvalidChartTypeError(config.type);
+    }
+
+    return factory(config);
   }
 
   /**
-   * Validates a chart configuration before creation
-   * @param config Chart configuration to validate
-   * @returns Validation result with errors array
+   * Creates a helper function to create chart instances with common interface
+   * @param config Chart configuration
+   * @param type Chart type
+   * @returns Chart instance
    */
-  validateChartConfig(config: IChartConfig): IValidationResult {
-    // Implementation will be added in Phase 3
-    return { valid: false, errors: ['Not implemented yet'] };
+  private createChartInstance(
+    config: IChartConfig,
+    type: ChartType
+  ): IChartInstance {
+    let container: HTMLElement | null = null;
+    let currentData: any[] = config.data || [];
+
+    return {
+      type,
+      render: (renderContainer: HTMLElement) => {
+        container = renderContainer;
+        // Actual D3 rendering will be implemented in chart components
+        // This is a placeholder that stores the container reference
+      },
+      update: (data: any[]) => {
+        currentData = data;
+        // Actual D3 update will be implemented in chart components
+        // This is a placeholder that stores the updated data
+      },
+      destroy: () => {
+        if (container) {
+          // Clean up D3 selections and event listeners
+          // Actual cleanup will be implemented in chart components
+          container = null;
+        }
+      },
+      getConfig: () => ({
+        ...config,
+        data: currentData
+      })
+    };
+  }
+
+  /**
+   * Creates a line chart instance
+   * @param config Chart configuration
+   * @returns Line chart instance
+   */
+  private createLineChart(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'line');
+  }
+
+  /**
+   * Creates a bar chart instance
+   * @param config Chart configuration
+   * @returns Bar chart instance
+   */
+  private createBarChart(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'bar');
+  }
+
+  /**
+   * Creates a pie chart instance
+   * @param config Chart configuration
+   * @returns Pie chart instance
+   */
+  private createPieChart(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'pie');
+  }
+
+  /**
+   * Creates a scatter plot instance
+   * @param config Chart configuration
+   * @returns Scatter plot instance
+   */
+  private createScatterPlot(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'scatter');
+  }
+
+  /**
+   * Creates an area chart instance
+   * @param config Chart configuration
+   * @returns Area chart instance
+   */
+  private createAreaChart(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'area');
+  }
+
+  /**
+   * Creates a heatmap instance
+   * @param config Chart configuration
+   * @returns Heatmap instance
+   */
+  private createHeatmap(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'heatmap');
+  }
+
+  /**
+   * Creates a treemap instance
+   * @param config Chart configuration
+   * @returns Treemap instance
+   */
+  private createTreemap(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'treemap');
+  }
+
+  /**
+   * Creates a force-directed graph instance
+   * @param config Chart configuration
+   * @returns Force-directed graph instance
+   */
+  private createForceGraph(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'force-graph');
+  }
+
+  /**
+   * Creates a geographic map instance
+   * @param config Chart configuration
+   * @returns Geographic map instance
+   */
+  private createGeoMap(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'geo-map');
+  }
+
+  /**
+   * Creates a gauge instance
+   * @param config Chart configuration
+   * @returns Gauge instance
+   */
+  private createGauge(config: IChartConfig): IChartInstance {
+    return this.createChartInstance(config, 'gauge');
   }
 
   /**

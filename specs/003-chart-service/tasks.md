@@ -66,34 +66,34 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T016 [P] [US1] Create unit test for createChart with valid line chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T017 [P] [US1] Create unit test for createChart with valid bar chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T018 [P] [US1] Create unit test for createChart with invalid chart type in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T019 [P] [US1] Create unit test for createChart with invalid chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T020 [P] [US1] Create unit test for validateChartConfig with valid config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T021 [P] [US1] Create unit test for validateChartConfig with invalid config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T016 [P] [US1] Create unit test for createChart with valid line chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T017 [P] [US1] Create unit test for createChart with valid bar chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T018 [P] [US1] Create unit test for createChart with invalid chart type in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T019 [P] [US1] Create unit test for createChart with invalid chart config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T020 [P] [US1] Create unit test for validateChartConfig with valid config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T021 [P] [US1] Create unit test for validateChartConfig with invalid config in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T022 [US1] Create IChartInstance interface in projects/d3-dashboards/src/lib/entities/chart.interface.ts
-- [ ] T023 [US1] Create ChartType type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
-- [ ] T024 [US1] Implement isValidChartType method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T025 [US1] Implement validateChartConfig method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T026 [US1] Create chart factory registry (Record<ChartType, factory function>) in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T027 [US1] Implement createLineChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T028 [US1] Implement createBarChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T029 [US1] Implement createPieChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T030 [US1] Implement createScatterPlot factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T031 [US1] Implement createAreaChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T032 [US1] Implement createHeatmap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T033 [US1] Implement createTreemap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T034 [US1] Implement createForceGraph factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T035 [US1] Implement createGeoMap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T036 [US1] Implement createGauge factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T037 [US1] Implement createChart method that routes to appropriate factory in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T038 [US1] Add error handling for InvalidChartTypeError in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T039 [US1] Add error handling for InvalidChartConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T040 [US1] Export ChartService and related types from projects/d3-dashboards/src/lib/public-api.ts
+- [X] T022 [US1] Create IChartInstance interface in projects/d3-dashboards/src/lib/entities/chart.interface.ts
+- [X] T023 [US1] Create ChartType type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
+- [X] T024 [US1] Implement isValidChartType method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T025 [US1] Implement validateChartConfig method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T026 [US1] Create chart factory registry (Record<ChartType, factory function>) in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T027 [US1] Implement createLineChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T028 [US1] Implement createBarChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T029 [US1] Implement createPieChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T030 [US1] Implement createScatterPlot factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T031 [US1] Implement createAreaChart factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T032 [US1] Implement createHeatmap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T033 [US1] Implement createTreemap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T034 [US1] Implement createForceGraph factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T035 [US1] Implement createGeoMap factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T036 [US1] Implement createGauge factory method in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T037 [US1] Implement createChart method that routes to appropriate factory in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T038 [US1] Add error handling for InvalidChartTypeError in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T039 [US1] Add error handling for InvalidChartConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T040 [US1] Export ChartService and related types from projects/d3-dashboards/src/lib/public-api.ts
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently. All 10 chart types can be created programmatically.
 
