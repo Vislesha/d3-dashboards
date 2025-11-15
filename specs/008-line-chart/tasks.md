@@ -188,7 +188,7 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 - [X] T066 [US3] Implement mouse wheel zoom: enable zoom in/out with mouse wheel centered on mouse position in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 - [X] T067 [US3] Implement pinch zoom: enable pinch gestures for touch devices using D3 zoom behavior in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T068 [US3] Implement brush selection zoom: enable drag selection to zoom into selected region using d3.brush in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T068 [US3] Implement brush selection zoom: enable drag selection to zoom into selected region using d3.brush in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Pan Implementation Tasks
 
@@ -254,20 +254,20 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 ### Accessibility Tasks
 
 - [X] T093 Implement ARIA labels: add ARIA labels and descriptions to chart container and interactive elements in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
-- [ ] T094 Implement keyboard navigation: support keyboard navigation for zoom/pan operations in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T094 Implement keyboard navigation: support keyboard navigation for zoom/pan operations in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 - [X] T095 Implement screen reader support: make chart data accessible to screen readers with descriptive text in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
 
 ### Testing Tasks
 
 - [X] T096 Write unit tests for component initialization and data handling in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T097 Write unit tests for rendering: single series, multiple series, empty data, invalid data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T098 Write unit tests for tooltips: hover detection, tooltip display, multi-series tooltips in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T099 Write unit tests for zoom/pan: mouse wheel, pinch, brush, pan, reset in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T100 Write unit tests for customization: axis labels, scale types, formatting, curve types in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T101 Write unit tests for edge cases: missing/null values, large datasets, non-chronological data, overlapping points in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T102 Write unit tests for performance: render time, tooltip response time, zoom response time in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T103 Write unit tests for cleanup: verify D3 selections and ResizeObserver are cleaned up in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
-- [ ] T104 Verify test coverage meets 80% minimum requirement in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T097 Write unit tests for rendering: single series, multiple series, empty data, invalid data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T098 Write unit tests for tooltips: hover detection, tooltip display, multi-series tooltips in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T099 Write unit tests for zoom/pan: mouse wheel, pinch, brush, pan, reset in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T100 Write unit tests for customization: axis labels, scale types, formatting, curve types in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T101 Write unit tests for edge cases: missing/null values, large datasets, non-chronological data, overlapping points in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T102 Write unit tests for performance: render time, tooltip response time, zoom response time in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T103 Write unit tests for cleanup: verify D3 selections and ResizeObserver are cleaned up in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T104 Verify test coverage meets 80% minimum requirement in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
 
 ### Performance Validation Tasks
 
@@ -281,5 +281,5 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 ### Documentation Tasks
 
 - [X] T111 Add JSDoc comments to all public methods and properties in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T112 Update component README or usage documentation with examples in `projects/d3-dashboards/src/lib/charts/line-chart/README.md` (if exists)
+- [X] T112 Update component README or usage documentation with examples in `projects/d3-dashboards/src/lib/charts/line-chart/README.md` (if exists)
 

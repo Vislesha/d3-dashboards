@@ -143,6 +143,8 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   private initialZoomTransform: d3.ZoomTransform = d3.zoomIdentity;
   private isZoomed = false;
   private zoomGroup: d3.Selection<SVGGElement, unknown, null, undefined> | null = null;
+  private brush: d3.BrushBehavior<unknown> | null = null;
+  private brushGroup: d3.Selection<SVGGElement, unknown, null, undefined> | null = null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -151,6 +153,7 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.initializeChart();
+    this.setupKeyboardNavigation();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -474,6 +477,11 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     // Setup zoom and pan if enabled
     if (this.getEffectiveConfig().zoom?.enabled !== false) {
       this.setupZoom();
+      
+      // Setup brush selection zoom if enabled
+      if (this.getEffectiveConfig().zoom?.brushZoomEnabled === true) {
+        this.setupBrushZoom();
+      }
     }
 
     // Update memoized calculations
@@ -1172,6 +1180,149 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * Sets up keyboard navigation for zoom/pan operations
+   */
+  private setupKeyboardNavigation(): void {
+    if (!this.chartContainer?.nativeElement) {
+      return;
+    }
+
+    // Listen for keyboard events on the chart container
+    fromEvent<KeyboardEvent>(this.chartContainer.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event) => {
+        this.handleKeyboardEvent(event);
+      });
+  }
+
+  /**
+   * Handles keyboard events for navigation
+   */
+  private handleKeyboardEvent(event: KeyboardEvent): void {
+    if (!this.zoomBehavior || !this.g || !this.xScale || !this.yScale) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    if (config.zoom?.enabled === false) {
+      return;
+    }
+
+    const ZOOM_STEP = 0.1;
+    const PAN_STEP = 50;
+
+    switch (event.key) {
+      case '+':
+      case '=':
+        // Zoom in
+        event.preventDefault();
+        this.zoomIn();
+        break;
+
+      case '-':
+      case '_':
+        // Zoom out
+        event.preventDefault();
+        this.zoomOut();
+        break;
+
+      case 'r':
+      case 'R':
+        // Reset zoom
+        event.preventDefault();
+        this.resetZoom();
+        break;
+
+      case 'ArrowLeft':
+        // Pan left
+        event.preventDefault();
+        this.pan(-PAN_STEP, 0);
+        break;
+
+      case 'ArrowRight':
+        // Pan right
+        event.preventDefault();
+        this.pan(PAN_STEP, 0);
+        break;
+
+      case 'ArrowUp':
+        // Pan up
+        event.preventDefault();
+        this.pan(0, -PAN_STEP);
+        break;
+
+      case 'ArrowDown':
+        // Pan down
+        event.preventDefault();
+        this.pan(0, PAN_STEP);
+        break;
+    }
+  }
+
+  /**
+   * Zooms in at the center of the chart
+   */
+  private zoomIn(): void {
+    if (!this.zoomBehavior || !this.g || !this.xScale || !this.yScale) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    const centerX = chartWidth / 2;
+    const centerY = chartHeight / 2;
+    const newK = this.currentZoomTransform.k * 1.2;
+
+    // Constrain zoom level
+    const maxZoom = config.zoom?.maxZoom || 10;
+    if (newK > maxZoom) {
+      return;
+    }
+
+    const transform = this.currentZoomTransform.scale(newK);
+    this.g.call(this.zoomBehavior.transform as any, transform);
+  }
+
+  /**
+   * Zooms out from the center of the chart
+   */
+  private zoomOut(): void {
+    if (!this.zoomBehavior || !this.g || !this.xScale || !this.yScale) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    const newK = this.currentZoomTransform.k / 1.2;
+
+    // Constrain zoom level
+    const minZoom = config.zoom?.minZoom || 1;
+    if (newK < minZoom) {
+      return;
+    }
+
+    const transform = this.currentZoomTransform.scale(newK);
+    this.g.call(this.zoomBehavior.transform as any, transform);
+  }
+
+  /**
+   * Pans the chart by the specified amount
+   */
+  private pan(deltaX: number, deltaY: number): void {
+    if (!this.zoomBehavior || !this.g || !this.isZoomed) {
+      return;
+    }
+
+    const newX = this.currentZoomTransform.x + deltaX;
+    const newY = this.currentZoomTransform.y + deltaY;
+
+    const transform = this.currentZoomTransform.translate(newX - this.currentZoomTransform.x, newY - this.currentZoomTransform.y);
+    this.g.call(this.zoomBehavior.transform as any, transform);
+  }
+
+  /**
    * Sets up zoom and pan behavior
    */
   private setupZoom(): void {
@@ -1309,6 +1460,82 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * Sets up brush selection zoom
+   */
+  private setupBrushZoom(): void {
+    if (!this.g || !this.xScale || !this.yScale || !this.chartData) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    // Create brush group
+    this.brushGroup = this.g.append('g').attr('class', 'brush-group');
+
+    // Create brush behavior
+    this.brush = d3
+      .brush()
+      .extent([
+        [0, 0],
+        [chartWidth, chartHeight],
+      ])
+      .on('end', (event: d3.D3BrushEvent<unknown>) => {
+        this.handleBrushEnd(event);
+      });
+
+    // Apply brush to brush group
+    if (this.brush && this.brushGroup) {
+      this.brushGroup.call(this.brush);
+    }
+  }
+
+  /**
+   * Handles brush selection end event
+   */
+  private handleBrushEnd(event: d3.D3BrushEvent<unknown>): void {
+    if (!event.selection || !this.xScale || !this.yScale || !this.zoomBehavior || !this.g) {
+      // Clear brush if selection is empty
+      if (this.brushGroup && this.brush) {
+        this.brushGroup.call(this.brush.move, null);
+      }
+      return;
+    }
+
+    const selection = event.selection as [[number, number], [number, number]];
+    const [x0, y0] = selection[0];
+    const [x1, y1] = selection[1];
+
+    // Calculate zoom transform based on selection
+    const config = this.getEffectiveConfig();
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    // Calculate scale factor
+    const kx = chartWidth / Math.abs(x1 - x0);
+    const ky = chartHeight / Math.abs(y1 - y0);
+    const k = Math.min(kx, ky);
+
+    // Calculate translation
+    const tx = -x0 * k;
+    const ty = -y0 * k;
+
+    // Create zoom transform
+    const transform = d3.zoomIdentity.translate(tx, ty).scale(k);
+
+    // Apply zoom transform
+    this.g.call(this.zoomBehavior.transform as any, transform);
+
+    // Clear brush
+    if (this.brushGroup && this.brush) {
+      this.brushGroup.call(this.brush.move, null);
+    }
+  }
+
+  /**
    * Resets zoom to initial state
    */
   public resetZoom(): void {
@@ -1360,6 +1587,14 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     this.currentZoomTransform = d3.zoomIdentity;
     this.initialZoomTransform = d3.zoomIdentity;
     this.isZoomed = false;
+
+    // Clean up brush
+    if (this.brushGroup && this.brush) {
+      this.brushGroup.call(this.brush.move, null);
+      this.brushGroup.on('.brush', null);
+    }
+    this.brush = null;
+    this.brushGroup = null;
 
     // Clean up D3 selections
     if (this.g) {
