@@ -179,32 +179,32 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Zoom Infrastructure Tasks
 
-- [ ] T062 [US3] Implement zoom state management: track current zoom transform and initial transform state in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T063 [US3] Implement zoom behavior setup: create D3 zoom behavior with scaleExtent and translateExtent constraints in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T064 [US3] Implement zoom handler: handle zoom events and update scales/axes based on zoom transform in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T065 [US3] Implement zoom constraints: constrain zoom to data domain bounds using zoom-helpers in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T062 [US3] Implement zoom state management: track current zoom transform and initial transform state in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T063 [US3] Implement zoom behavior setup: create D3 zoom behavior with scaleExtent and translateExtent constraints in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T064 [US3] Implement zoom handler: handle zoom events and update scales/axes based on zoom transform in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T065 [US3] Implement zoom constraints: constrain zoom to data domain bounds using zoom-helpers in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Zoom Methods Tasks
 
-- [ ] T066 [US3] Implement mouse wheel zoom: enable zoom in/out with mouse wheel centered on mouse position in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T067 [US3] Implement pinch zoom: enable pinch gestures for touch devices using D3 zoom behavior in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T066 [US3] Implement mouse wheel zoom: enable zoom in/out with mouse wheel centered on mouse position in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T067 [US3] Implement pinch zoom: enable pinch gestures for touch devices using D3 zoom behavior in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 - [ ] T068 [US3] Implement brush selection zoom: enable drag selection to zoom into selected region using d3.brush in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Pan Implementation Tasks
 
-- [ ] T069 [US3] Implement pan functionality: enable drag to move visible region while maintaining zoom level in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T070 [US3] Implement pan constraints: prevent panning beyond data bounds in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T069 [US3] Implement pan functionality: enable drag to move visible region while maintaining zoom level in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T070 [US3] Implement pan constraints: prevent panning beyond data bounds in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Zoom Reset Tasks
 
-- [ ] T071 [US3] Implement resetZoom method: public method to reset zoom to show all data (FR-014) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T072 [US3] Implement zoom reset on data update: reset zoom when data updates during zoom/pan (per clarification) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T073 [US3] Implement zoomChange event emission: emit zoomChange event with IZoomState when zoom/pan state changes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T071 [US3] Implement resetZoom method: public method to reset zoom to show all data (FR-014) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T072 [US3] Implement zoom reset on data update: reset zoom when data updates during zoom/pan (per clarification) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T073 [US3] Implement zoomChange event emission: emit zoomChange event with IZoomState when zoom/pan state changes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Performance Tasks
 
-- [ ] T074 [US3] Implement zoom performance: ensure zoom operations complete within 100ms (SC-003) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T075 [US3] Implement 60fps zoom/pan: maintain 60fps during zoom/pan interactions (SC-007) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T074 [US3] Implement zoom performance: ensure zoom operations complete within 100ms (SC-003) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T075 [US3] Implement 60fps zoom/pan: maintain 60fps during zoom/pan interactions (SC-007) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ## Phase 6: User Story 4 - Customizable Axes and Scales (P3)
 

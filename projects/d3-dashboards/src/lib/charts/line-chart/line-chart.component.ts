@@ -137,6 +137,13 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   private tooltipText: d3.Selection<SVGTextElement, unknown, null, undefined> | null = null;
   private currentHoveredPoint: { point: ILineChartDataPoint; series: ILineChartSeries } | null = null;
 
+  /** Zoom state */
+  private zoomBehavior: d3.ZoomBehavior<Element, unknown> | null = null;
+  private currentZoomTransform: d3.ZoomTransform = d3.zoomIdentity;
+  private initialZoomTransform: d3.ZoomTransform = d3.zoomIdentity;
+  private isZoomed = false;
+  private zoomGroup: d3.Selection<SVGGElement, unknown, null, undefined> | null = null;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private dataService: DataService
@@ -210,6 +217,11 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
       this.hasError = false;
       this.cdr.markForCheck();
       return;
+    }
+
+    // Reset zoom when data updates (per clarification)
+    if (this.isZoomed) {
+      this.resetZoom();
     }
 
     // Check if data is IDataSource
@@ -457,6 +469,11 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     // Setup tooltips if enabled
     if (this.getEffectiveConfig().tooltip?.enabled !== false) {
       this.setupTooltips();
+    }
+
+    // Setup zoom and pan if enabled
+    if (this.getEffectiveConfig().zoom?.enabled !== false) {
+      this.setupZoom();
     }
 
     // Update memoized calculations
@@ -1155,6 +1172,169 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * Sets up zoom and pan behavior
+   */
+  private setupZoom(): void {
+    if (!this.g || !this.xScale || !this.yScale || !this.chartData) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    const zoomConfig = config.zoom || {};
+
+    // Calculate data domains for constraints
+    const { xDomain, yDomain } = this.calculateDomains();
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    // Create zoom behavior
+    this.zoomBehavior = createZoomBehavior({
+      minZoom: zoomConfig.minZoom || 1,
+      maxZoom: zoomConfig.maxZoom || 10,
+      constrainTranslation: true,
+      xDomain,
+      yDomain,
+      width: chartWidth,
+      height: chartHeight,
+    });
+
+    // Create zoom group (contains all zoomable elements)
+    this.zoomGroup = this.g.append('g').attr('class', 'zoom-group');
+
+    // Apply zoom to the main group
+    if (this.zoomBehavior && this.g) {
+      const gElement = this.g.node();
+      if (gElement) {
+        this.g.call(this.zoomBehavior as any);
+
+        // Handle zoom events
+        this.zoomBehavior.on('zoom', (event: d3.D3ZoomEvent<Element, unknown>) => {
+          this.handleZoom(event);
+        });
+      }
+    }
+
+    // Reset zoom state
+    this.currentZoomTransform = d3.zoomIdentity;
+    this.initialZoomTransform = d3.zoomIdentity;
+    this.isZoomed = false;
+  }
+
+  /**
+   * Handles zoom events
+   */
+  private handleZoom(event: d3.D3ZoomEvent<Element, unknown>): void {
+    if (!this.xScale || !this.yScale || !this.chartData) {
+      return;
+    }
+
+    const transform = event.transform;
+    this.currentZoomTransform = transform;
+    this.isZoomed = transform.k !== 1 || transform.x !== 0 || transform.y !== 0;
+
+    // Update scales based on zoom transform
+    this.updateZoomedScales(transform);
+
+    // Re-render chart with updated scales
+    this.renderLines();
+    this.renderAxes();
+
+    // Emit zoom change event
+    const visibleDomain = this.calculateVisibleDomain(transform);
+    this.zoomChange.emit({
+      transform,
+      initialTransform: this.initialZoomTransform,
+      isZoomed: this.isZoomed,
+      visibleDomain,
+    });
+  }
+
+  /**
+   * Updates scales based on zoom transform
+   */
+  private updateZoomedScales(transform: d3.ZoomTransform): void {
+    if (!this.xScale || !this.yScale || !this.chartData) {
+      return;
+    }
+
+    const config = this.getEffectiveConfig();
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    // Calculate visible domain based on zoom
+    const { xDomain, yDomain } = this.calculateDomains();
+
+    // For x-axis zoom
+    if (this.detectXScaleType() === 'time') {
+      const xRange = (xDomain[1] as Date).getTime() - (xDomain[0] as Date).getTime();
+      const visibleXRange = xRange / transform.k;
+      const visibleXStart = (xDomain[0] as Date).getTime() - (transform.x / transform.k) * (xRange / chartWidth);
+      const visibleXEnd = visibleXStart + visibleXRange;
+
+      this.xScale.domain([new Date(visibleXStart), new Date(visibleXEnd)]);
+    } else {
+      const xRange = (xDomain[1] as number) - (xDomain[0] as number);
+      const visibleXRange = xRange / transform.k;
+      const visibleXStart = (xDomain[0] as number) - (transform.x / transform.k) * (xRange / chartWidth);
+      const visibleXEnd = visibleXStart + visibleXRange;
+
+      this.xScale.domain([visibleXStart, visibleXEnd]);
+    }
+
+    // For y-axis zoom
+    const yRange = yDomain[1] - yDomain[0];
+    const visibleYRange = yRange / transform.k;
+    const visibleYStart = yDomain[0] - (transform.y / transform.k) * (yRange / chartHeight);
+    const visibleYEnd = visibleYStart + visibleYRange;
+
+    if (this.getEffectiveConfig().yAxis?.scaleType === 'log') {
+      this.yScale.domain([Math.max(0.1, visibleYStart), visibleYEnd]);
+    } else {
+      this.yScale.domain([visibleYStart, visibleYEnd]);
+    }
+  }
+
+  /**
+   * Calculates visible domain based on zoom transform
+   */
+  private calculateVisibleDomain(transform: d3.ZoomTransform): [number, number] | [Date, Date] | undefined {
+    if (!this.xScale || !this.chartData) {
+      return undefined;
+    }
+
+    const domain = this.xScale.domain();
+    return domain as [number, number] | [Date, Date];
+  }
+
+  /**
+   * Resets zoom to initial state
+   */
+  public resetZoom(): void {
+    if (!this.g || !this.zoomBehavior) {
+      return;
+    }
+
+    resetZoomTransform(this.g as unknown as d3.Selection<Element, unknown, null, undefined>, this.zoomBehavior);
+    this.currentZoomTransform = d3.zoomIdentity;
+    this.isZoomed = false;
+
+    // Reset scales and re-render
+    this.createScales();
+    this.renderLines();
+    this.renderAxes();
+
+    // Emit zoom change event
+    this.zoomChange.emit({
+      transform: d3.zoomIdentity,
+      initialTransform: this.initialZoomTransform,
+      isZoomed: false,
+      visibleDomain: undefined,
+    });
+  }
+
+  /**
    * Cleans up D3 selections and observers
    */
   private cleanup(): void {
@@ -1170,6 +1350,16 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     this.tooltipRect = null;
     this.tooltipText = null;
     this.currentHoveredPoint = null;
+
+    // Clean up zoom
+    if (this.zoomBehavior && this.g) {
+      this.g.on('.zoom', null);
+    }
+    this.zoomBehavior = null;
+    this.zoomGroup = null;
+    this.currentZoomTransform = d3.zoomIdentity;
+    this.initialZoomTransform = d3.zoomIdentity;
+    this.isZoomed = false;
 
     // Clean up D3 selections
     if (this.g) {
