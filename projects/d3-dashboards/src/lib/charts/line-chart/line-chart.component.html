@@ -3,9 +3,11 @@
   #chartContainer
   role="img"
   [attr.aria-label]="'Line chart' + (config?.emptyState?.message ? ': ' + config.emptyState.message : '')"
-  [attr.aria-description]="'Interactive line chart with ' + (chartData?.series?.length || 0) + ' data series'">
+  [attr.aria-description]="'Interactive line chart with ' + (chartData?.series?.length || 0) + ' data series'"
+  tabindex="0"
+  [attr.aria-keyshortcuts]="'Arrow keys for navigation, + and - for zoom, R for reset'">
   <!-- SVG Container for D3 rendering -->
-  <svg #svgContainer class="line-chart-svg"></svg>
+  <svg #svgContainer class="line-chart-svg" role="presentation" aria-hidden="true"></svg>
 
   <!-- Empty State -->
   <div *ngIf="isEmpty" class="line-chart-empty" role="status" aria-live="polite">

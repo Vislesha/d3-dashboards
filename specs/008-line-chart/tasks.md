@@ -214,26 +214,26 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Axis Customization Tasks
 
-- [ ] T076 [US4] Implement axis label customization: support custom x and y axis labels from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T077 [US4] Implement axis visibility: support showing/hiding x and y axes from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T078 [US4] Implement tick count customization: support custom number of ticks for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T076 [US4] Implement axis label customization: support custom x and y axis labels from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T077 [US4] Implement axis visibility: support showing/hiding x and y axes from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T078 [US4] Implement tick count customization: support custom number of ticks for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Scale Customization Tasks
 
-- [ ] T079 [US4] Implement scale type selection: support linear, log, time, ordinal scale types for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T080 [US4] Implement log scale support: implement logarithmic scale for y-axis when scaleType is 'log' in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T081 [US4] Implement domain padding: support y-axis domain padding to extend domain by percentage in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T079 [US4] Implement scale type selection: support linear, log, time, ordinal scale types for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T080 [US4] Implement log scale support: implement logarithmic scale for y-axis when scaleType is 'log' in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T081 [US4] Implement domain padding: support y-axis domain padding to extend domain by percentage in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Formatting Tasks
 
-- [ ] T082 [US4] Implement tick format customization: support custom tick format functions for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T083 [US4] Implement default time formatting: apply appropriate time format based on time range (short/medium/long) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T082 [US4] Implement tick format customization: support custom tick format functions for x and y axes in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T083 [US4] Implement default time formatting: apply appropriate time format based on time range (short/medium/long) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Series Customization Tasks
 
-- [ ] T084 [US4] Implement curve type selection: support linear, monotone, basis, cardinal curve types (FR-013) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T085 [US4] Implement stroke width customization: support custom line stroke width from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T086 [US4] Implement color palette: use color palette from configuration or default palette for series colors in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T084 [US4] Implement curve type selection: support linear, monotone, basis, cardinal curve types (FR-013) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T085 [US4] Implement stroke width customization: support custom line stroke width from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T086 [US4] Implement color palette: use color palette from configuration or default palette for series colors in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
@@ -241,25 +241,25 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Integration Tasks
 
-- [ ] T087 Export LineChartComponent from public-api.ts in `projects/d3-dashboards/src/lib/public-api.ts`
-- [ ] T088 Export line chart interfaces from public-api.ts in `projects/d3-dashboards/src/lib/public-api.ts`
-- [ ] T089 Update widget-loader.util.ts to register LineChartComponent for 'line' widget type in `projects/d3-dashboards/src/lib/utils/widget-loader.util.ts`
-- [ ] T090 Verify widget component integration: ensure widget component can load and display line chart in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T087 Export LineChartComponent from public-api.ts in `projects/d3-dashboards/src/lib/public-api.ts`
+- [X] T088 Export line chart interfaces from public-api.ts in `projects/d3-dashboards/src/lib/public-api.ts`
+- [X] T089 Update widget-loader.util.ts to register LineChartComponent for 'line' widget type in `projects/d3-dashboards/src/lib/utils/widget-loader.util.ts`
+- [X] T090 Verify widget component integration: ensure widget component can load and display line chart in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
 
 ### Animation Tasks
 
-- [ ] T091 Implement D3 transitions: use D3 transitions for smooth animations on data updates in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T092 Implement animation configuration: support animation enable/disable, duration, and easing from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T091 Implement D3 transitions: use D3 transitions for smooth animations on data updates in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T092 Implement animation configuration: support animation enable/disable, duration, and easing from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Accessibility Tasks
 
-- [ ] T093 Implement ARIA labels: add ARIA labels and descriptions to chart container and interactive elements in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
+- [X] T093 Implement ARIA labels: add ARIA labels and descriptions to chart container and interactive elements in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
 - [ ] T094 Implement keyboard navigation: support keyboard navigation for zoom/pan operations in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T095 Implement screen reader support: make chart data accessible to screen readers with descriptive text in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
+- [X] T095 Implement screen reader support: make chart data accessible to screen readers with descriptive text in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
 
 ### Testing Tasks
 
-- [ ] T096 Write unit tests for component initialization and data handling in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T096 Write unit tests for component initialization and data handling in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
 - [ ] T097 Write unit tests for rendering: single series, multiple series, empty data, invalid data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
 - [ ] T098 Write unit tests for tooltips: hover detection, tooltip display, multi-series tooltips in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
 - [ ] T099 Write unit tests for zoom/pan: mouse wheel, pinch, brush, pan, reset in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
@@ -280,6 +280,6 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Documentation Tasks
 
-- [ ] T111 Add JSDoc comments to all public methods and properties in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T111 Add JSDoc comments to all public methods and properties in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 - [ ] T112 Update component README or usage documentation with examples in `projects/d3-dashboards/src/lib/charts/line-chart/README.md` (if exists)
 

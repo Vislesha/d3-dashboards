@@ -1,4 +1,5 @@
 import { Type } from '@angular/core';
+import { LineChartComponent } from '../charts/line-chart/line-chart.component';
 
 /**
  * Widget component loader utility
@@ -6,10 +7,9 @@ import { Type } from '@angular/core';
  */
 
 // Component registry for eager-loaded components
-// Placeholder entries for now - will be populated when chart components are implemented
 const COMPONENT_REGISTRY = new Map<string, Type<any>>([
-  // Line and bar charts will be added when implemented
-  // ['line', LineChartComponent],
+  ['line', LineChartComponent],
+  // Bar and other charts will be added when implemented
   // ['bar', BarChartComponent],
 ]);
 

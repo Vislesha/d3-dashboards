@@ -9,6 +9,9 @@ export * from './lib/components/dashboard-container/dashboard-container.componen
 export * from './lib/components/widget/widget.component';
 export * from './lib/components/widget-header/widget-header.component';
 
+// Chart Components
+export * from './lib/charts/line-chart/line-chart.component';
+
 // Abstract classes
 export * from './lib/abstract/abstract-dashboard-container';
 
@@ -29,6 +32,7 @@ export {
   IValidationResult,
 } from './lib/entities/data-source.interface';
 export * from './lib/entities/chart.interface';
+export * from './lib/entities/line-chart.interface';
 
 // Services
 export * from './lib/services/data.service';
@@ -41,6 +45,7 @@ export * from './lib/services/dashboard.service.types';
 export * from './lib/utils/d3-utils';
 export * from './lib/utils/scale-helpers';
 export * from './lib/utils/axis-helpers';
+export * from './lib/utils/zoom-helpers';
 export * from './lib/utils/color-palette';
 export * from './lib/utils/dashboard-validator.util';
 export * from './lib/utils/widget-position.validator';

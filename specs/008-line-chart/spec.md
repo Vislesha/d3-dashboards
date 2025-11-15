@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Line Chart Component - D3.js-based line chart with multiple series support, interactive tooltips, zoom and pan capabilities, time-series support, and customizable axes and scales"
 
+## Clarifications
+
+### Session 2025-01-27
+
+- Q: How should the chart component receive data from the widget's data source? → A: Chart accepts both IDataSource and direct data (supports both patterns)
+- Q: How should widget filter changes be handled when chart is embedded? → A: Chart accepts both pre-filtered data and filter inputs (supports both patterns)
+- Q: Which container should the chart observe for size changes when embedded in a widget? → A: Chart observes widget container dimensions (ResizeObserver on widget container)
+- Q: Are all zoom methods (mouse wheel, pinch, brush selection) required or can some be optional? → A: All three methods required (mouse wheel, pinch, brush selection)
+- Q: What should happen when data updates while chart is zoomed? → A: Reset zoom to show all new data (loses user's current view)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Display Line Chart with Data (Priority: P1)
@@ -80,7 +90,7 @@ As a dashboard administrator, I want to customize chart axes and scales so that 
 - What happens when x-axis values are not in chronological order?
 - How does the chart handle overlapping data points?
 - What happens when zoom level exceeds data bounds?
-- How does the chart handle rapid data updates during zoom/pan?
+- How does the chart handle rapid data updates during zoom/pan? **Answer**: When data updates occur during zoom/pan, the chart MUST reset zoom to show all new data, losing the user's current zoomed view to ensure all data is visible.
 
 ## Requirements *(mandatory)*
 
@@ -89,27 +99,33 @@ As a dashboard administrator, I want to customize chart axes and scales so that 
 - **FR-001**: System MUST render line chart using D3.js v7.8.5
 - **FR-002**: System MUST support multiple data series with different colors
 - **FR-003**: System MUST display interactive tooltips on data point hover
-- **FR-004**: System MUST support zoom functionality (mouse wheel, pinch, brush selection)
+- **FR-004**: System MUST support zoom functionality including all three methods: mouse wheel (desktop), pinch gestures (touch devices), and brush selection (drag to select region). All three methods are required.
 - **FR-005**: System MUST support pan functionality (drag to move visible region)
 - **FR-006**: System MUST support time-series data with appropriate axis formatting
 - **FR-007**: System MUST support customizable axes (labels, formats, scales)
 - **FR-008**: System MUST handle empty data gracefully
-- **FR-009**: System MUST be responsive and resize with container
+- **FR-009**: System MUST be responsive and resize with container. When embedded in a widget, chart MUST observe widget container dimensions using ResizeObserver
 - **FR-010**: System MUST clean up D3 selections on component destruction
 - **FR-011**: System MUST use enter/update/exit pattern for data updates
 - **FR-012**: System MUST recalculate scales on data or size changes
 - **FR-013**: System MUST support smooth curves and straight lines
 - **FR-014**: System MUST provide zoom reset functionality
+- **FR-015**: System MUST accept data via both `IDataSource` interface (for widget integration) and direct data array input (for standalone usage)
+- **FR-016**: System MUST support both pre-filtered data input (widget applies filters) and filter inputs for internal filtering (supports both patterns)
 
 ### Key Entities *(include if feature involves data)*
 
-- **Line Chart Data**: Array of data points with x and y values. Can contain multiple series for multi-line charts.
+- **Line Chart Data**: Array of data points with x and y values. Can contain multiple series for multi-line charts. Can be provided directly as an array or via `IDataSource` interface for widget integration.
 
 - **Chart Configuration**: Contains options for axes, scales, colors, margins, tooltips, zoom/pan behavior, and styling.
 
 - **Zoom State**: Tracks current zoom level and visible region for pan/zoom functionality.
 
 - **Data Series**: Collection of related data points that form a single line on the chart. Multiple series create multiple lines.
+
+- **Data Source**: Optional `IDataSource` interface for widget-based data fetching. When provided, chart component handles data fetching internally. When direct data array is provided, chart uses it directly without fetching.
+
+- **Filter Integration**: Chart supports both receiving pre-filtered data (when widget component applies filters) and accepting filter inputs (`IFilterValues[]`) for internal filtering. This provides flexibility for different widget integration patterns.
 
 ## Success Criteria *(mandatory)*
 

@@ -8,6 +8,7 @@ import { IWidgetActionEvent } from '../../entities/widget-action-event.interface
 describe('WidgetHeaderComponent', () => {
   let component: WidgetHeaderComponent;
   let fixture: ComponentFixture<WidgetHeaderComponent>;
+  let cdr: ChangeDetectorRef;
 
   const mockWidget: ID3Widget = {
     id: 'test-widget-id',
@@ -24,6 +25,7 @@ describe('WidgetHeaderComponent', () => {
 
     fixture = TestBed.createComponent(WidgetHeaderComponent);
     component = fixture.componentInstance;
+    cdr = fixture.componentRef.injector.get(ChangeDetectorRef);
     component.widget = mockWidget;
     fixture.detectChanges();
   });
@@ -39,8 +41,11 @@ describe('WidgetHeaderComponent', () => {
 
   it('should display default title when widget has no title', () => {
     component.widget = { ...mockWidget, title: '' };
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
+    // Force signal recalculation by accessing it
+    const title = component.titleSignal();
+    expect(title).toBe('Untitled Widget');
     const titleElement = fixture.nativeElement.querySelector('.widget-title');
     expect(titleElement?.textContent.trim()).toBe('Untitled Widget');
   });
@@ -95,24 +100,27 @@ describe('WidgetHeaderComponent', () => {
   it('should show tooltip for truncated titles', () => {
     const longTitle = 'A'.repeat(100);
     component.widget = { ...mockWidget, title: longTitle };
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const titleElement = fixture.nativeElement.querySelector('.widget-title');
     // Tooltip should be present when title is long (PrimeNG tooltip is added dynamically)
     expect(titleElement).toBeTruthy();
+    expect(component.titleSignal().length).toBe(100);
     expect(component.titleSignal().length).toBeGreaterThan(50);
   });
 
   // Phase 4: User Story 2 - Action Menu Tests
   it('should show all menu items when in edit mode', () => {
     component.isEditMode = true;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const menuItems = component.menuItemsSignal();
     // Should have Edit, Delete, separator, Refresh, Export (5 items total)
-    expect(menuItems.length).toBeGreaterThanOrEqual(4); // At least Edit, Delete, Refresh, Export
+    expect(menuItems.length).toBeGreaterThanOrEqual(4);
     expect(menuItems.some(item => item.label === 'Edit')).toBeTruthy();
     expect(menuItems.some(item => item.label === 'Delete')).toBeTruthy();
+    expect(menuItems.some(item => item.label === 'Refresh')).toBeTruthy();
+    expect(menuItems.some(item => item.label === 'Export')).toBeTruthy();
   });
 
   it('should show only refresh and export when not in edit mode', () => {
@@ -127,7 +135,7 @@ describe('WidgetHeaderComponent', () => {
 
   it('should disable refresh action when loading', () => {
     component.loading = true;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const menuItems = component.menuItemsSignal();
     const refreshItem = menuItems.find(item => item.label === 'Refresh');
@@ -148,8 +156,9 @@ describe('WidgetHeaderComponent', () => {
   // Phase 5: User Story 3 - Filter Indicators Tests
   it('should display filter indicators when filters are active', () => {
     component.filters = [{ key: 'Status', value: 'Active' }];
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
+    expect(component.hasFiltersSignal()).toBe(true);
     const filterSection = fixture.nativeElement.querySelector('.header-filters');
     expect(filterSection).toBeTruthy();
     const filterIndicators = fixture.nativeElement.querySelectorAll('.filter-badge');
@@ -168,7 +177,7 @@ describe('WidgetHeaderComponent', () => {
       key: `Filter${i}`,
       value: `Value${i}`,
     }));
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     expect(component.hiddenFiltersSignal().length).toBe(2);
     const moreIndicator = fixture.nativeElement.querySelector('.filter-more');
@@ -190,7 +199,7 @@ describe('WidgetHeaderComponent', () => {
   it('should display loading indicator when loading is true', () => {
     component.loading = true;
     component.error = null;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const loadingIndicator = fixture.nativeElement.querySelector('.loading-indicator');
     expect(loadingIndicator).toBeTruthy();
@@ -199,7 +208,7 @@ describe('WidgetHeaderComponent', () => {
   it('should display error indicator when error is set', () => {
     component.error = 'Test error message';
     component.loading = false;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const errorIndicator = fixture.nativeElement.querySelector('.error-indicator');
     expect(errorIndicator).toBeTruthy();
@@ -208,7 +217,7 @@ describe('WidgetHeaderComponent', () => {
   it('should prioritize error indicator over loading indicator', () => {
     component.loading = true;
     component.error = 'Test error';
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     const loadingIndicator = fixture.nativeElement.querySelector('.loading-indicator');
     const errorIndicator = fixture.nativeElement.querySelector('.error-indicator');
@@ -218,7 +227,7 @@ describe('WidgetHeaderComponent', () => {
 
   it('should emit errorClick when error indicator is clicked', () => {
     component.error = 'Test error';
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     jest.spyOn(component.errorClick, 'emit');
     const errorIndicator = fixture.nativeElement.querySelector('.error-indicator') as HTMLElement;
@@ -260,21 +269,21 @@ describe('WidgetHeaderComponent', () => {
     // Loading state
     component.loading = true;
     component.error = null;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.loading-indicator')).toBeTruthy();
 
     // Loaded state
     component.loading = false;
     component.error = null;
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.loading-indicator')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.error-indicator')).toBeFalsy();
 
     // Error state
     component.error = 'Test error';
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.error-indicator')).toBeTruthy();
   });
@@ -284,7 +293,7 @@ describe('WidgetHeaderComponent', () => {
       key: `Filter${i}`,
       value: `Value${i}`,
     }));
-    fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+    cdr.markForCheck();
     fixture.detectChanges();
     expect(component.visibleFiltersSignal().length).toBe(5);
     expect(component.hiddenFiltersSignal().length).toBe(5);

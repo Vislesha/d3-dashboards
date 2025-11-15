@@ -1,0 +1,201 @@
+{
+  "component": "LineChartComponent",
+  "path": "projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts",
+  "version": "1.0.0",
+  "description": "D3.js-based line chart component with multiple series support, interactive tooltips, zoom and pan capabilities, time-series support, and customizable axes and scales",
+  "type": "Angular Component",
+  "standalone": true,
+  "changeDetection": "OnPush",
+  "inputs": [
+    {
+      "name": "data",
+      "type": "ILineChartData",
+      "required": true,
+      "description": "Chart data containing one or more series of data points",
+      "validation": {
+        "series": {
+          "type": "array",
+          "minLength": 1,
+          "items": {
+            "id": { "type": "string", "required": true },
+            "name": { "type": "string", "required": true, "minLength": 1 },
+            "data": { "type": "array", "required": true, "minLength": 1 }
+          }
+        }
+      }
+    },
+    {
+      "name": "config",
+      "type": "ILineChartConfiguration",
+      "required": false,
+      "description": "Chart configuration options (dimensions, axes, tooltips, zoom, etc.)",
+      "default": "Default configuration with sensible defaults"
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "required": false,
+      "description": "Chart width in pixels (overrides config.width)",
+      "validation": { "type": "number", "min": 100 }
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "required": false,
+      "description": "Chart height in pixels (overrides config.height)",
+      "validation": { "type": "number", "min": 100 }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pointClick",
+      "type": "EventEmitter<{ point: ILineChartDataPoint; series: ILineChartSeries }>",
+      "description": "Emitted when a data point is clicked",
+      "payload": {
+        "point": "ILineChartDataPoint",
+        "series": "ILineChartSeries"
+      }
+    },
+    {
+      "name": "pointHover",
+      "type": "EventEmitter<{ point: ILineChartDataPoint; series: ILineChartSeries }>",
+      "description": "Emitted when a data point is hovered",
+      "payload": {
+        "point": "ILineChartDataPoint",
+        "series": "ILineChartSeries"
+      }
+    },
+    {
+      "name": "zoomChange",
+      "type": "EventEmitter<IZoomState>",
+      "description": "Emitted when zoom or pan state changes",
+      "payload": {
+        "transform": "d3.ZoomTransform",
+        "initialTransform": "d3.ZoomTransform",
+        "isZoomed": "boolean",
+        "visibleDomain": "[number, number] | [Date, Date] | undefined"
+      }
+    },
+    {
+      "name": "error",
+      "type": "EventEmitter<Error>",
+      "description": "Emitted when an error occurs during chart rendering or interaction",
+      "payload": "Error"
+    }
+  ],
+  "publicMethods": [
+    {
+      "name": "resetZoom",
+      "description": "Resets the chart zoom to show all data",
+      "parameters": [],
+      "returnType": "void",
+      "sideEffects": "Updates chart zoom state and triggers re-render"
+    },
+    {
+      "name": "updateData",
+      "description": "Updates chart data programmatically",
+      "parameters": [
+        {
+          "name": "data",
+          "type": "ILineChartData",
+          "description": "New chart data"
+        }
+      ],
+      "returnType": "void",
+      "sideEffects": "Triggers chart re-render with new data"
+    },
+    {
+      "name": "updateConfig",
+      "description": "Updates chart configuration programmatically",
+      "parameters": [
+        {
+          "name": "config",
+          "type": "Partial<ILineChartConfiguration>",
+          "description": "Partial configuration to merge with existing config"
+        }
+      ],
+      "returnType": "void",
+      "sideEffects": "Triggers chart re-render with new configuration"
+    },
+    {
+      "name": "exportChart",
+      "description": "Exports chart as image (PNG or SVG)",
+      "parameters": [
+        {
+          "name": "format",
+          "type": "'png' | 'svg'",
+          "description": "Export format",
+          "default": "'png'"
+        }
+      ],
+      "returnType": "Promise<string>",
+      "description": "Returns data URL of exported image"
+    }
+  ],
+  "lifecycleHooks": [
+    {
+      "name": "ngOnInit",
+      "description": "Initializes chart, creates D3 scales and axes"
+    },
+    {
+      "name": "ngOnChanges",
+      "description": "Handles input changes, triggers chart updates"
+    },
+    {
+      "name": "ngOnDestroy",
+      "description": "Cleans up D3 selections and event listeners"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "D3.js",
+      "version": "^7.8.5",
+      "modules": [
+        "d3-selection",
+        "d3-scale",
+        "d3-axis",
+        "d3-shape",
+        "d3-zoom",
+        "d3-time",
+        "d3-time-format"
+      ]
+    },
+    {
+      "name": "@angular/core",
+      "version": "^20.2.0"
+    },
+    {
+      "name": "rxjs",
+      "version": "~7.8.0"
+    }
+  ],
+  "performanceRequirements": {
+    "renderTime": {
+      "target": "< 100ms",
+      "condition": "datasets < 1000 points"
+    },
+    "tooltipResponseTime": {
+      "target": "< 50ms",
+      "condition": "mouse hover"
+    },
+    "zoomResponseTime": {
+      "target": "< 100ms",
+      "condition": "zoom operations"
+    },
+    "frameRate": {
+      "target": "60fps",
+      "condition": "zoom/pan interactions"
+    },
+    "maxDataPoints": {
+      "target": "10,000",
+      "condition": "without performance degradation"
+    }
+  },
+  "accessibility": {
+    "ariaLabel": "Line chart",
+    "ariaDescription": "Interactive line chart with zoom and pan capabilities",
+    "keyboardNavigation": true,
+    "screenReaderSupport": true
+  }
+}
+
