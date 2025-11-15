@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Dashboard Service - Dashboard CRUD operations, widget management, configuration persistence, and state management"
 
+## Clarifications
+
+### Session 2025-01-27
+
+- Q: How should dashboard configurations be persisted? → A: In-memory with optional localStorage persistence (browser-based)
+- Q: How should the service handle concurrent dashboard modifications? → A: Optimistic locking with version numbers (detect conflicts, reject stale updates)
+- Q: What should happen when a widget ID conflict is detected? → A: Reject with error (prevent duplicate IDs, require unique IDs per dashboard)
+- Q: How should the service handle corrupted or invalid dashboard data when loading from storage? → A: Reject with validation error (fail fast, return error, do not load corrupted data)
+- Q: What should happen when a dashboard save operation fails? → A: Return error with details (operation fails, return typed error with message, dashboard not saved)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Create and Save Dashboards (Priority: P1)
@@ -73,27 +83,27 @@ As a dashboard developer, I want the service to manage dashboard state so that s
 
 ### Edge Cases
 
-- What happens when dashboard save fails?
-- How does the service handle concurrent dashboard modifications?
-- What happens when widget IDs conflict?
-- How does the service handle corrupted dashboard data?
+- What happens when dashboard save fails? → Save failures return a typed error with detailed message. The dashboard is not persisted. The error includes information about the failure reason (e.g., storage quota exceeded, validation failure, network error). The operation completes within 200ms as per SC-008.
+- How does the service handle concurrent dashboard modifications? → Uses optimistic locking with version numbers: each dashboard has a version field that is incremented on update; if an update is attempted with a stale version, the operation is rejected with a clear error message indicating the conflict.
+- What happens when widget IDs conflict? → Widget ID conflicts are rejected with a validation error. Widget IDs must be unique within a dashboard. Attempting to add a widget with an existing ID will fail with a clear error message.
+- How does the service handle corrupted dashboard data? → Corrupted or invalid dashboard data is rejected with a validation error. The service performs validation when loading dashboards from storage; if data fails validation, the load operation fails with a clear error message. No corrupted data is loaded or used.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: System MUST provide dashboard create operation
-- **FR-002**: System MUST provide dashboard read/load operation
-- **FR-003**: System MUST provide dashboard update operation
+- **FR-002**: System MUST provide dashboard read/load operation with validation to reject corrupted or invalid data
+- **FR-003**: System MUST provide dashboard update operation with optimistic locking (version-based conflict detection)
 - **FR-004**: System MUST provide dashboard delete operation
 - **FR-005**: System MUST provide dashboard list operation
-- **FR-006**: System MUST provide widget add operation
+- **FR-006**: System MUST provide widget add operation with validation to prevent duplicate widget IDs within a dashboard
 - **FR-007**: System MUST provide widget update operation
 - **FR-008**: System MUST provide widget remove operation
-- **FR-009**: System MUST persist dashboard configurations
+- **FR-009**: System MUST persist dashboard configurations using in-memory storage with optional localStorage persistence for browser-based applications
 - **FR-010**: System MUST manage dashboard state
 - **FR-011**: System MUST handle errors gracefully
-- **FR-012**: System MUST validate dashboard and widget configurations
+- **FR-012**: System MUST validate dashboard and widget configurations, including widget ID uniqueness within each dashboard
 
 ### Key Entities *(include if feature involves data)*
 

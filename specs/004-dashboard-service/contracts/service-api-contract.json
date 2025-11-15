@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dashboard Service API Contract",
+  "description": "TypeScript service interface contract for DashboardService",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "DashboardService class interface",
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "DashboardService"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "create",
+                  "load",
+                  "update",
+                  "delete",
+                  "list",
+                  "addWidget",
+                  "updateWidget",
+                  "removeWidget",
+                  "validateDashboard",
+                  "validateWidget",
+                  "getState",
+                  "getCurrentState",
+                  "updateState",
+                  "resetState"
+                ]
+              },
+              "description": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "returnType": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "returnType"]
+          }
+        }
+      },
+      "required": ["name", "methods"]
+    }
+  },
+  "required": ["service"]
+}
+

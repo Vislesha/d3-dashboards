@@ -25,9 +25,12 @@ export * from './lib/entities/chart.interface';
 export * from './lib/services/data.service';
 export * from './lib/services/chart.service';
 export * from './lib/services/chart.service.types';
+export * from './lib/services/dashboard.service';
+export * from './lib/services/dashboard.service.types';
 
 // Utils
 export * from './lib/utils/d3-utils';
 export * from './lib/utils/scale-helpers';
 export * from './lib/utils/axis-helpers';
 export * from './lib/utils/color-palette';
+export * from './lib/utils/dashboard-validator.util';
