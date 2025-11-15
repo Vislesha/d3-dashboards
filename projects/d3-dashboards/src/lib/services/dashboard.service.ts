@@ -13,6 +13,7 @@ import { ID3Widget } from '../entities/widget.interface';
 import {
   DashboardServiceError,
   DashboardValidationError,
+  DashboardNotFoundError,
   IDashboardStorage,
   InMemoryDashboardStorage,
   LocalStorageDashboardStorage,
@@ -102,8 +103,70 @@ export class DashboardService {
     return validateDashboard(dashboard);
   }
 
+  /**
+   * Loads a dashboard by ID
+   * @param id Dashboard ID
+   * @returns Observable that emits the dashboard configuration
+   */
+  load(id: string): Observable<IDashboard> {
+    return this.storage.load(id).pipe(
+      map((dashboard) => {
+        if (!dashboard) {
+          throw new DashboardNotFoundError(id);
+        }
+
+        // Validate loaded dashboard to reject corrupted data
+        const validation = validateDashboard(dashboard);
+        if (!validation.valid) {
+          throw new DashboardValidationError(validation.errors);
+        }
+
+        return dashboard;
+      }),
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to load dashboard: ${error instanceof Error ? error.message : String(error)}`,
+              'LOAD_ERROR',
+              true,
+              id,
+            ),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Lists all saved dashboards
+   * @returns Observable that emits array of all dashboards
+   */
+  list(): Observable<IDashboard[]> {
+    return this.storage.list().pipe(
+      map((dashboards) => {
+        // Validate all dashboards and filter out corrupted ones
+        return dashboards.filter((dashboard) => {
+          const validation = validateDashboard(dashboard);
+          return validation.valid;
+        });
+      }),
+      catchError((error) => {
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to list dashboards: ${error instanceof Error ? error.message : String(error)}`,
+              'LIST_ERROR',
+              true,
+            ),
+        );
+      }),
+    );
+  }
+
   // State management methods will be implemented in Phase 6
-  // Load/List methods will be implemented in Phase 4
   // Update/Delete methods will be implemented in Phase 7
   // Widget management methods will be implemented in Phase 5
 }

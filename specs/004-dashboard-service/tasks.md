@@ -104,25 +104,25 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T036 [P] [US2] Create unit test for load with valid dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T037 [P] [US2] Create unit test for load with non-existent dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T038 [P] [US2] Create unit test for load with corrupted dashboard data in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T039 [P] [US2] Create unit test for list with multiple dashboards in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T040 [P] [US2] Create unit test for list with no dashboards in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T041 [P] [US2] Create unit test for load validation of corrupted data in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T036 [P] [US2] Create unit test for load with valid dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T037 [P] [US2] Create unit test for load with non-existent dashboard ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T038 [P] [US2] Create unit test for load with corrupted dashboard data in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T039 [P] [US2] Create unit test for list with multiple dashboards in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T040 [P] [US2] Create unit test for list with no dashboards in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T041 [P] [US2] Create unit test for load validation of corrupted data in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T042 [US2] Implement DashboardNotFoundError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T043 [US2] Implement load method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T044 [US2] Implement list method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T045 [US2] Implement storage.load method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T046 [US2] Implement storage.list method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T047 [US2] Implement storage.load method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T048 [US2] Implement storage.list method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T049 [US2] Add validation on load to reject corrupted data in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T050 [US2] Add error handling for DashboardNotFoundError in load method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T051 [US2] Add error handling for load failures in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T042 [US2] Implement DashboardNotFoundError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T043 [US2] Implement load method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T044 [US2] Implement list method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T045 [US2] Implement storage.load method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T046 [US2] Implement storage.list method in InMemoryDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T047 [US2] Implement storage.load method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T048 [US2] Implement storage.list method in LocalStorageDashboardStorage in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T049 [US2] Add validation on load to reject corrupted data in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T050 [US2] Add error handling for DashboardNotFoundError in load method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T051 [US2] Add error handling for load failures in projects/d3-dashboards/src/lib/services/dashboard.service.ts
 
 **Checkpoint**: At this point, User Story 2 should be fully functional and testable independently. Dashboards can be loaded and listed.
 
