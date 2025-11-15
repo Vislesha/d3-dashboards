@@ -237,8 +237,13 @@ export class DashboardService {
   delete(id: string): Observable<boolean> {
     return this.storage.delete(id).pipe(
       map((deleted) => {
-        // Update state if deleted dashboard was active (will be implemented in Phase 6)
-        // For now, just return the deletion result
+        // Update state if deleted dashboard was active
+        const currentState = this.state$.value;
+        if (currentState.activeDashboardId === id) {
+          this.updateState({
+            activeDashboardId: null,
+          });
+        }
         return deleted;
       }),
       catchError((error) => {
@@ -422,6 +427,45 @@ export class DashboardService {
     );
   }
 
-  // State management methods will be implemented in Phase 6
+  /**
+   * Gets the state observable
+   * @returns Observable that emits the current dashboard state
+   */
+  getState(): Observable<IDashboardState> {
+    return this.state$.asObservable();
+  }
+
+  /**
+   * Gets the current state synchronously
+   * @returns Current dashboard state
+   */
+  getCurrentState(): IDashboardState {
+    return this.state$.value;
+  }
+
+  /**
+   * Updates the dashboard state with partial updates
+   * @param updates Partial state updates
+   */
+  updateState(updates: Partial<IDashboardState>): void {
+    const currentState = this.state$.value;
+    const newState: IDashboardState = {
+      ...currentState,
+      ...updates,
+    };
+    this.state$.next(newState);
+  }
+
+  /**
+   * Resets the dashboard state to initial values
+   */
+  resetState(): void {
+    this.state$.next({
+      activeDashboardId: null,
+      editMode: false,
+      filters: [],
+      selectedWidgets: [],
+    });
+  }
 }
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DashboardService } from './dashboard.service';
-import { IDashboardConfig, IDashboard } from '../entities/dashboard.interface';
+import { IDashboardConfig, IDashboard, IDashboardState } from '../entities/dashboard.interface';
 import { ID3Widget } from '../entities/widget.interface';
 import {
   DashboardValidationError,
@@ -578,6 +578,116 @@ describe('DashboardService', () => {
         const result = service.validateWidget(invalidWidget);
         expect(result.valid).toBe(false);
         expect(result.errors.length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  describe('User Story 4 - State Management', () => {
+    let createdDashboardId: string;
+
+    beforeEach((done) => {
+      const config: IDashboardConfig = {
+        title: 'Dashboard for State Management',
+        widgets: [],
+      };
+
+      service.create(config).subscribe({
+        next: (id) => {
+          createdDashboardId = id;
+          done();
+        },
+        error: () => {
+          done();
+        },
+      });
+    });
+
+    describe('getState', () => {
+      it('should return state observable', (done) => {
+        service.getState().subscribe({
+          next: (state: IDashboardState) => {
+            expect(state).toBeTruthy();
+            expect(state.activeDashboardId).toBeNull();
+            expect(state.editMode).toBe(false);
+            expect(Array.isArray(state.filters)).toBe(true);
+            expect(Array.isArray(state.selectedWidgets)).toBe(true);
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should emit state changes when state is updated', (done) => {
+        let emissionCount = 0;
+        service.getState().subscribe({
+          next: (state: IDashboardState) => {
+            emissionCount++;
+            if (emissionCount === 1) {
+              // Initial state
+              expect(state.activeDashboardId).toBeNull();
+            } else if (emissionCount === 2) {
+              // After update
+              expect(state.activeDashboardId).toBe(createdDashboardId);
+              done();
+            }
+          },
+        });
+
+        // Update state
+        service.updateState({ activeDashboardId: createdDashboardId });
+      });
+    });
+
+    describe('getCurrentState', () => {
+      it('should return current state synchronously', () => {
+        const state = service.getCurrentState();
+        expect(state).toBeTruthy();
+        expect(state.activeDashboardId).toBeNull();
+        expect(state.editMode).toBe(false);
+      });
+    });
+
+    describe('updateState', () => {
+      it('should update state with partial updates', (done) => {
+        service.updateState({
+          activeDashboardId: createdDashboardId,
+          editMode: true,
+        });
+
+        service.getState().subscribe({
+          next: (state: IDashboardState) => {
+            expect(state.activeDashboardId).toBe(createdDashboardId);
+            expect(state.editMode).toBe(true);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('resetState', () => {
+      it('should reset state to initial values', (done) => {
+        // Update state first
+        service.updateState({
+          activeDashboardId: createdDashboardId,
+          editMode: true,
+          filters: [{ key: 'test', value: 'value' }],
+          selectedWidgets: ['widget-1'],
+        });
+
+        // Reset state
+        service.resetState();
+
+        service.getState().subscribe({
+          next: (state: IDashboardState) => {
+            expect(state.activeDashboardId).toBeNull();
+            expect(state.editMode).toBe(false);
+            expect(state.filters.length).toBe(0);
+            expect(state.selectedWidgets.length).toBe(0);
+            done();
+          },
+        });
       });
     });
   });

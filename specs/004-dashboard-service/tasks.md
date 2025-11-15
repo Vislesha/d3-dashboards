@@ -178,21 +178,21 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T074 [P] [US4] Create unit test for getState observable in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T075 [P] [US4] Create unit test for getCurrentState synchronous access in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T076 [P] [US4] Create unit test for updateState with partial updates in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T077 [P] [US4] Create unit test for resetState to initial values in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T078 [P] [US4] Create unit test for state observable emissions in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T074 [P] [US4] Create unit test for getState observable in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T075 [P] [US4] Create unit test for getCurrentState synchronous access in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T076 [P] [US4] Create unit test for updateState with partial updates in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T077 [P] [US4] Create unit test for resetState to initial values in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T078 [P] [US4] Create unit test for state observable emissions in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
 
 ### Implementation for User Story 4
 
-- [ ] T079 [US4] Create BehaviorSubject for state management in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T080 [US4] Initialize state with default values in DashboardService constructor in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T081 [US4] Implement getState method returning Observable in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T082 [US4] Implement getCurrentState method returning current state value in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T083 [US4] Implement updateState method with partial state updates in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T084 [US4] Implement resetState method to restore initial state in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T085 [US4] Add state update when dashboard is deleted in delete method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T079 [US4] Create BehaviorSubject for state management in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T080 [US4] Initialize state with default values in DashboardService constructor in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T081 [US4] Implement getState method returning Observable in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T082 [US4] Implement getCurrentState method returning current state value in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T083 [US4] Implement updateState method with partial state updates in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T084 [US4] Implement resetState method to restore initial state in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T085 [US4] Add state update when dashboard is deleted in delete method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
 
 **Checkpoint**: At this point, User Story 4 should be fully functional and testable independently. Dashboard state can be managed and observed.
 
