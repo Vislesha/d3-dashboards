@@ -1,0 +1,45 @@
+.line-chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .line-chart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .line-chart-empty,
+  .line-chart-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-color-secondary, #6c757d);
+    padding: 1rem;
+
+    i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+  }
+
+  .line-chart-error {
+    color: var(--red-500, #ef4444);
+
+    i {
+      color: var(--red-500, #ef4444);
+    }
+  }
+}
+

@@ -108,48 +108,48 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Component Structure Tasks
 
-- [ ] T021 [P] [US1] Create line-chart.component.ts with component decorator, standalone: true, OnPush change detection in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T022 [P] [US1] Create line-chart.component.html template file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
-- [ ] T023 [P] [US1] Create line-chart.component.scss styles file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.scss`
-- [ ] T024 [P] [US1] Create line-chart.component.spec.ts test file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
+- [X] T021 [P] [US1] Create line-chart.component.ts with component decorator, standalone: true, OnPush change detection in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T022 [P] [US1] Create line-chart.component.html template file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.html`
+- [X] T023 [P] [US1] Create line-chart.component.scss styles file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.scss`
+- [X] T024 [P] [US1] Create line-chart.component.spec.ts test file in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.spec.ts`
 
 ### Component Inputs/Outputs Tasks
 
-- [ ] T025 [US1] Define component inputs: data (ILineChartData | IDataSource, required), config (ILineChartConfiguration, optional), width (number, optional), height (number, optional), filters (IFilterValues[], optional) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T026 [US1] Define component outputs: pointClick (EventEmitter), pointHover (EventEmitter), zoomChange (EventEmitter), error (EventEmitter) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T025 [US1] Define component inputs: data (ILineChartData | IDataSource, required), config (ILineChartConfiguration, optional), width (number, optional), height (number, optional), filters (IFilterValues[], optional) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T026 [US1] Define component outputs: pointClick (EventEmitter), pointHover (EventEmitter), zoomChange (EventEmitter), error (EventEmitter) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Data Handling Tasks
 
-- [ ] T027 [US1] Implement data source handling: support both IDataSource and direct ILineChartData input in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T028 [US1] Implement data fetching from IDataSource when provided using DataService in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T029 [US1] Implement data transformation: convert raw data to ILineChartData format in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T030 [US1] Implement filter application: support both pre-filtered data and filter inputs for internal filtering in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T031 [US1] Implement data validation: validate series structure, data point types, and compatibility in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T032 [US1] Implement empty data handling: display empty state message when no data available in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T033 [US1] Implement error handling: emit error events and display error messages for invalid data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T027 [US1] Implement data source handling: support both IDataSource and direct ILineChartData input in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T028 [US1] Implement data fetching from IDataSource when provided using DataService in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T029 [US1] Implement data transformation: convert raw data to ILineChartData format in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T030 [US1] Implement filter application: support both pre-filtered data and filter inputs for internal filtering in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T031 [US1] Implement data validation: validate series structure, data point types, and compatibility in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T032 [US1] Implement empty data handling: display empty state message when no data available in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T033 [US1] Implement error handling: emit error events and display error messages for invalid data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### D3 Rendering Tasks
 
-- [ ] T034 [US1] Implement ngOnInit: initialize SVG container, set up ResizeObserver on widget container in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T035 [US1] Implement scale creation: create x and y scales based on data domain and chart dimensions in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T036 [US1] Implement time scale detection: auto-detect time-series data and use d3.scaleTime for x-axis in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T037 [US1] Implement line generator: create d3.line generator with curve type support (linear, monotone) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T038 [US1] Implement missing/null value handling: use d3.line().defined() to skip null y values in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T039 [US1] Implement data sorting: sort data points by x-value before rendering (chronological for time-series) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T040 [US1] Implement enter/update/exit pattern: bind data to SVG path elements using D3 data join in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T041 [US1] Implement multiple series rendering: render multiple lines with distinct colors from color palette in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T042 [US1] Implement axis rendering: create and render x and y axes using d3.axisBottom and d3.axisLeft in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T043 [US1] Implement time-series axis formatting: format time axis labels using d3.timeFormat based on time range in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T044 [US1] Implement responsive resizing: use ResizeObserver to detect widget container size changes and update chart dimensions in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T045 [US1] Implement scale recalculation: recalculate scales on data or size changes (FR-012) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T046 [US1] Implement ngOnChanges: handle input changes and trigger chart updates using enter/update/exit pattern in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T047 [US1] Implement ngOnDestroy: clean up D3 selections, ResizeObserver, and event listeners (FR-010) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T034 [US1] Implement ngOnInit: initialize SVG container, set up ResizeObserver on widget container in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T035 [US1] Implement scale creation: create x and y scales based on data domain and chart dimensions in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T036 [US1] Implement time scale detection: auto-detect time-series data and use d3.scaleTime for x-axis in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T037 [US1] Implement line generator: create d3.line generator with curve type support (linear, monotone) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T038 [US1] Implement missing/null value handling: use d3.line().defined() to skip null y values in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T039 [US1] Implement data sorting: sort data points by x-value before rendering (chronological for time-series) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T040 [US1] Implement enter/update/exit pattern: bind data to SVG path elements using D3 data join in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T041 [US1] Implement multiple series rendering: render multiple lines with distinct colors from color palette in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T042 [US1] Implement axis rendering: create and render x and y axes using d3.axisBottom and d3.axisLeft in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T043 [US1] Implement time-series axis formatting: format time axis labels using d3.timeFormat based on time range in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T044 [US1] Implement responsive resizing: use ResizeObserver to detect widget container size changes and update chart dimensions in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T045 [US1] Implement scale recalculation: recalculate scales on data or size changes (FR-012) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T046 [US1] Implement ngOnChanges: handle input changes and trigger chart updates using enter/update/exit pattern in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T047 [US1] Implement ngOnDestroy: clean up D3 selections, ResizeObserver, and event listeners (FR-010) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ### Performance Optimization Tasks
 
-- [ ] T048 [US1] Implement data sampling: sample data for datasets > 1000 points to maintain performance in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T049 [US1] Implement memoization: memoize expensive calculations (scale calculations, path generation) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T050 [US1] Implement debouncing: debounce resize events to prevent excessive redraws in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T048 [US1] Implement data sampling: sample data for datasets > 1000 points to maintain performance in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T049 [US1] Implement memoization: memoize expensive calculations (scale calculations, path generation) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T050 [US1] Implement debouncing: debounce resize events to prevent excessive redraws in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ## Phase 4: User Story 2 - Interactive Tooltips (P2)
 

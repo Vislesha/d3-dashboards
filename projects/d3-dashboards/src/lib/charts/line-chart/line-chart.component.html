@@ -1,0 +1,22 @@
+<div
+  class="line-chart-container"
+  #chartContainer
+  role="img"
+  [attr.aria-label]="'Line chart' + (config?.emptyState?.message ? ': ' + config.emptyState.message : '')"
+  [attr.aria-description]="'Interactive line chart with ' + (chartData?.series?.length || 0) + ' data series'">
+  <!-- SVG Container for D3 rendering -->
+  <svg #svgContainer class="line-chart-svg"></svg>
+
+  <!-- Empty State -->
+  <div *ngIf="isEmpty" class="line-chart-empty" role="status" aria-live="polite">
+    <i *ngIf="config?.emptyState?.icon" [class]="config.emptyState.icon" aria-hidden="true"></i>
+    <p>{{ config?.emptyState?.message || 'No data available' }}</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="hasError" class="line-chart-error" role="alert" aria-live="assertive">
+    <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>
+
