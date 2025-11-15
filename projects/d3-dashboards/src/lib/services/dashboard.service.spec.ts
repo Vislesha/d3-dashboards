@@ -6,6 +6,9 @@ import {
   DashboardValidationError,
   DashboardServiceError,
   DashboardNotFoundError,
+  WidgetValidationError,
+  WidgetIdConflictError,
+  WidgetNotFoundError,
 } from './dashboard.service.types';
 
 describe('DashboardService', () => {
@@ -381,6 +384,200 @@ describe('DashboardService', () => {
             done.fail(`Expected false but got error: ${error.message}`);
           },
         });
+      });
+    });
+  });
+
+  describe('User Story 3 - Widget Management', () => {
+    let createdDashboardId: string;
+    const testWidget: ID3Widget = {
+      id: '550e8400-e29b-41d4-a716-446655440001',
+      type: 'line',
+      position: { x: 0, y: 0, cols: 4, rows: 3 },
+      title: 'Test Widget',
+      config: {},
+    };
+
+    beforeEach((done) => {
+      const config: IDashboardConfig = {
+        title: 'Dashboard for Widget Management',
+        widgets: [],
+      };
+
+      service.create(config).subscribe({
+        next: (id) => {
+          createdDashboardId = id;
+          done();
+        },
+        error: () => {
+          done();
+        },
+      });
+    });
+
+    describe('addWidget', () => {
+      it('should add a widget to a dashboard', (done) => {
+        service.addWidget(createdDashboardId, testWidget).subscribe({
+          next: (dashboard) => {
+            expect(dashboard.widgets.length).toBe(1);
+            expect(dashboard.widgets[0].id).toBe(testWidget.id);
+            expect(dashboard.version).toBeGreaterThan(1);
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should reject widget with duplicate ID', (done) => {
+        // Add widget first
+        service.addWidget(createdDashboardId, testWidget).subscribe({
+          next: () => {
+            // Try to add same widget again
+            service.addWidget(createdDashboardId, testWidget).subscribe({
+              next: () => {
+                done.fail('Expected WidgetIdConflictError but got success');
+              },
+              error: (error) => {
+                expect(error.code).toBe('WIDGET_ID_CONFLICT');
+                done();
+              },
+            });
+          },
+          error: () => {
+            done();
+          },
+        });
+      });
+
+      it('should reject widget with invalid config', (done) => {
+        const invalidWidget = {
+          ...testWidget,
+          title: '', // Invalid
+        };
+
+        service.addWidget(createdDashboardId, invalidWidget).subscribe({
+          next: () => {
+            done.fail('Expected validation error but got success');
+          },
+          error: (error) => {
+            expect(error).toBeInstanceOf(WidgetValidationError);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('updateWidget', () => {
+      beforeEach((done) => {
+        // Add a widget first
+        service.addWidget(createdDashboardId, testWidget).subscribe({
+          next: () => {
+            done();
+          },
+          error: () => {
+            done();
+          },
+        });
+      });
+
+      it('should update a widget in a dashboard', (done) => {
+        const updatedWidget = {
+          ...testWidget,
+          title: 'Updated Widget Title',
+        };
+
+        service.updateWidget(createdDashboardId, updatedWidget).subscribe({
+          next: (dashboard) => {
+            const widget = dashboard.widgets.find((w) => w.id === testWidget.id);
+            expect(widget).toBeTruthy();
+            expect(widget?.title).toBe('Updated Widget Title');
+            expect(dashboard.version).toBeGreaterThan(1);
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should reject update for non-existent widget ID', (done) => {
+        const nonExistentWidget = {
+          ...testWidget,
+          id: '550e8400-e29b-41d4-a716-446655440999',
+        };
+
+        service.updateWidget(createdDashboardId, nonExistentWidget).subscribe({
+          next: () => {
+            done.fail('Expected WidgetNotFoundError but got success');
+          },
+          error: (error) => {
+            expect(error.code).toBe('WIDGET_NOT_FOUND');
+            done();
+          },
+        });
+      });
+    });
+
+    describe('removeWidget', () => {
+      beforeEach((done) => {
+        // Add a widget first
+        service.addWidget(createdDashboardId, testWidget).subscribe({
+          next: () => {
+            done();
+          },
+          error: () => {
+            done();
+          },
+        });
+      });
+
+      it('should remove a widget from a dashboard', (done) => {
+        service.removeWidget(createdDashboardId, testWidget.id).subscribe({
+          next: (dashboard) => {
+            expect(dashboard.widgets.length).toBe(0);
+            expect(dashboard.widgets.find((w) => w.id === testWidget.id)).toBeUndefined();
+            expect(dashboard.version).toBeGreaterThan(1);
+            done();
+          },
+          error: (error) => {
+            done.fail(`Expected success but got error: ${error.message}`);
+          },
+        });
+      });
+
+      it('should reject removal for non-existent widget ID', (done) => {
+        const nonExistentWidgetId = '550e8400-e29b-41d4-a716-446655440999';
+
+        service.removeWidget(createdDashboardId, nonExistentWidgetId).subscribe({
+          next: () => {
+            done.fail('Expected WidgetNotFoundError but got success');
+          },
+          error: (error) => {
+            expect(error.code).toBe('WIDGET_NOT_FOUND');
+            done();
+          },
+        });
+      });
+    });
+
+    describe('validateWidget', () => {
+      it('should validate widget with valid config', () => {
+        const result = service.validateWidget(testWidget);
+        expect(result.valid).toBe(true);
+        expect(result.errors.length).toBe(0);
+      });
+
+      it('should reject widget with invalid config', () => {
+        const invalidWidget = {
+          ...testWidget,
+          title: '',
+        };
+
+        const result = service.validateWidget(invalidWidget);
+        expect(result.valid).toBe(false);
+        expect(result.errors.length).toBeGreaterThan(0);
       });
     });
   });

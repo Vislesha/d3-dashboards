@@ -15,6 +15,9 @@ import {
   DashboardValidationError,
   DashboardNotFoundError,
   ConcurrentModificationError,
+  WidgetValidationError,
+  WidgetIdConflictError,
+  WidgetNotFoundError,
   IDashboardStorage,
   InMemoryDashboardStorage,
   LocalStorageDashboardStorage,
@@ -252,7 +255,173 @@ export class DashboardService {
     );
   }
 
+  /**
+   * Validates a widget configuration
+   * @param widget Widget to validate
+   * @returns Validation result
+   */
+  validateWidget(widget: ID3Widget): IValidationResult {
+    return validateWidget(widget);
+  }
+
+  /**
+   * Adds a widget to a dashboard
+   * @param dashboardId Dashboard ID
+   * @param widget Widget configuration
+   * @returns Observable that emits the updated dashboard
+   */
+  addWidget(dashboardId: string, widget: ID3Widget): Observable<IDashboard> {
+    // Validate widget
+    const widgetValidation = validateWidget(widget);
+    if (!widgetValidation.valid) {
+      return throwError(() => new WidgetValidationError(widgetValidation.errors));
+    }
+
+    // Load dashboard
+    return this.load(dashboardId).pipe(
+      map((dashboard) => {
+        // Check for widget ID conflicts
+        if (dashboard.widgets.some((w) => w.id === widget.id)) {
+          throw new WidgetIdConflictError(widget.id, dashboardId);
+        }
+
+        // Immutable update: add widget
+        const now = new Date();
+        const updated: IDashboard = {
+          ...dashboard,
+          widgets: [...dashboard.widgets, widget],
+          version: dashboard.version + 1,
+          updatedAt: now,
+        };
+
+        return updated;
+      }),
+      switchMap((updated) => {
+        // Save updated dashboard
+        return this.storage.save(updated).pipe(map(() => updated));
+      }),
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to add widget: ${error instanceof Error ? error.message : String(error)}`,
+              'ADD_WIDGET_ERROR',
+              true,
+              dashboardId,
+              widget.id,
+            ),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Updates a widget in a dashboard
+   * @param dashboardId Dashboard ID
+   * @param widget Widget configuration with updated values
+   * @returns Observable that emits the updated dashboard
+   */
+  updateWidget(dashboardId: string, widget: ID3Widget): Observable<IDashboard> {
+    // Validate widget
+    const widgetValidation = validateWidget(widget);
+    if (!widgetValidation.valid) {
+      return throwError(() => new WidgetValidationError(widgetValidation.errors));
+    }
+
+    // Load dashboard
+    return this.load(dashboardId).pipe(
+      map((dashboard) => {
+        // Find widget by ID
+        const widgetIndex = dashboard.widgets.findIndex((w) => w.id === widget.id);
+        if (widgetIndex === -1) {
+          throw new WidgetNotFoundError(widget.id, dashboardId);
+        }
+
+        // Immutable update: update widget
+        const now = new Date();
+        const updated: IDashboard = {
+          ...dashboard,
+          widgets: dashboard.widgets.map((w) => (w.id === widget.id ? widget : w)),
+          version: dashboard.version + 1,
+          updatedAt: now,
+        };
+
+        return updated;
+      }),
+      switchMap((updated) => {
+        // Save updated dashboard
+        return this.storage.save(updated).pipe(map(() => updated));
+      }),
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to update widget: ${error instanceof Error ? error.message : String(error)}`,
+              'UPDATE_WIDGET_ERROR',
+              true,
+              dashboardId,
+              widget.id,
+            ),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Removes a widget from a dashboard
+   * @param dashboardId Dashboard ID
+   * @param widgetId Widget ID
+   * @returns Observable that emits the updated dashboard
+   */
+  removeWidget(dashboardId: string, widgetId: string): Observable<IDashboard> {
+    // Load dashboard
+    return this.load(dashboardId).pipe(
+      map((dashboard) => {
+        // Find widget by ID
+        const widgetExists = dashboard.widgets.some((w) => w.id === widgetId);
+        if (!widgetExists) {
+          throw new WidgetNotFoundError(widgetId, dashboardId);
+        }
+
+        // Immutable update: remove widget
+        const now = new Date();
+        const updated: IDashboard = {
+          ...dashboard,
+          widgets: dashboard.widgets.filter((w) => w.id !== widgetId),
+          version: dashboard.version + 1,
+          updatedAt: now,
+        };
+
+        return updated;
+      }),
+      switchMap((updated) => {
+        // Save updated dashboard
+        return this.storage.save(updated).pipe(map(() => updated));
+      }),
+      catchError((error) => {
+        if (error instanceof DashboardServiceError) {
+          return throwError(() => error);
+        }
+        return throwError(
+          () =>
+            new DashboardServiceError(
+              `Failed to remove widget: ${error instanceof Error ? error.message : String(error)}`,
+              'REMOVE_WIDGET_ERROR',
+              true,
+              dashboardId,
+              widgetId,
+            ),
+        );
+      }),
+    );
+  }
+
   // State management methods will be implemented in Phase 6
-  // Widget management methods will be implemented in Phase 5
 }
 

@@ -138,31 +138,31 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T052 [P] [US3] Create unit test for addWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T053 [P] [US3] Create unit test for addWidget with duplicate widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T054 [P] [US3] Create unit test for addWidget with invalid widget config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T055 [P] [US3] Create unit test for updateWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T056 [P] [US3] Create unit test for updateWidget with non-existent widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T057 [P] [US3] Create unit test for removeWidget with valid widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T058 [P] [US3] Create unit test for removeWidget with non-existent widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T059 [P] [US3] Create unit test for validateWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
-- [ ] T060 [P] [US3] Create unit test for validateWidget with invalid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T052 [P] [US3] Create unit test for addWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T053 [P] [US3] Create unit test for addWidget with duplicate widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T054 [P] [US3] Create unit test for addWidget with invalid widget config in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T055 [P] [US3] Create unit test for updateWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T056 [P] [US3] Create unit test for updateWidget with non-existent widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T057 [P] [US3] Create unit test for removeWidget with valid widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T058 [P] [US3] Create unit test for removeWidget with non-existent widget ID in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T059 [P] [US3] Create unit test for validateWidget with valid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
+- [X] T060 [P] [US3] Create unit test for validateWidget with invalid widget in projects/d3-dashboards/src/lib/services/dashboard.service.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T061 [US3] Implement validateWidget method in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
-- [ ] T062 [US3] Implement WidgetValidationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T063 [US3] Implement WidgetIdConflictError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T064 [US3] Implement WidgetNotFoundError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
-- [ ] T065 [US3] Implement addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T066 [US3] Implement updateWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T067 [US3] Implement removeWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T068 [US3] Add widget ID uniqueness validation in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T069 [US3] Add immutable update pattern for widgets in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T070 [US3] Add immutable update pattern for widgets in updateWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T071 [US3] Add immutable update pattern for widgets in removeWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T072 [US3] Add error handling for WidgetIdConflictError in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
-- [ ] T073 [US3] Add error handling for WidgetNotFoundError in updateWidget and removeWidget methods in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T061 [US3] Implement validateWidget method in projects/d3-dashboards/src/lib/utils/dashboard-validator.util.ts
+- [X] T062 [US3] Implement WidgetValidationError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T063 [US3] Implement WidgetIdConflictError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T064 [US3] Implement WidgetNotFoundError class in projects/d3-dashboards/src/lib/services/dashboard.service.types.ts
+- [X] T065 [US3] Implement addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T066 [US3] Implement updateWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T067 [US3] Implement removeWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T068 [US3] Add widget ID uniqueness validation in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T069 [US3] Add immutable update pattern for widgets in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T070 [US3] Add immutable update pattern for widgets in updateWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T071 [US3] Add immutable update pattern for widgets in removeWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T072 [US3] Add error handling for WidgetIdConflictError in addWidget method in projects/d3-dashboards/src/lib/services/dashboard.service.ts
+- [X] T073 [US3] Add error handling for WidgetNotFoundError in updateWidget and removeWidget methods in projects/d3-dashboards/src/lib/services/dashboard.service.ts
 
 **Checkpoint**: At this point, User Story 3 should be fully functional and testable independently. Widgets can be added, updated, and removed from dashboards.
 
