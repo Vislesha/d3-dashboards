@@ -23,6 +23,7 @@ import {
 import { calculateMargins as calculateMarginsUtil } from '../utils/d3-utils';
 import { createScale as createScaleUtil, updateScale as updateScaleUtil } from '../utils/scale-helpers';
 import { createAxis as createAxisUtil, updateAxis as updateAxisUtil } from '../utils/axis-helpers';
+import { ColorPaletteManager } from '../utils/color-palette';
 
 /**
  * Chart Service
@@ -43,6 +44,11 @@ export class ChartService {
   >;
 
   /**
+   * Color palette manager instance
+   */
+  private readonly colorPaletteManager: ColorPaletteManager;
+
+  /**
    * Creates a new instance of ChartService
    */
   constructor() {
@@ -59,6 +65,9 @@ export class ChartService {
       'geo-map': (config) => this.createGeoMap(config),
       gauge: (config) => this.createGauge(config)
     };
+
+    // Initialize color palette manager
+    this.colorPaletteManager = new ColorPaletteManager();
   }
 
   /**
@@ -341,8 +350,7 @@ export class ChartService {
    * @returns Color palette object if found, null if not found
    */
   getColorPalette(name: string): IColorPalette | null {
-    // Implementation will be added in Phase 6
-    return null;
+    return this.colorPaletteManager.getColorPalette(name);
   }
 
   /**
@@ -351,8 +359,7 @@ export class ChartService {
    * @throws InvalidColorPaletteError if palette is invalid (e.g., less than 10 colors)
    */
   setColorPalette(palette: IColorPalette): void {
-    // Implementation will be added in Phase 6
-    throw new Error('Not implemented yet');
+    this.colorPaletteManager.setColorPalette(palette);
   }
 
   /**
@@ -361,8 +368,7 @@ export class ChartService {
    * @throws PaletteNotFoundError if palette not found
    */
   setDefaultPalette(name: string): void {
-    // Implementation will be added in Phase 6
-    throw new Error('Not implemented yet');
+    this.colorPaletteManager.setDefaultPalette(name);
   }
 
   /**
@@ -373,8 +379,7 @@ export class ChartService {
    * @throws PaletteNotFoundError if palette not found
    */
   getColors(count: number, paletteName?: string): string[] {
-    // Implementation will be added in Phase 6
-    throw new Error('Not implemented yet');
+    return this.colorPaletteManager.getColors(count, paletteName);
   }
 
   /**

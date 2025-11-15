@@ -30,3 +30,4 @@ export * from './lib/services/chart.service.types';
 export * from './lib/utils/d3-utils';
 export * from './lib/utils/scale-helpers';
 export * from './lib/utils/axis-helpers';
+export * from './lib/utils/color-palette';
