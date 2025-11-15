@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Widget Component - Dynamic component loading based on widget type, widget header with title and actions, widget configuration panel, loading states, and error handling"
 
+## Clarifications
+
+### Session 2025-01-27
+
+- Q: Should widget header be fully implemented in feature 006 or deferred to feature 007? → A: Implement basic header UI in 006 (title display and basic action buttons), defer advanced header features (filter indicators, advanced styling, animations) to feature 007
+- Q: What UI pattern should the configuration panel use? → A: Modal dialog (overlay) - opens on top of dashboard, blocks interaction until closed
+- Q: What format should the export action support? → A: Multiple formats - support CSV (data export), JSON (data and configuration), and PNG (visualization image) with user format selection
+- Q: What level of detail should error messages display? → A: User-friendly primary message with optional technical details (expandable/collapsible or tooltip) for debugging
+- Q: How should component loading failures be handled - automatic retry, manual retry, or no retry? → A: No retry - display error state only, no retry option (user must refresh page or reconfigure widget)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Render Widget Based on Type (Priority: P1)
@@ -32,11 +42,13 @@ As a dashboard user, I want to see the widget title and access widget actions th
 
 **Independent Test**: Can be fully tested by rendering a widget and verifying the header displays title and action menu. Delivers identification and action capabilities.
 
+**Scope Note**: This feature implements basic header UI (title display and action buttons). Advanced header features (filter indicators, advanced styling, animations) are deferred to feature 007.
+
 **Acceptance Scenarios**:
 
 1. **Given** a widget with a title, **When** the widget renders, **Then** the widget header displays the title
-2. **Given** a widget in edit mode, **When** the widget header is displayed, **Then** action menu items (edit, delete, refresh, export) are available
-3. **Given** a widget not in edit mode, **When** the widget header is displayed, **Then** action menu items are hidden or limited
+2. **Given** a widget in edit mode, **When** the widget header is displayed, **Then** basic action buttons (edit, delete, refresh, export) are available. Export action supports multiple formats (CSV, JSON, PNG) with user selection.
+3. **Given** a widget not in edit mode, **When** the widget header is displayed, **Then** action buttons are hidden or limited
 4. **Given** a widget header action is clicked, **When** the action is triggered, **Then** the appropriate event is emitted to the parent component
 
 ---
@@ -52,7 +64,7 @@ As a dashboard user, I want to see loading indicators while data is being fetche
 **Acceptance Scenarios**:
 
 1. **Given** a widget is loading data, **When** the widget renders, **Then** a loading indicator is displayed
-2. **Given** a widget data source fails, **When** the widget attempts to load, **Then** an error message is displayed with appropriate details
+2. **Given** a widget data source fails, **When** the widget attempts to load, **Then** a user-friendly error message is displayed with optional technical details available (expandable/collapsible or tooltip)
 3. **Given** a widget with empty data, **When** the widget renders, **Then** an empty state message is displayed
 4. **Given** a widget transitions from loading to loaded, **When** data is received, **Then** the loading indicator is removed and content is displayed
 
@@ -66,18 +78,20 @@ As a dashboard administrator, I want to configure widget settings through a conf
 
 **Independent Test**: Can be fully tested by opening the configuration panel, making changes, and verifying updates are applied. Delivers customization capabilities.
 
+**UI Pattern**: Configuration panel is implemented as a modal dialog (overlay) that opens on top of the dashboard and blocks interaction until closed.
+
 **Acceptance Scenarios**:
 
-1. **Given** a widget in edit mode, **When** the configuration action is triggered, **Then** a configuration panel is displayed
-2. **Given** a widget configuration panel, **When** settings are modified, **Then** changes are reflected in the widget
-3. **Given** a widget configuration panel, **When** changes are saved, **Then** the widget update event is emitted with new configuration
-4. **Given** a widget configuration panel, **When** changes are cancelled, **Then** the panel closes without applying changes
+1. **Given** a widget in edit mode, **When** the configuration action is triggered, **Then** a modal configuration dialog is displayed on top of the dashboard
+2. **Given** a widget configuration panel, **When** settings are modified, **Then** changes are reflected in the widget (preview mode if supported)
+3. **Given** a widget configuration panel, **When** changes are saved, **Then** the widget update event is emitted with new configuration and the dialog closes
+4. **Given** a widget configuration panel, **When** changes are cancelled, **Then** the dialog closes without applying changes
 
 ---
 
 ### Edge Cases
 
-- What happens when a widget type component fails to load?
+- What happens when a widget type component fails to load? → Error state is displayed with no retry option (user must refresh page or reconfigure widget)
 - How does the system handle widgets with missing required configuration?
 - What happens when widget data source is slow to respond?
 - How does the system handle rapid widget type changes?
@@ -90,17 +104,17 @@ As a dashboard administrator, I want to configure widget settings through a conf
 ### Functional Requirements
 
 - **FR-001**: System MUST dynamically load the appropriate component based on widget type
-- **FR-002**: System MUST display widget header with title
-- **FR-003**: System MUST provide action menu in widget header (edit, delete, refresh, export)
+- **FR-002**: System MUST display basic widget header with title (advanced header features deferred to feature 007)
+- **FR-003**: System MUST provide basic action buttons in widget header (edit, delete, refresh, export) - export supports multiple formats (CSV, JSON, PNG) with user selection, advanced action menu features deferred to feature 007
 - **FR-004**: System MUST display loading indicator when widget data is being fetched
-- **FR-005**: System MUST display error state when widget data fails to load
+- **FR-005**: System MUST display error state when widget data fails to load - primary message must be user-friendly, with optional technical details available (expandable/collapsible or tooltip) for debugging
 - **FR-006**: System MUST display empty state when widget has no data
-- **FR-007**: System MUST provide configuration panel for widget customization
+- **FR-007**: System MUST provide configuration panel as a modal dialog for widget customization (overlay pattern, blocks interaction until closed)
 - **FR-008**: System MUST emit widget update event when configuration changes
 - **FR-009**: System MUST emit widget delete event when delete action is triggered
 - **FR-010**: System MUST handle edit mode state and show/hide actions accordingly
 - **FR-011**: System MUST validate widget configuration before rendering
-- **FR-012**: System MUST handle component loading failures gracefully
+- **FR-012**: System MUST handle component loading failures gracefully - display error state with no retry option (user must refresh page or reconfigure widget)
 - **FR-013**: System MUST clean up resources when widget is destroyed
 - **FR-014**: System MUST support all widget types defined in ID3Widget interface
 

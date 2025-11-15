@@ -1,0 +1,278 @@
+{
+  "component": "WidgetComponent",
+  "path": "projects/d3-dashboards/src/lib/components/widget/widget.component.ts",
+  "version": "1.0.0",
+  "description": "Dynamic widget component that loads and renders appropriate child components based on widget type",
+  "selector": "lib-widget",
+  "standalone": true,
+  "changeDetection": "OnPush",
+  "inputs": [
+    {
+      "name": "widget",
+      "type": "ID3Widget",
+      "required": true,
+      "description": "Widget configuration and metadata. Contains type, title, config, dataSource, filters, and styling.",
+      "validation": {
+        "id": "non-empty string (UUID format preferred)",
+        "type": "one of: 'line' | 'bar' | 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge' | 'table' | 'filter' | 'tile' | 'markdown'",
+        "title": "non-empty string",
+        "config": "ID3WidgetConfig object",
+        "position": "valid GridsterItem"
+      }
+    },
+    {
+      "name": "isEditMode",
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "Whether the widget is in edit mode. Controls visibility of action menu items."
+    },
+    {
+      "name": "filters",
+      "type": "IFilterValues[]",
+      "required": false,
+      "default": "[]",
+      "description": "Merged filters (dashboard + widget filters) to apply to widget data."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "widgetUpdate",
+      "type": "EventEmitter<ID3Widget>",
+      "description": "Emitted when widget configuration is updated. Contains the updated widget object with new configuration.",
+      "when": "Configuration panel saves changes (FR-008)"
+    },
+    {
+      "name": "widgetDelete",
+      "type": "EventEmitter<string>",
+      "description": "Emitted when widget delete action is triggered. Emits the widget ID.",
+      "when": "Delete action is clicked in widget header (FR-009)"
+    },
+    {
+      "name": "widgetAction",
+      "type": "EventEmitter<WidgetActionEvent>",
+      "description": "Emitted when any widget action is triggered (edit, delete, refresh, export, configure).",
+      "when": "Any action button is clicked in widget header"
+    },
+    {
+      "name": "dataLoad",
+      "type": "EventEmitter<any>",
+      "description": "Emitted when widget data is successfully loaded. Emits the loaded data.",
+      "when": "Data loading completes successfully"
+    }
+  ],
+  "methods": {
+    "public": [
+      {
+        "name": "refresh",
+        "returns": "void",
+        "description": "Manually triggers a data refresh for the widget. Resets loading state and reloads data from dataSource.",
+        "usage": "Called when refresh action is triggered or programmatically"
+      },
+      {
+        "name": "openConfiguration",
+        "returns": "void",
+        "description": "Opens the configuration panel for the widget. Only available in edit mode.",
+        "usage": "Called when configure action is triggered"
+      },
+      {
+        "name": "getState",
+        "returns": "Observable<WidgetState>",
+        "description": "Returns an observable of the widget's current state (loading, error, data).",
+        "usage": "For parent components to monitor widget state"
+      }
+    ],
+    "private": [
+      {
+        "name": "loadComponent",
+        "returns": "Promise<void>",
+        "description": "Dynamically loads the appropriate component based on widget type. Handles component registry lookup and instantiation."
+      },
+      {
+        "name": "loadData",
+        "returns": "Promise<void>",
+        "description": "Loads widget data from dataSource using DataService. Handles all data source types (api, static, computed)."
+      },
+      {
+        "name": "validateWidget",
+        "returns": "boolean",
+        "description": "Validates widget configuration before rendering. Returns true if valid, false otherwise."
+      },
+      {
+        "name": "handleError",
+        "returns": "void",
+        "description": "Handles errors during component loading or data loading. Sets error state and displays error UI."
+      },
+      {
+        "name": "cleanup",
+        "returns": "void",
+        "description": "Cleans up component references, subscriptions, and resources. Called in ngOnDestroy."
+      }
+    ]
+  },
+  "lifecycle": {
+    "ngOnInit": "Validates widget, initializes state, loads component, loads data",
+    "ngOnChanges": "Handles widget input changes, reloads component/data if type changes",
+    "ngOnDestroy": "Cleans up component references, unsubscribes from observables, removes event listeners"
+  },
+  "dependencies": {
+    "services": [
+      {
+        "name": "DataService",
+        "path": "projects/d3-dashboards/src/lib/services/data.service.ts",
+        "usage": "Loads widget data from dataSource"
+      }
+    ],
+    "utilities": [
+      {
+        "name": "WidgetLoaderUtil",
+        "path": "projects/d3-dashboards/src/lib/utils/widget-loader.util.ts",
+        "usage": "Provides component registry and dynamic loading functionality"
+      }
+    ],
+    "entities": [
+      {
+        "name": "ID3Widget",
+        "path": "projects/d3-dashboards/src/lib/entities/widget.interface.ts"
+      },
+      {
+        "name": "IDataSource",
+        "path": "projects/d3-dashboards/src/lib/entities/widget.interface.ts"
+      },
+      {
+        "name": "ID3WidgetConfig",
+        "path": "projects/d3-dashboards/src/lib/entities/widget.interface.ts"
+      },
+      {
+        "name": "IFilterValues",
+        "path": "projects/d3-dashboards/src/lib/entities/filter.interface.ts"
+      }
+    ]
+  },
+  "ui": {
+    "states": [
+      {
+        "name": "loading",
+        "description": "Widget is loading component or data. Displays loading indicator.",
+        "ui": "Loading spinner with message"
+      },
+      {
+        "name": "error",
+        "description": "Widget encountered an error. Displays error message with retry option.",
+        "ui": "Error icon, message, retry button"
+      },
+      {
+        "name": "empty",
+        "description": "Widget has no data to display. Displays empty state message.",
+        "ui": "Empty state icon and message"
+      },
+      {
+        "name": "loaded",
+        "description": "Widget is successfully loaded and displaying content.",
+        "ui": "Widget header + dynamic component content"
+      }
+    ],
+    "header": {
+      "component": "WidgetHeaderComponent (feature 007)",
+      "description": "Displays widget title and action menu. Integrated into widget component template.",
+      "actions": [
+        {
+          "name": "edit",
+          "visible": "isEditMode === true",
+          "description": "Edit widget configuration"
+        },
+        {
+          "name": "delete",
+          "visible": "isEditMode === true",
+          "description": "Delete widget from dashboard"
+        },
+        {
+          "name": "refresh",
+          "visible": "always",
+          "description": "Refresh widget data"
+        },
+        {
+          "name": "export",
+          "visible": "isEditMode === true",
+          "description": "Export widget data"
+        },
+        {
+          "name": "configure",
+          "visible": "isEditMode === true",
+          "description": "Open configuration panel"
+        }
+      ]
+    },
+    "configurationPanel": {
+      "component": "WidgetConfigPanelComponent",
+      "description": "Modal dialog for configuring widget settings. Uses PrimeNG Dialog.",
+      "actions": [
+        {
+          "name": "save",
+          "description": "Saves configuration changes and emits widgetUpdate event"
+        },
+        {
+          "name": "cancel",
+          "description": "Closes panel without saving changes"
+        }
+      ]
+    }
+  },
+  "performance": {
+    "targets": {
+      "componentLoad": "200ms (SC-001)",
+      "loadingIndicator": "100ms (SC-003)",
+      "errorDisplay": "500ms (SC-004)",
+      "configPanelOpen": "150ms (SC-005)",
+      "updateEventEmit": "100ms (SC-006)"
+    },
+    "optimization": [
+      "OnPush change detection strategy",
+      "Lazy loading for optional chart components",
+      "Component type caching",
+      "Debounced configuration updates (300ms)",
+      "Memoized data transformations"
+    ]
+  },
+  "errorHandling": {
+    "componentLoadFailure": {
+      "scenario": "Widget type component fails to load",
+      "handling": "Display error state with retry option, log error to console"
+    },
+    "dataLoadFailure": {
+      "scenario": "Data source fails to load data",
+      "handling": "Display error state with retry option, keep component loaded"
+    },
+    "invalidConfiguration": {
+      "scenario": "Widget configuration is invalid",
+      "handling": "Prevent rendering, display error message, log validation errors"
+    },
+    "rapidTypeChanges": {
+      "scenario": "Widget type changes rapidly",
+      "handling": "Cancel previous load, clean up, load new type"
+    }
+  },
+  "testing": {
+    "coverage": "Minimum 80% code coverage required",
+    "framework": "Jest ^29.7.0, jest-preset-angular ^14.6.1",
+    "testCases": [
+      "Component loads correct child component based on widget type",
+      "Component handles invalid widget types gracefully",
+      "Component displays loading state during data fetch",
+      "Component displays error state on data load failure",
+      "Component displays empty state when no data",
+      "Component emits widgetUpdate event on configuration save",
+      "Component emits widgetDelete event on delete action",
+      "Component cleans up resources on destroy",
+      "Component validates widget configuration before rendering",
+      "Component handles rapid type changes correctly"
+    ]
+  },
+  "accessibility": {
+    "ariaLabels": "All interactive elements have ARIA labels",
+    "keyboardNavigation": "Configuration panel is keyboard accessible",
+    "screenReader": "Loading and error states are announced",
+    "focusManagement": "Proper focus handling when opening/closing configuration panel"
+  }
+}
+

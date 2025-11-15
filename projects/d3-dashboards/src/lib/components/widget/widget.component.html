@@ -1,0 +1,95 @@
+<div class="widget-container" [attr.data-widget-id]="widget.id" [attr.data-widget-type]="widget.type">
+  <!-- Widget Header -->
+  <div class="widget-header" *ngIf="widget.title">
+    <h3 class="widget-title">{{ widget.title }}</h3>
+    <div class="widget-actions" *ngIf="isEditMode">
+      <button
+        type="button"
+        class="action-button"
+        (click)="onActionClick('edit')"
+        [attr.aria-label]="'Edit widget ' + widget.title">
+        <i class="pi pi-pencil" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        class="action-button"
+        (click)="onActionClick('delete')"
+        [attr.aria-label]="'Delete widget ' + widget.title">
+        <i class="pi pi-trash" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        class="action-button"
+        (click)="onActionClick('refresh')"
+        [attr.aria-label]="'Refresh widget ' + widget.title">
+        <i class="pi pi-refresh" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        class="action-button"
+        (click)="onActionClick('export')"
+        [attr.aria-label]="'Export widget ' + widget.title">
+        <i class="pi pi-download" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        class="action-button"
+        (click)="onActionClick('configure')"
+        [attr.aria-label]="'Configure widget ' + widget.title">
+        <i class="pi pi-cog" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Widget Content -->
+  <div class="widget-content">
+    <!-- Loading State -->
+    <div
+      *ngIf="currentState.loading && !currentState.componentLoaded"
+      class="widget-loading"
+      role="status"
+      aria-live="polite"
+      [attr.aria-label]="'Loading widget ' + widget.title">
+      <div class="loading-spinner"></div>
+      <p>Loading widget...</p>
+    </div>
+
+    <!-- Error State -->
+    <div
+      *ngIf="currentState.error"
+      class="widget-error"
+      role="alert"
+      aria-live="assertive"
+      [attr.aria-label]="'Error loading widget ' + widget.title">
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+        <div class="error-message">
+          <p class="error-primary">{{ currentState.error }}</p>
+          <details class="error-details" *ngIf="currentState.error.includes('Failed to load')">
+            <summary>Technical Details</summary>
+            <pre>{{ currentState.error }}</pre>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="!currentState.loading && !currentState.error && !currentState.data && currentState.componentLoaded"
+      class="widget-empty"
+      role="status"
+      aria-live="polite"
+      [attr.aria-label]="'Empty widget ' + widget.title">
+      <i class="pi pi-inbox" aria-hidden="true"></i>
+      <p>No data available</p>
+    </div>
+
+    <!-- Dynamic Component Container -->
+    <ng-container
+      *ngIf="currentState.componentLoaded && !currentState.error && !currentState.loading && currentState.data"
+      #widgetContainer>
+      <!-- Dynamic component will be inserted here -->
+    </ng-container>
+  </div>
+</div>
+
