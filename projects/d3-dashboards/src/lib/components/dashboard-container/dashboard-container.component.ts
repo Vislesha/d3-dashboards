@@ -53,11 +53,15 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
   /** Validated and corrected widgets array */
   private _validatedWidgets: ID3Widget[] = [];
 
+  /** Window resize listener */
+  private resizeListener?: () => void;
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.initializeGridsterConfig();
     this.validateWidgets();
+    this.setupWindowResizeListener();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,7 +74,7 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnDestroy(): void {
-    // Cleanup if needed
+    this.cleanupWindowResizeListener();
   }
 
   /**
@@ -175,6 +179,38 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
    */
   get isEmpty(): boolean {
     return !this._validatedWidgets || this._validatedWidgets.length === 0;
+  }
+
+  /**
+   * Setup window resize listener for layout adaptation
+   */
+  private setupWindowResizeListener(): void {
+    if (typeof window !== 'undefined') {
+      this.resizeListener = () => {
+        // Trigger change detection to update grid layout
+        this.cdr.markForCheck();
+      };
+      window.addEventListener('resize', this.resizeListener);
+    }
+  }
+
+  /**
+   * Cleanup window resize listener
+   */
+  private cleanupWindowResizeListener(): void {
+    if (this.resizeListener && typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.resizeListener);
+      this.resizeListener = undefined;
+    }
+  }
+
+  /**
+   * Handle widget resize on container resize
+   */
+  onWidgetResize(): void {
+    // Gridster handles widget resizing internally
+    // This method can be extended for custom resize handling
+    this.cdr.markForCheck();
   }
 }
 

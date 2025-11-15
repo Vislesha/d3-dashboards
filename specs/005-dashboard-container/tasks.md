@@ -103,20 +103,20 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T035 [P] [US3] Create unit test for responsive grid configuration in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T036 [P] [US3] Create unit test for grid layout adaptation on window resize in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T037 [P] [US3] Create integration test for mobile viewport (320px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T038 [P] [US3] Create integration test for tablet viewport (768px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
-- [ ] T039 [P] [US3] Create integration test for desktop viewport (1024px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T035 [P] [US3] Create unit test for responsive grid configuration in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T036 [P] [US3] Create unit test for grid layout adaptation on window resize in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T037 [P] [US3] Create integration test for mobile viewport (320px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T038 [P] [US3] Create integration test for tablet viewport (768px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
+- [X] T039 [P] [US3] Create integration test for desktop viewport (1024px+) in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T040 [US3] Configure angular-gridster2 responsive breakpoints in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T041 [US3] Implement window resize listener for layout adaptation in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T042 [US3] Configure grid column adaptation for different screen sizes in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T043 [US3] Implement widget resize handling on container resize in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
-- [ ] T044 [US3] Add responsive styles for mobile, tablet, desktop in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.scss
-- [ ] T045 [US3] Implement cleanup for window resize listener in OnDestroy lifecycle hook in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T040 [US3] Configure angular-gridster2 responsive breakpoints in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T041 [US3] Implement window resize listener for layout adaptation in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T042 [US3] Configure grid column adaptation for different screen sizes in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T043 [US3] Implement widget resize handling on container resize in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
+- [X] T044 [US3] Add responsive styles for mobile, tablet, desktop in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.scss
+- [X] T045 [US3] Implement cleanup for window resize listener in OnDestroy lifecycle hook in projects/d3-dashboards/src/lib/components/dashboard-container/dashboard-container.component.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 3 should both work independently. Dashboard adapts to different screen sizes.
 

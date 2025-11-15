@@ -54,6 +54,37 @@
   display: flex;
   flex-direction: column;
 
+  // Responsive styles
+  @media (max-width: 767px) {
+    // Mobile styles
+    .widget-header {
+      padding: 0.5rem 0.75rem;
+
+      h3 {
+        font-size: 0.9rem;
+      }
+    }
+
+    .widget-content {
+      padding: 0.75rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    // Tablet styles
+    .widget-header {
+      padding: 0.625rem 0.875rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    // Desktop styles
+    .widget-header {
+      padding: 0.75rem 1rem;
+    }
+  }
+
   .widget-header {
     padding: 0.75rem 1rem;
     border-bottom: 1px solid #dee2e6;

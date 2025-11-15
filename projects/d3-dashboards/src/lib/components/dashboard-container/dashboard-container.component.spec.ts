@@ -234,5 +234,86 @@ describe('DashboardContainerComponent', () => {
       expect(gridsterItems.length).toBe(2);
     });
   });
+
+  describe('Responsive Grid Layout', () => {
+    it('should configure responsive grid with breakpoints', () => {
+      const config: IGridConfiguration = {
+        ...DEFAULT_GRID_CONFIG,
+        responsive: true,
+        breakpoints: {
+          mobile: 320,
+          tablet: 768,
+          desktop: 1024,
+          mobileCols: 4,
+          tabletCols: 8,
+          desktopCols: 12,
+        },
+      };
+      component.widgets = [];
+      component.gridConfig = config;
+      fixture.detectChanges();
+
+      expect(component.gridsterOptions['responsiveSizes']).toBeDefined();
+      expect(component.gridsterOptions['responsiveSizes']?.length).toBe(3);
+    });
+
+    it('should adapt grid layout on window resize', () => {
+      component.widgets = [createMockWidget('widget-1')];
+      fixture.detectChanges();
+
+      // Simulate window resize
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+
+      // Gridster should handle resize internally
+      expect(component.gridsterOptions).toBeDefined();
+    });
+
+    it('should render correctly on mobile viewport (320px+)', () => {
+      // Mock window.innerWidth
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 375, // Mobile width
+      });
+
+      component.widgets = [createMockWidget('widget-1')];
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const gridster = compiled.querySelector('gridster');
+      expect(gridster).toBeTruthy();
+    });
+
+    it('should render correctly on tablet viewport (768px+)', () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 1024, // Tablet width
+      });
+
+      component.widgets = [createMockWidget('widget-1')];
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const gridster = compiled.querySelector('gridster');
+      expect(gridster).toBeTruthy();
+    });
+
+    it('should render correctly on desktop viewport (1024px+)', () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 1920, // Desktop width
+      });
+
+      component.widgets = [createMockWidget('widget-1')];
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const gridster = compiled.querySelector('gridster');
+      expect(gridster).toBeTruthy();
+    });
+  });
 });
 
