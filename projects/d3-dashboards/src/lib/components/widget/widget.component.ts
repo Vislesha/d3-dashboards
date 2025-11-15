@@ -17,6 +17,9 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject, Observable, firstValueFrom } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ID3Widget } from '../../entities/widget.interface';
 import { IFilterValues } from '../../entities/filter.interface';
 import { IWidgetState } from '../../entities/widget-state.interface';
@@ -38,6 +41,8 @@ import { loadWidgetComponent } from '../../utils/widget-loader.util';
   templateUrl: './widget.component.html',
   styleUrls: ['./widget.component.scss'],
   standalone: true,
+  imports: [CommonModule, FormsModule],
+  providers: [DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
@@ -77,6 +82,9 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
   /** Template reference for widget container */
   @ViewChild('widgetContainer', { read: ViewContainerRef }) widgetContainer!: ViewContainerRef;
 
+  /** Dialog reference for configuration panel */
+  private configDialogRef: DynamicDialogRef | null = null;
+
   /** Destroy subject for cleanup */
   private destroy$ = new Subject<void>();
 
@@ -93,7 +101,8 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private viewContainerRef: ViewContainerRef,
     private dataService: DataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -138,7 +147,63 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
    * Opens the configuration panel for the widget
    */
   openConfiguration(): void {
-    // Implementation will be added in Phase 6 (User Story 4)
+    if (!this.isEditMode) {
+      return;
+    }
+
+    // Import configuration panel component dynamically
+    import('./widget-config-panel.component').then((module) => {
+      this.configDialogRef = this.dialogService.open(module.WidgetConfigPanelComponent, {
+        header: `Configure ${this.widget.title}`,
+        width: '80%',
+        maxWidth: '800px',
+        data: {
+          widget: { ...this.widget },
+          config: { ...this.widget.config },
+        },
+        modal: true,
+        dismissableMask: true,
+        closable: true,
+      });
+
+      this.configDialogRef.onClose.subscribe((result) => {
+        if (result) {
+          // Validate new configuration
+          const updatedWidget: ID3Widget = {
+            ...this.widget,
+            config: result.config,
+          };
+
+      // Update widget title if changed
+      if (result.title && result.title !== this.widget.title) {
+        updatedWidget.title = result.title;
+      }
+
+      // Re-validate widget with new config
+      const tempWidget = this.widget;
+      this.widget = updatedWidget;
+      if (this.validateWidget()) {
+        // Emit update event
+        this.widgetUpdate.emit(updatedWidget);
+        // Update component inputs if component is loaded
+        this.updateComponentInputs();
+      } else {
+        // Revert if validation fails
+        this.widget = tempWidget;
+        console.error('Configuration validation failed');
+      }
+        }
+        this.configDialogRef = null;
+        this.cdr.markForCheck();
+      });
+    }).catch((error) => {
+      console.error('Failed to load configuration panel:', error);
+      // Fallback: emit action event for parent to handle
+      this.widgetAction.emit({
+        action: 'configure',
+        widgetId: this.widget.id,
+      });
+    });
   }
 
   /**
@@ -491,6 +556,12 @@ export class WidgetComponent implements OnInit, OnChanges, OnDestroy {
    * Cleans up all resources
    */
   private cleanup(): void {
+    // Close configuration dialog if open
+    if (this.configDialogRef) {
+      this.configDialogRef.close();
+      this.configDialogRef = null;
+    }
+
     this.cleanupComponent();
     this.destroy$.next();
     this.destroy$.complete();

@@ -202,11 +202,11 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Configuration Panel Tasks
 
-- [ ] T064 [US4] Inject PrimeNG DialogService in widget component constructor in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
-- [ ] T065 [US4] Implement `openConfiguration()` public method opening PrimeNG Dialog in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
-- [ ] T066 [US4] Create configuration form component or use PrimeNG form components in dialog in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
-- [ ] T067 [US4] Implement save handler that validates and emits `widgetUpdate` event in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
-- [ ] T068 [US4] Implement cancel handler that closes dialog without saving in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T064 [US4] Inject PrimeNG DialogService in widget component constructor in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T065 [US4] Implement `openConfiguration()` public method opening PrimeNG Dialog in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T066 [US4] Create configuration form component or use PrimeNG form components in dialog in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T067 [US4] Implement save handler that validates and emits `widgetUpdate` event in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
+- [X] T068 [US4] Implement cancel handler that closes dialog without saving in `projects/d3-dashboards/src/lib/components/widget/widget.component.ts`
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
