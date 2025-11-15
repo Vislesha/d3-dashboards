@@ -46,18 +46,18 @@
     </div>
 
     <!-- Error Indicator -->
-    <div
+    <button
       *ngIf="error"
+      type="button"
       class="error-indicator"
       role="alert"
       aria-live="assertive"
       [pTooltip]="error"
       (click)="onErrorClick()"
       [attr.aria-label]="'Error: ' + error"
-      role="button"
       tabindex="0">
       <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
-    </div>
+    </button>
   </div>
 
   <!-- Action Menu -->

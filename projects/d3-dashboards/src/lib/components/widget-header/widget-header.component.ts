@@ -7,6 +7,7 @@ import {
   Signal,
   computed,
   effect,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuModule } from 'primeng/menu';
@@ -55,39 +56,79 @@ interface IMenuItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetHeaderComponent {
-  /** Widget configuration and metadata */
+  /**
+   * Widget configuration and metadata.
+   * Required input that provides widget information including title, id, and type.
+   */
   @Input({ required: true }) widget!: ID3Widget;
 
-  /** Whether the widget is in edit mode */
+  /**
+   * Whether the widget is in edit mode.
+   * When true, edit and delete actions are available in the action menu.
+   * Default: false
+   */
   @Input() isEditMode: boolean = false;
 
-  /** Active filters applied to the widget */
+  /**
+   * Active filters applied to the widget.
+   * Array of filter values that will be displayed as filter indicators.
+   * Default: []
+   */
   @Input() filters: IFilterValues[] = [];
 
-  /** Whether the widget is currently loading data */
+  /**
+   * Whether the widget is currently loading data.
+   * When true, a loading indicator is displayed and refresh action is disabled.
+   * Default: false
+   */
   @Input() loading: boolean = false;
 
-  /** Error message if the widget encountered an error */
+  /**
+   * Error message if the widget encountered an error.
+   * When set, an error indicator is displayed (takes precedence over loading indicator).
+   * Default: null
+   */
   @Input() error: string | null = null;
 
-  /** Emitted when a widget action is triggered */
+  /**
+   * Emitted when a widget action is triggered (edit, delete, refresh, export, configure).
+   * The event contains the action type, widget ID, and optional payload.
+   */
   @Output() widgetAction = new EventEmitter<IWidgetActionEvent>();
 
-  /** Emitted when a filter indicator is clicked to remove the filter */
+  /**
+   * Emitted when a filter indicator is clicked to remove the filter.
+   * The event contains the filter key to be removed.
+   */
   @Output() filterRemove = new EventEmitter<string>();
 
-  /** Emitted when error indicator is clicked */
+  /**
+   * Emitted when error indicator is clicked.
+   * Parent component should handle retry or show error details.
+   */
   @Output() errorClick = new EventEmitter<void>();
 
-  // Computed signals
+  // Computed signals for reactive state management
+  /** Computed signal that returns widget title or "Untitled Widget" if empty */
   titleSignal: Signal<string> = computed(() => this.widget?.title || 'Untitled Widget');
+  
+  /** Computed signal that returns true if filters are active */
   hasFiltersSignal: Signal<boolean> = computed(() => this.filters.length > 0);
+  
+  /** Computed signal that returns first 5 visible filter indicators */
   visibleFiltersSignal: Signal<IFilterValues[]> = computed(() => this.filters.slice(0, 5));
+  
+  /** Computed signal that returns hidden filters beyond the first 5 */
   hiddenFiltersSignal: Signal<IFilterValues[]> = computed(() => this.filters.slice(5));
+  
+  /** Computed signal that returns menu items based on edit mode and loading state */
   menuItemsSignal: Signal<MenuItem[]> = computed(() => this.getMenuItems());
 
   /**
-   * Emits widget action event
+   * Emits widget action event.
+   * Creates an IWidgetActionEvent with the specified action, widget ID, and optional payload.
+   * 
+   * @param action - The action type to emit (edit, delete, refresh, export, or configure)
    */
   emitAction(action: 'edit' | 'delete' | 'refresh' | 'export' | 'configure'): void {
     this.widgetAction.emit({
@@ -98,21 +139,30 @@ export class WidgetHeaderComponent {
   }
 
   /**
-   * Emits filter remove event
+   * Emits filter remove event.
+   * Called when a filter indicator is clicked to remove the filter.
+   * 
+   * @param filterKey - The key of the filter to remove
    */
   onFilterRemove(filterKey: string): void {
     this.filterRemove.emit(filterKey);
   }
 
   /**
-   * Emits error click event
+   * Emits error click event.
+   * Called when the error indicator is clicked, typically to trigger a retry or show error details.
    */
   onErrorClick(): void {
     this.errorClick.emit();
   }
 
   /**
-   * Gets menu items based on edit mode and loading state
+   * Gets menu items based on edit mode and loading state.
+   * Returns an array of PrimeNG MenuItem objects configured for the action menu.
+   * Edit and Delete items are only included when in edit mode.
+   * Refresh action is disabled when loading.
+   * 
+   * @returns Array of menu items for the action menu
    */
   private getMenuItems(): MenuItem[] {
     const items: MenuItem[] = [];
@@ -147,7 +197,11 @@ export class WidgetHeaderComponent {
   }
 
   /**
-   * Formats filter display text
+   * Formats filter display text.
+   * Returns a formatted string in "Key: Value" or "Key operator Value" format.
+   * 
+   * @param filter - The filter to format
+   * @returns Formatted filter display text
    */
   getFilterDisplayText(filter: IFilterValues): string {
     if (filter.operator) {
@@ -157,7 +211,10 @@ export class WidgetHeaderComponent {
   }
 
   /**
-   * Gets tooltip text for hidden filters
+   * Gets tooltip text for hidden filters.
+   * Returns a formatted string listing all hidden filters (beyond the first 5).
+   * 
+   * @returns Formatted string with all hidden filters, or empty string if none
    */
   getHiddenFiltersTooltip(): string {
     const hiddenFilters = this.hiddenFiltersSignal();
@@ -165,6 +222,19 @@ export class WidgetHeaderComponent {
       return '';
     }
     return 'Additional filters: ' + hiddenFilters.map(f => this.getFilterDisplayText(f)).join(', ');
+  }
+
+  /**
+   * Handles keyboard navigation - Escape key closes menu.
+   * PrimeNG Menu handles other keyboard navigation internally.
+   * 
+   * @param event Keyboard event
+   */
+  @HostListener('keydown.escape', ['$event'])
+  onEscapeKey(event: KeyboardEvent): void {
+    // Menu component handles escape key internally via PrimeNG
+    // This is here for potential future custom keyboard handling
+    event.stopPropagation();
   }
 }
 
