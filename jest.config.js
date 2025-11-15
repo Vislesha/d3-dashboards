@@ -28,6 +28,9 @@ module.exports = {
         stringifyContentPathRegex: '\\.html$'
       }
     ]
-  }
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@angular|d3-.*|internmap|delaunator|robust-predicates)/)'
+  ]
 };
 

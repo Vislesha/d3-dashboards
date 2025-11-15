@@ -3,7 +3,9 @@ import { ChartService } from './chart.service';
 import {
   IChartConfig,
   IChartInstance,
-  ChartType
+  ChartType,
+  IScaleConfig,
+  IAxisConfig
 } from '../entities/chart.interface';
 import {
   InvalidChartTypeError,
@@ -125,6 +127,67 @@ describe('ChartService', () => {
         };
 
         const result = service.validateChartConfig(config);
+
+        expect(result.valid).toBe(false);
+        expect(result.errors.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe('validateScaleConfig', () => {
+      it('should return valid result for valid scale config', () => {
+        const config: IScaleConfig = {
+          type: 'linear',
+          domain: [0, 100] as [number, number],
+          range: [0, 800] as [number, number]
+        };
+
+        const result = service.validateScaleConfig(config);
+
+        expect(result.valid).toBe(true);
+        expect(result.errors).toHaveLength(0);
+      });
+
+      it('should return invalid result with errors for invalid scale config', () => {
+        const config: IScaleConfig = {
+          type: 'invalid' as any,
+          domain: [] as any,
+          range: [0, 800] as [number, number]
+        };
+
+        const result = service.validateScaleConfig(config);
+
+        expect(result.valid).toBe(false);
+        expect(result.errors.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe('validateAxisConfig', () => {
+      it('should return valid result for valid axis config', () => {
+        const scaleConfig: IScaleConfig = {
+          type: 'linear',
+          domain: [0, 100] as [number, number],
+          range: [0, 800] as [number, number]
+        };
+        const scale = service.createScale(scaleConfig);
+
+        const axisConfig: IAxisConfig = {
+          scale,
+          orientation: 'bottom'
+        };
+
+        const result = service.validateAxisConfig(axisConfig);
+
+        expect(result.valid).toBe(true);
+        expect(result.errors).toHaveLength(0);
+      });
+
+      it('should return invalid result with errors for invalid axis config', () => {
+        const config = {
+          scale: null,
+          orientation: 'invalid' as any
+        };
+
+        const result = service.validateAxisConfig(config);
 
         expect(result.valid).toBe(false);
         expect(result.errors.length).toBeGreaterThan(0);

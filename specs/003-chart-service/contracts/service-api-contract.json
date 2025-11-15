@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Chart Service API Contract",
+  "description": "TypeScript service interface contract for ChartService",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "object",
+      "description": "ChartService class interface",
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "ChartService"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "createChart",
+                  "createScale",
+                  "createAxis",
+                  "updateScale",
+                  "updateAxis",
+                  "getColorPalette",
+                  "setColorPalette",
+                  "setDefaultPalette",
+                  "getColors",
+                  "calculateMargins",
+                  "validateChartConfig",
+                  "validateScaleConfig",
+                  "validateAxisConfig"
+                ]
+              },
+              "description": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "returnType": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "returnType"]
+          }
+        }
+      },
+      "required": ["name", "methods"]
+    }
+  },
+  "required": ["service"]
+}
+

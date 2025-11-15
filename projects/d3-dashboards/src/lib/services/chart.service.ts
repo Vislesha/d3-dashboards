@@ -7,7 +7,9 @@ import {
   IAxisConfig,
   IColorPalette,
   IMargins,
-  IValidationResult
+  IValidationResult,
+  ScaleType,
+  AxisOrientation
 } from '../entities/chart.interface';
 import {
   ChartServiceError,
@@ -19,6 +21,8 @@ import {
   InvalidColorPaletteError
 } from './chart.service.types';
 import { calculateMargins as calculateMarginsUtil } from '../utils/d3-utils';
+import { createScale as createScaleUtil, updateScale as updateScaleUtil } from '../utils/scale-helpers';
+import { createAxis as createAxisUtil, updateAxis as updateAxisUtil } from '../utils/axis-helpers';
 
 /**
  * Chart Service
@@ -283,11 +287,14 @@ export class ChartService {
    * @returns D3 Scale object
    * @throws InvalidScaleConfigError if configuration is invalid
    */
-  createScale(
-    config: IScaleConfig
-  ): any {
-    // Implementation will be added in Phase 5
-    throw new Error('Not implemented yet');
+  createScale(config: IScaleConfig): any {
+    // Validate configuration first
+    const validation = this.validateScaleConfig(config);
+    if (!validation.valid) {
+      throw new InvalidScaleConfigError(validation.errors.join('; '));
+    }
+
+    return createScaleUtil(config);
   }
 
   /**
@@ -297,8 +304,13 @@ export class ChartService {
    * @throws InvalidAxisConfigError if configuration is invalid
    */
   createAxis(config: IAxisConfig): any {
-    // Implementation will be added in Phase 5
-    throw new Error('Not implemented yet');
+    // Validate configuration first
+    const validation = this.validateAxisConfig(config);
+    if (!validation.valid) {
+      throw new InvalidAxisConfigError(validation.errors.join('; '));
+    }
+
+    return createAxisUtil(config);
   }
 
   /**
@@ -309,8 +321,7 @@ export class ChartService {
    * @throws InvalidScaleConfigError if updated configuration is invalid
    */
   updateScale(existingScale: any, updates: Partial<IScaleConfig>): any {
-    // Implementation will be added in Phase 5
-    throw new Error('Not implemented yet');
+    return updateScaleUtil(existingScale, updates);
   }
 
   /**
@@ -320,12 +331,8 @@ export class ChartService {
    * @returns Updated axis object with new configuration
    * @throws InvalidAxisConfigError if updated configuration is invalid
    */
-  updateAxis(
-    existingAxis: any,
-    updates: Partial<IAxisConfig>
-  ): any {
-    // Implementation will be added in Phase 5
-    throw new Error('Not implemented yet');
+  updateAxis(existingAxis: any, updates: Partial<IAxisConfig>): any {
+    return updateAxisUtil(existingAxis, updates);
   }
 
   /**
@@ -391,8 +398,53 @@ export class ChartService {
    * @returns Validation result with errors array
    */
   validateScaleConfig(config: IScaleConfig): IValidationResult {
-    // Implementation will be added in Phase 5
-    return { valid: false, errors: ['Not implemented yet'] };
+    const errors: string[] = [];
+
+    // Validate scale type
+    const validTypes: ScaleType[] = [
+      'linear',
+      'time',
+      'ordinal',
+      'band',
+      'log',
+      'pow',
+      'sqrt'
+    ];
+    if (!config.type || !validTypes.includes(config.type)) {
+      errors.push(`Invalid scale type: ${config.type || 'undefined'}`);
+    }
+
+    // Validate domain
+    if (!config.domain || !Array.isArray(config.domain) || config.domain.length === 0) {
+      errors.push('Domain must be a non-empty array');
+    }
+
+    // Validate range
+    if (!config.range || !Array.isArray(config.range) || config.range.length === 0) {
+      errors.push('Range must be a non-empty array');
+    }
+
+    // Validate domain/range compatibility for continuous scales
+    if (config.type && ['linear', 'time', 'log', 'pow', 'sqrt'].includes(config.type)) {
+      if (config.domain && Array.isArray(config.domain) && config.domain.length !== 2) {
+        errors.push(`${config.type} scale requires domain to be a tuple of 2 values`);
+      }
+      if (config.range && Array.isArray(config.range) && config.range.length !== 2) {
+        errors.push(`${config.type} scale requires range to be a tuple of 2 values`);
+      }
+    }
+
+    // Validate padding for band scales
+    if (config.type === 'band' && config.padding !== undefined) {
+      if (config.padding < 0 || config.padding > 1) {
+        errors.push('Band scale padding must be between 0 and 1');
+      }
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
   }
 
   /**
@@ -401,8 +453,28 @@ export class ChartService {
    * @returns Validation result with errors array
    */
   validateAxisConfig(config: IAxisConfig): IValidationResult {
-    // Implementation will be added in Phase 5
-    return { valid: false, errors: ['Not implemented yet'] };
+    const errors: string[] = [];
+
+    // Validate scale
+    if (!config.scale) {
+      errors.push('Scale is required');
+    }
+
+    // Validate orientation
+    const validOrientations: AxisOrientation[] = ['bottom', 'top', 'left', 'right'];
+    if (!config.orientation || !validOrientations.includes(config.orientation)) {
+      errors.push(`Invalid orientation: ${config.orientation || 'undefined'}`);
+    }
+
+    // Validate ticks if provided
+    if (config.ticks !== undefined && config.ticks < 0) {
+      errors.push('Ticks must be a non-negative number');
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
   }
 }
 

@@ -28,3 +28,5 @@ export * from './lib/services/chart.service.types';
 
 // Utils
 export * from './lib/utils/d3-utils';
+export * from './lib/utils/scale-helpers';
+export * from './lib/utils/axis-helpers';

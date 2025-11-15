@@ -105,8 +105,8 @@ export interface IScaleConfig {
   type: ScaleType;
   /** Input domain for the scale */
   domain: [number, number] | string[] | Date[];
-  /** Output range for the scale */
-  range: [number, number] | string[];
+  /** Output range for the scale (tuple for continuous scales, array for ordinal scales) */
+  range: [number, number] | number[] | string[];
   /** Whether to extend domain to nice round values (for continuous scales) */
   nice?: boolean;
   /** Padding between bands (0-1, for band scales) */

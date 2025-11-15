@@ -133,56 +133,56 @@
 
 ### Tests for User Story 3
 
-- [ ] T051 [P] [US3] Create unit test for createScale with linear scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T052 [P] [US3] Create unit test for createScale with time scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T053 [P] [US3] Create unit test for createScale with ordinal scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T054 [P] [US3] Create unit test for createScale with band scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T055 [P] [US3] Create unit test for createScale with log scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T056 [P] [US3] Create unit test for createScale with pow scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T057 [P] [US3] Create unit test for createScale with sqrt scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T058 [P] [US3] Create unit test for createScale with invalid config in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T059 [P] [US3] Create unit test for updateScale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
-- [ ] T060 [P] [US3] Create unit test for createAxis with bottom orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T061 [P] [US3] Create unit test for createAxis with top orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T062 [P] [US3] Create unit test for createAxis with left orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T063 [P] [US3] Create unit test for createAxis with right orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T064 [P] [US3] Create unit test for createAxis with tick configuration in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T065 [P] [US3] Create unit test for createAxis with invalid config in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T066 [P] [US3] Create unit test for updateAxis in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
-- [ ] T067 [P] [US3] Create unit test for validateScaleConfig in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
-- [ ] T068 [P] [US3] Create unit test for validateAxisConfig in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T051 [P] [US3] Create unit test for createScale with linear scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T052 [P] [US3] Create unit test for createScale with time scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T053 [P] [US3] Create unit test for createScale with ordinal scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T054 [P] [US3] Create unit test for createScale with band scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T055 [P] [US3] Create unit test for createScale with log scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T056 [P] [US3] Create unit test for createScale with pow scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T057 [P] [US3] Create unit test for createScale with sqrt scale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T058 [P] [US3] Create unit test for createScale with invalid config in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T059 [P] [US3] Create unit test for updateScale in projects/d3-dashboards/src/lib/utils/scale-helpers.spec.ts
+- [X] T060 [P] [US3] Create unit test for createAxis with bottom orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T061 [P] [US3] Create unit test for createAxis with top orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T062 [P] [US3] Create unit test for createAxis with left orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T063 [P] [US3] Create unit test for createAxis with right orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T064 [P] [US3] Create unit test for createAxis with tick configuration in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T065 [P] [US3] Create unit test for createAxis with invalid config in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T066 [P] [US3] Create unit test for updateAxis in projects/d3-dashboards/src/lib/utils/axis-helpers.spec.ts
+- [X] T067 [P] [US3] Create unit test for validateScaleConfig in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
+- [X] T068 [P] [US3] Create unit test for validateAxisConfig in projects/d3-dashboards/src/lib/services/chart.service.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T069 [US3] Create scale-helpers.ts file in projects/d3-dashboards/src/lib/utils/
-- [ ] T070 [US3] Import D3 scale modules (scaleLinear, scaleTime, scaleOrdinal, scaleBand, etc.) in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T071 [US3] Create ScaleType type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
-- [ ] T072 [US3] Implement createScale function for linear scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T073 [US3] Implement createScale function for time scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T074 [US3] Implement createScale function for ordinal scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T075 [US3] Implement createScale function for band scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T076 [US3] Implement createScale function for log scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T077 [US3] Implement createScale function for pow scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T078 [US3] Implement createScale function for sqrt scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T079 [US3] Implement updateScale function in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
-- [ ] T080 [US3] Implement validateScaleConfig function in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T081 [US3] Create axis-helpers.ts file in projects/d3-dashboards/src/lib/utils/
-- [ ] T082 [US3] Import D3 axis modules (axisBottom, axisTop, axisLeft, axisRight) in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T083 [US3] Create AxisOrientation type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
-- [ ] T084 [US3] Implement createAxis function for bottom orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T085 [US3] Implement createAxis function for top orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T086 [US3] Implement createAxis function for left orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T087 [US3] Implement createAxis function for right orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T088 [US3] Implement tick configuration support in createAxis in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T089 [US3] Implement updateAxis function in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
-- [ ] T090 [US3] Implement validateAxisConfig function in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T091 [US3] Add createScale method to ChartService that delegates to scale-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T092 [US3] Add createAxis method to ChartService that delegates to axis-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T093 [US3] Add updateScale method to ChartService that delegates to scale-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T094 [US3] Add updateAxis method to ChartService that delegates to axis-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T095 [US3] Add error handling for InvalidScaleConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T096 [US3] Add error handling for InvalidAxisConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T097 [US3] Export scale-helpers and axis-helpers from projects/d3-dashboards/src/lib/public-api.ts
+- [X] T069 [US3] Create scale-helpers.ts file in projects/d3-dashboards/src/lib/utils/
+- [X] T070 [US3] Import D3 scale modules (scaleLinear, scaleTime, scaleOrdinal, scaleBand, etc.) in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T071 [US3] Create ScaleType type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
+- [X] T072 [US3] Implement createScale function for linear scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T073 [US3] Implement createScale function for time scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T074 [US3] Implement createScale function for ordinal scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T075 [US3] Implement createScale function for band scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T076 [US3] Implement createScale function for log scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T077 [US3] Implement createScale function for pow scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T078 [US3] Implement createScale function for sqrt scales in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T079 [US3] Implement updateScale function in projects/d3-dashboards/src/lib/utils/scale-helpers.ts
+- [X] T080 [US3] Implement validateScaleConfig function in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T081 [US3] Create axis-helpers.ts file in projects/d3-dashboards/src/lib/utils/
+- [X] T082 [US3] Import D3 axis modules (axisBottom, axisTop, axisLeft, axisRight) in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T083 [US3] Create AxisOrientation type definition in projects/d3-dashboards/src/lib/entities/chart.interface.ts
+- [X] T084 [US3] Implement createAxis function for bottom orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T085 [US3] Implement createAxis function for top orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T086 [US3] Implement createAxis function for left orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T087 [US3] Implement createAxis function for right orientation in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T088 [US3] Implement tick configuration support in createAxis in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T089 [US3] Implement updateAxis function in projects/d3-dashboards/src/lib/utils/axis-helpers.ts
+- [X] T090 [US3] Implement validateAxisConfig function in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T091 [US3] Add createScale method to ChartService that delegates to scale-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T092 [US3] Add createAxis method to ChartService that delegates to axis-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T093 [US3] Add updateScale method to ChartService that delegates to scale-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T094 [US3] Add updateAxis method to ChartService that delegates to axis-helpers in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T095 [US3] Add error handling for InvalidScaleConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T096 [US3] Add error handling for InvalidAxisConfigError in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T097 [US3] Export scale-helpers and axis-helpers from projects/d3-dashboards/src/lib/public-api.ts
 
 **Checkpoint**: At this point, User Story 3 should be fully functional. All scale types and axis orientations are supported with consistent helpers.
 
