@@ -27,6 +27,18 @@ import { validateWidgetPosition } from '../../utils/widget-position.validator';
  * responsive grid system (12-column), and filter propagation to all widgets.
  * This component serves as the core container for displaying dashboard widgets
  * in a read-only view with coordinated filtering capabilities.
+ *
+ * @example
+ * ```html
+ * <lib-dashboard-container
+ *   [widgets]="dashboardWidgets"
+ *   [gridConfig]="gridConfiguration"
+ *   [filters]="dashboardFilters"
+ *   (filterChange)="onFilterChange($event)">
+ * </lib-dashboard-container>
+ * ```
+ *
+ * @public
  */
 @Component({
   selector: 'lib-dashboard-container',
@@ -165,21 +177,59 @@ export class DashboardContainerComponent implements OnInit, OnChanges, OnDestroy
     }
 
     const config = this.gridConfig || DEFAULT_GRID_CONFIG;
-    this._validatedWidgets = this.widgets.map((widget, index) => {
-      const existingPositions = this._validatedWidgets
-        .slice(0, index)
-        .map((w) => w.position);
-      const validatedPosition = validateWidgetPosition(
-        widget.position,
-        config,
-        existingPositions
-      );
+    const startTime = performance.now();
 
-      return {
-        ...widget,
-        position: validatedPosition,
-      };
-    });
+    try {
+      this._validatedWidgets = this.widgets.map((widget, index) => {
+        try {
+          const existingPositions = this._validatedWidgets
+            .slice(0, index)
+            .map((w) => w.position);
+          const validatedPosition = validateWidgetPosition(
+            widget.position,
+            config,
+            existingPositions
+          );
+
+          // Log position correction if needed
+          if (
+            validatedPosition.x !== widget.position.x ||
+            validatedPosition.y !== widget.position.y ||
+            validatedPosition.cols !== widget.position.cols ||
+            validatedPosition.rows !== widget.position.rows
+          ) {
+            console.warn(
+              `Widget ${widget.id} position was auto-corrected:`,
+              `from (${widget.position.x}, ${widget.position.y}, ${widget.position.cols}x${widget.position.rows})`,
+              `to (${validatedPosition.x}, ${validatedPosition.y}, ${validatedPosition.cols}x${validatedPosition.rows})`
+            );
+          }
+
+          return {
+            ...widget,
+            position: validatedPosition,
+          };
+        } catch (error) {
+          console.error(`Error validating widget ${widget.id}:`, error);
+          // Return widget with default position if validation fails
+          return {
+            ...widget,
+            position: { x: 0, y: 0, cols: 4, rows: 2 },
+          };
+        }
+      });
+
+      // Performance check for large widget arrays
+      const validationTime = performance.now() - startTime;
+      if (this._validatedWidgets.length > 50 && validationTime > 100) {
+        console.warn(
+          `Widget validation took ${validationTime.toFixed(2)}ms for ${this._validatedWidgets.length} widgets. Consider optimizing.`
+        );
+      }
+    } catch (error) {
+      console.error('Error during widget validation:', error);
+      this._validatedWidgets = [];
+    }
 
     this.cdr.markForCheck();
   }

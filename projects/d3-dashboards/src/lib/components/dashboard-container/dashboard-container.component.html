@@ -1,7 +1,7 @@
-<div class="dashboard-container">
-  <gridster [options]="gridsterOptions">
+<div class="dashboard-container" role="region" aria-label="Dashboard container">
+  <gridster [options]="gridsterOptions" [attr.aria-label]="'Dashboard grid with ' + validatedWidgets.length + ' widgets'">
     @if (isEmpty) {
-      <div class="empty-dashboard-message">
+      <div class="empty-dashboard-message" role="status" aria-live="polite">
         <div class="empty-message-content">
           <i class="pi pi-inbox" aria-hidden="true"></i>
           <p>No widgets to display</p>
@@ -9,22 +9,36 @@
       </div>
     } @else {
       @for (widget of validatedWidgets; track widget.id) {
-        <gridster-item [item]="widget.position">
-          <div class="widget-wrapper">
+        <gridster-item [item]="widget.position" [attr.aria-label]="widget.title + ' widget'">
+          <div class="widget-wrapper" [attr.data-widget-id]="widget.id" [attr.data-widget-type]="widget.type">
             <!-- Widget component will be dynamically loaded here -->
             <!-- Filters are passed via getWidgetFilters(widget.id) -->
-            <div class="widget-placeholder">
+            <div class="widget-placeholder" role="article" [attr.aria-label]="widget.title">
               <div class="widget-header">
                 <h3>{{ widget.title }}</h3>
-                <span class="widget-type">{{ widget.type }}</span>
+                <span class="widget-type" aria-label="Widget type: {{ widget.type }}">{{ widget.type }}</span>
               </div>
               <div class="widget-content">
-                <p>Widget component for {{ widget.type }} will be rendered here</p>
-                @if (getWidgetFilters(widget.id).length > 0) {
-                  <div class="widget-filters">
-                    <small>Filters: {{ getWidgetFilters(widget.id).length }}</small>
-                  </div>
-                }
+                <!-- Loading state -->
+                <div class="widget-loading" role="status" aria-live="polite" aria-label="Loading widget">
+                  <div class="spinner"></div>
+                  <p>Loading widget...</p>
+                </div>
+                <!-- Error state -->
+                <div class="widget-error" role="alert" aria-live="assertive" style="display: none;">
+                  <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                  <p>Error loading widget. Please try again.</p>
+                  <button type="button" class="retry-button" aria-label="Retry loading widget">Retry</button>
+                </div>
+                <!-- Content placeholder (will be replaced by actual widget component) -->
+                <div class="widget-content-placeholder">
+                  <p>Widget component for {{ widget.type }} will be rendered here</p>
+                  @if (getWidgetFilters(widget.id).length > 0) {
+                    <div class="widget-filters" role="status" aria-label="Active filters: {{ getWidgetFilters(widget.id).length }}">
+                      <small>Filters: {{ getWidgetFilters(widget.id).length }}</small>
+                    </div>
+                  }
+                </div>
               </div>
             </div>
           </div>
