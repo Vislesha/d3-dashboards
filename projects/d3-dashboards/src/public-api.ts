@@ -19,6 +19,9 @@ export {
   IDataServiceError,
   IValidationResult
 } from './lib/entities/data-source.interface';
+export * from './lib/entities/chart.interface';
 
 // Services
 export * from './lib/services/data.service';
+export * from './lib/services/chart.service';
+export * from './lib/services/chart.service.types';
