@@ -107,19 +107,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T041 [P] [US2] Create unit test for calculateMargins with default values in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
-- [ ] T042 [P] [US2] Create unit test for calculateMargins with custom values in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
-- [ ] T043 [P] [US2] Create unit test for calculateInnerDimensions in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
-- [ ] T044 [P] [US2] Create unit test for extent utility function in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
+- [X] T041 [P] [US2] Create unit test for calculateMargins with default values in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
+- [X] T042 [P] [US2] Create unit test for calculateMargins with custom values in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
+- [X] T043 [P] [US2] Create unit test for calculateInnerDimensions in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
+- [X] T044 [P] [US2] Create unit test for extent utility function in projects/d3-dashboards/src/lib/utils/d3-utils.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T045 [US2] Create d3-utils.ts file in projects/d3-dashboards/src/lib/utils/
-- [ ] T046 [US2] Implement calculateMargins function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
-- [ ] T047 [US2] Implement calculateInnerDimensions function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
-- [ ] T048 [US2] Implement extent utility function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
-- [ ] T049 [US2] Add calculateMargins method to ChartService that delegates to d3-utils in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T050 [US2] Export d3-utils functions from projects/d3-dashboards/src/lib/public-api.ts
+- [X] T045 [US2] Create d3-utils.ts file in projects/d3-dashboards/src/lib/utils/
+- [X] T046 [US2] Implement calculateMargins function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
+- [X] T047 [US2] Implement calculateInnerDimensions function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
+- [X] T048 [US2] Implement extent utility function in projects/d3-dashboards/src/lib/utils/d3-utils.ts
+- [X] T049 [US2] Add calculateMargins method to ChartService that delegates to d3-utils in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T050 [US2] Export d3-utils functions from projects/d3-dashboards/src/lib/public-api.ts
 
 **Checkpoint**: At this point, User Story 2 should be fully functional. D3 utility functions are available for reuse across the application.
 

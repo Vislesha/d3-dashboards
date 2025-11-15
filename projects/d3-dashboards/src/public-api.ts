@@ -25,3 +25,6 @@ export * from './lib/entities/chart.interface';
 export * from './lib/services/data.service';
 export * from './lib/services/chart.service';
 export * from './lib/services/chart.service.types';
+
+// Utils
+export * from './lib/utils/d3-utils';

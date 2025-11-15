@@ -18,6 +18,7 @@ import {
   PaletteNotFoundError,
   InvalidColorPaletteError
 } from './chart.service.types';
+import { calculateMargins as calculateMarginsUtil } from '../utils/d3-utils';
 
 /**
  * Chart Service
@@ -381,8 +382,7 @@ export class ChartService {
     height: number,
     marginConfig?: Partial<IMargins>
   ): IMargins {
-    // Implementation will be added in Phase 4
-    throw new Error('Not implemented yet');
+    return calculateMarginsUtil(width, height, marginConfig);
   }
 
   /**
