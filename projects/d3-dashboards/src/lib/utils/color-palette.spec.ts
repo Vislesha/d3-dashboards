@@ -1,9 +1,6 @@
 import { ColorPaletteManager } from './color-palette';
 import { IColorPalette } from '../entities/chart.interface';
-import {
-  PaletteNotFoundError,
-  InvalidColorPaletteError
-} from '../services/chart.service.types';
+import { PaletteNotFoundError, InvalidColorPaletteError } from '../services/chart.service.types';
 
 describe('ColorPaletteManager', () => {
   let manager: ColorPaletteManager;
@@ -26,8 +23,8 @@ describe('ColorPaletteManager', () => {
           '#ffffff',
           '#000000',
           '#808080',
-          '#ff8080'
-        ]
+          '#ff8080',
+        ],
       };
 
       manager.setColorPalette(palette);
@@ -59,8 +56,8 @@ describe('ColorPaletteManager', () => {
           '#ffffff',
           '#000000',
           '#808080',
-          '#ff8080'
-        ]
+          '#ff8080',
+        ],
       };
 
       expect(() => manager.setColorPalette(palette)).not.toThrow();
@@ -70,12 +67,12 @@ describe('ColorPaletteManager', () => {
     it('should overwrite existing palette with same name silently', () => {
       const palette1: IColorPalette = {
         name: 'overwrite-palette',
-        colors: Array(10).fill('#ff0000')
+        colors: Array(10).fill('#ff0000'),
       };
 
       const palette2: IColorPalette = {
         name: 'overwrite-palette',
-        colors: Array(10).fill('#00ff00')
+        colors: Array(10).fill('#00ff00'),
       };
 
       manager.setColorPalette(palette1);
@@ -88,12 +85,10 @@ describe('ColorPaletteManager', () => {
     it('should throw InvalidColorPaletteError for palette with less than 10 colors', () => {
       const palette: IColorPalette = {
         name: 'invalid-palette',
-        colors: ['#ff0000', '#00ff00', '#0000ff'] // Only 3 colors
+        colors: ['#ff0000', '#00ff00', '#0000ff'], // Only 3 colors
       };
 
-      expect(() => manager.setColorPalette(palette)).toThrow(
-        InvalidColorPaletteError
-      );
+      expect(() => manager.setColorPalette(palette)).toThrow(InvalidColorPaletteError);
     });
   });
 
@@ -101,7 +96,7 @@ describe('ColorPaletteManager', () => {
     it('should set default palette by name', () => {
       const palette: IColorPalette = {
         name: 'default-test',
-        colors: Array(10).fill('#ff0000')
+        colors: Array(10).fill('#ff0000'),
       };
 
       manager.setColorPalette(palette);
@@ -111,9 +106,7 @@ describe('ColorPaletteManager', () => {
     });
 
     it('should throw PaletteNotFoundError if palette not found', () => {
-      expect(() => manager.setDefaultPalette('non-existent')).toThrow(
-        PaletteNotFoundError
-      );
+      expect(() => manager.setDefaultPalette('non-existent')).toThrow(PaletteNotFoundError);
     });
   });
 
@@ -121,7 +114,18 @@ describe('ColorPaletteManager', () => {
     it('should return colors from default palette', () => {
       const palette: IColorPalette = {
         name: 'default-colors',
-        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#000000', '#808080', '#ff8080']
+        colors: [
+          '#ff0000',
+          '#00ff00',
+          '#0000ff',
+          '#ffff00',
+          '#ff00ff',
+          '#00ffff',
+          '#ffffff',
+          '#000000',
+          '#808080',
+          '#ff8080',
+        ],
       };
 
       manager.setColorPalette(palette);
@@ -137,7 +141,18 @@ describe('ColorPaletteManager', () => {
     it('should return colors from specific palette', () => {
       const palette: IColorPalette = {
         name: 'specific-palette',
-        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#000000', '#808080', '#ff8080']
+        colors: [
+          '#ff0000',
+          '#00ff00',
+          '#0000ff',
+          '#ffff00',
+          '#ff00ff',
+          '#00ffff',
+          '#ffffff',
+          '#000000',
+          '#808080',
+          '#ff8080',
+        ],
       };
 
       manager.setColorPalette(palette);
@@ -152,7 +167,18 @@ describe('ColorPaletteManager', () => {
     it('should cycle colors when count is greater than palette size', () => {
       const palette: IColorPalette = {
         name: 'cycle-palette',
-        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#000000', '#808080', '#ff8080']
+        colors: [
+          '#ff0000',
+          '#00ff00',
+          '#0000ff',
+          '#ffff00',
+          '#ff00ff',
+          '#00ffff',
+          '#ffffff',
+          '#000000',
+          '#808080',
+          '#ff8080',
+        ],
       };
 
       manager.setColorPalette(palette);
@@ -176,4 +202,3 @@ describe('ColorPaletteManager', () => {
     });
   });
 });
-

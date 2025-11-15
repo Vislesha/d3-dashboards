@@ -7,7 +7,7 @@ const DEFAULT_MARGINS: IMargins = {
   top: 20,
   right: 20,
   bottom: 40,
-  left: 40
+  left: 40,
 };
 
 /**
@@ -20,11 +20,11 @@ const DEFAULT_MARGINS: IMargins = {
 export function calculateMargins(
   width: number,
   height: number,
-  marginConfig?: Partial<IMargins>
+  marginConfig?: Partial<IMargins>,
 ): IMargins {
   return {
     ...DEFAULT_MARGINS,
-    ...marginConfig
+    ...marginConfig,
   };
 }
 
@@ -42,12 +42,13 @@ export interface IDimensions {
  * @param dimensions Chart dimensions including margins
  * @returns Inner width and height
  */
-export function calculateInnerDimensions(
-  dimensions: IDimensions
-): { width: number; height: number } {
+export function calculateInnerDimensions(dimensions: IDimensions): {
+  width: number;
+  height: number;
+} {
   return {
     width: dimensions.width - dimensions.margins.left - dimensions.margins.right,
-    height: dimensions.height - dimensions.margins.top - dimensions.margins.bottom
+    height: dimensions.height - dimensions.margins.top - dimensions.margins.bottom,
   };
 }
 
@@ -73,4 +74,3 @@ export function extent<T>(data: T[], accessor: (d: T) => number): [number, numbe
 
   return [min, max];
 }
-

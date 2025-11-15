@@ -5,19 +5,16 @@ import {
   IChartInstance,
   ChartType,
   IScaleConfig,
-  IAxisConfig
+  IAxisConfig,
 } from '../entities/chart.interface';
-import {
-  InvalidChartTypeError,
-  InvalidChartConfigError
-} from './chart.service.types';
+import { InvalidChartTypeError, InvalidChartConfigError } from './chart.service.types';
 
 describe('ChartService', () => {
   let service: ChartService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ChartService]
+      providers: [ChartService],
     });
     service = TestBed.inject(ChartService);
   });
@@ -29,13 +26,13 @@ describe('ChartService', () => {
           type: 'line',
           data: [
             { x: 1, y: 10 },
-            { x: 2, y: 20 }
+            { x: 2, y: 20 },
           ],
           options: {
             width: 800,
             height: 400,
-            margin: { top: 20, right: 20, bottom: 40, left: 40 }
-          }
+            margin: { top: 20, right: 20, bottom: 40, left: 40 },
+          },
         };
 
         const chart = service.createChart(config);
@@ -57,12 +54,12 @@ describe('ChartService', () => {
           type: 'bar',
           data: [
             { category: 'A', value: 10 },
-            { category: 'B', value: 20 }
+            { category: 'B', value: 20 },
           ],
           options: {
             width: 800,
-            height: 400
-          }
+            height: 400,
+          },
         };
 
         const chart = service.createChart(config);
@@ -78,13 +75,11 @@ describe('ChartService', () => {
       it('should throw InvalidChartTypeError when chart type is invalid', () => {
         const config = {
           type: 'invalid-type' as ChartType,
-          data: []
+          data: [],
         };
 
         expect(() => service.createChart(config)).toThrow(InvalidChartTypeError);
-        expect(() => service.createChart(config)).toThrow(
-          'Invalid chart type: invalid-type'
-        );
+        expect(() => service.createChart(config)).toThrow('Invalid chart type: invalid-type');
       });
 
       it('should throw InvalidChartConfigError when chart config is invalid', () => {
@@ -93,13 +88,11 @@ describe('ChartService', () => {
           // Missing required data or invalid structure
           options: {
             width: -100, // Invalid negative width
-            height: 400
-          }
+            height: 400,
+          },
         };
 
-        expect(() => service.createChart(config)).toThrow(
-          InvalidChartConfigError
-        );
+        expect(() => service.createChart(config)).toThrow(InvalidChartConfigError);
       });
     });
 
@@ -110,8 +103,8 @@ describe('ChartService', () => {
           data: [{ x: 1, y: 10 }],
           options: {
             width: 800,
-            height: 400
-          }
+            height: 400,
+          },
         };
 
         const result = service.validateChartConfig(config);
@@ -123,7 +116,7 @@ describe('ChartService', () => {
       it('should return invalid result with errors for invalid chart config', () => {
         const config = {
           type: 'invalid-type' as ChartType,
-          data: []
+          data: [],
         };
 
         const result = service.validateChartConfig(config);
@@ -138,7 +131,7 @@ describe('ChartService', () => {
         const config: IScaleConfig = {
           type: 'linear',
           domain: [0, 100] as [number, number],
-          range: [0, 800] as [number, number]
+          range: [0, 800] as [number, number],
         };
 
         const result = service.validateScaleConfig(config);
@@ -151,7 +144,7 @@ describe('ChartService', () => {
         const config: IScaleConfig = {
           type: 'invalid' as any,
           domain: [] as any,
-          range: [0, 800] as [number, number]
+          range: [0, 800] as [number, number],
         };
 
         const result = service.validateScaleConfig(config);
@@ -166,13 +159,13 @@ describe('ChartService', () => {
         const scaleConfig: IScaleConfig = {
           type: 'linear',
           domain: [0, 100] as [number, number],
-          range: [0, 800] as [number, number]
+          range: [0, 800] as [number, number],
         };
         const scale = service.createScale(scaleConfig);
 
         const axisConfig: IAxisConfig = {
           scale,
-          orientation: 'bottom'
+          orientation: 'bottom',
         };
 
         const result = service.validateAxisConfig(axisConfig);
@@ -184,7 +177,7 @@ describe('ChartService', () => {
       it('should return invalid result with errors for invalid axis config', () => {
         const config = {
           scale: null,
-          orientation: 'invalid' as any
+          orientation: 'invalid' as any,
         };
 
         const result = service.validateAxisConfig(config);
@@ -195,4 +188,3 @@ describe('ChartService', () => {
     });
   });
 });
-

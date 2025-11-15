@@ -9,4 +9,3 @@ export interface IFilterValues {
   /** Optional filter operator */
   operator?: 'equals' | 'contains' | 'greaterThan' | 'lessThan' | 'between';
 }
-

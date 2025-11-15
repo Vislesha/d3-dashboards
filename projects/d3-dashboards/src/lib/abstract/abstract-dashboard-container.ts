@@ -8,37 +8,37 @@ import { IDashboardNavigationInfo } from '../entities/dashboard.interface';
 
 /**
  * Abstract base class providing common functionality for dashboard implementations.
- * 
+ *
  * This class provides:
  * - Filter management with reactive state
  * - Widget lifecycle hooks
  * - Navigation helpers (optional Router dependency)
  * - Error handling with graceful degradation
- * 
+ *
  * Derived classes must implement abstract methods for widget management.
- * 
+ *
  * @example
  * ```typescript
  * class MyDashboard extends AbstractDashboardContainer {
  *   private widgets: ID3Widget[] = [];
- * 
+ *
  *   constructor(@Optional() router?: Router) {
  *     super(router);
  *   }
- * 
+ *
  *   initializeDashboard(): void {
  *     this.widgets = [];
  *   }
- * 
+ *
  *   getWidgets(): ID3Widget[] {
  *     return this.widgets;
  *   }
- * 
+ *
  *   addWidget(widget: ID3Widget): void {
  *     this.widgets.push(widget);
  *     this.onWidgetInit(widget);
  *   }
- * 
+ *
  *   removeWidget(widgetId: string): void {
  *     const index = this.widgets.findIndex(w => w.id === widgetId);
  *     if (index !== -1) {
@@ -46,7 +46,7 @@ import { IDashboardNavigationInfo } from '../entities/dashboard.interface';
  *       this.widgets.splice(index, 1);
  *     }
  *   }
- * 
+ *
  *   updateWidget(widget: ID3Widget): void {
  *     const index = this.widgets.findIndex(w => w.id === widget.id);
  *     if (index !== -1) {
@@ -78,7 +78,7 @@ export abstract class AbstractDashboardContainer {
 
   /**
    * Creates an instance of AbstractDashboardContainer.
-   * 
+   *
    * @param router - Optional Angular Router instance for navigation helpers
    */
   constructor(@Optional() router?: Router) {
@@ -94,7 +94,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Initialize the dashboard.
    * Must be implemented by derived classes.
-   * 
+   *
    * @returns void or Promise<void> for async initialization
    */
   abstract initializeDashboard(): void | Promise<void>;
@@ -102,7 +102,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Get current widgets in the dashboard.
    * Must be implemented by derived classes.
-   * 
+   *
    * @returns Array of current widgets
    */
   abstract getWidgets(): ID3Widget[];
@@ -110,9 +110,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Add a widget to the dashboard.
    * Must be implemented by derived classes.
-   * 
+   *
    * Derived classes should call `this.onWidgetInit(widget)` after adding.
-   * 
+   *
    * @param widget - Widget to add to the dashboard
    */
   abstract addWidget(widget: ID3Widget): void;
@@ -120,9 +120,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Remove a widget from the dashboard.
    * Must be implemented by derived classes.
-   * 
+   *
    * Derived classes should call `this.onWidgetDestroy(widgetId)` before removing.
-   * 
+   *
    * @param widgetId - Unique identifier of widget to remove
    */
   abstract removeWidget(widgetId: string): void;
@@ -130,9 +130,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Update an existing widget in the dashboard.
    * Must be implemented by derived classes.
-   * 
+   *
    * Derived classes should call `this.onWidgetUpdate(widget)` after updating.
-   * 
+   *
    * @param widget - Updated widget configuration
    */
   abstract updateWidget(widget: ID3Widget): void;
@@ -144,7 +144,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Add a filter to the dashboard.
    * Filter is validated before adding. Invalid filters are rejected with a warning.
-   * 
+   *
    * @param filter - Filter to add. Must have valid key and value.
    */
   addFilter(filter: IFilterValues): void {
@@ -155,7 +155,7 @@ export abstract class AbstractDashboardContainer {
       }
 
       const currentFilters = this.filters$.value;
-      const existingIndex = currentFilters.findIndex(f => f.key === filter.key);
+      const existingIndex = currentFilters.findIndex((f) => f.key === filter.key);
 
       if (existingIndex >= 0) {
         // Update existing filter
@@ -173,14 +173,14 @@ export abstract class AbstractDashboardContainer {
 
   /**
    * Remove a filter by key.
-   * 
+   *
    * @param filterKey - Key of filter to remove
    */
   removeFilter(filterKey: string): void {
     try {
       const currentFilters = this.filters$.value;
-      const filtered = currentFilters.filter(f => f.key !== filterKey);
-      
+      const filtered = currentFilters.filter((f) => f.key !== filterKey);
+
       if (filtered.length !== currentFilters.length) {
         this.filters$.next(filtered);
       }
@@ -192,7 +192,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Update an existing filter.
    * If filter with same key exists, it is updated. Otherwise, filter is added.
-   * 
+   *
    * @param filter - Updated filter configuration
    */
   updateFilter(filter: IFilterValues): void {
@@ -203,7 +203,7 @@ export abstract class AbstractDashboardContainer {
       }
 
       const currentFilters = this.filters$.value;
-      const existingIndex = currentFilters.findIndex(f => f.key === filter.key);
+      const existingIndex = currentFilters.findIndex((f) => f.key === filter.key);
 
       if (existingIndex >= 0) {
         // Update existing filter
@@ -221,7 +221,7 @@ export abstract class AbstractDashboardContainer {
 
   /**
    * Get current filter values synchronously.
-   * 
+   *
    * @returns Current array of filter values
    */
   getFilters(): IFilterValues[] {
@@ -231,16 +231,13 @@ export abstract class AbstractDashboardContainer {
   /**
    * Get observable stream of filter values.
    * Subscribers are notified when filters change (after debouncing).
-   * 
+   *
    * Remember to unsubscribe to prevent memory leaks (use takeUntil pattern).
-   * 
+   *
    * @returns Observable stream of filter values
    */
   getFilters$(): Observable<IFilterValues[]> {
-    return this.filters$.pipe(
-      debounceTime(300),
-      takeUntil(this.destroy$)
-    );
+    return this.filters$.pipe(debounceTime(300), takeUntil(this.destroy$));
   }
 
   /**
@@ -261,9 +258,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Lifecycle hook called when widget is initialized.
    * Can be overridden by derived classes for custom widget initialization logic.
-   * 
+   *
    * Errors in this hook are caught and logged, but do not block widget operations.
-   * 
+   *
    * @param widget - Widget that was initialized
    */
   protected onWidgetInit(widget: ID3Widget): void {
@@ -278,9 +275,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Lifecycle hook called when widget is updated.
    * Can be overridden by derived classes for custom widget update logic.
-   * 
+   *
    * Errors in this hook are caught and logged, but do not block widget operations.
-   * 
+   *
    * @param widget - Widget that was updated
    */
   protected onWidgetUpdate(widget: ID3Widget): void {
@@ -295,9 +292,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Lifecycle hook called when widget is destroyed.
    * Can be overridden by derived classes for custom widget cleanup logic.
-   * 
+   *
    * Errors in this hook are caught and logged, but do not block widget operations.
-   * 
+   *
    * @param widgetId - Unique identifier of widget being destroyed
    */
   protected onWidgetDestroy(widgetId: string): void {
@@ -316,7 +313,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Navigate to another dashboard.
    * Returns false if Router is not available or navigation fails.
-   * 
+   *
    * @param dashboardId - Identifier of dashboard to navigate to
    * @param params - Optional route parameters
    * @returns Promise that resolves to true if navigation succeeded, false otherwise
@@ -324,7 +321,10 @@ export abstract class AbstractDashboardContainer {
   async navigateToDashboard(dashboardId: string, params?: Record<string, any>): Promise<boolean> {
     try {
       if (!this.canNavigate()) {
-        console.warn('AbstractDashboardContainer: Router not available for navigation', dashboardId);
+        console.warn(
+          'AbstractDashboardContainer: Router not available for navigation',
+          dashboardId,
+        );
         return false;
       }
 
@@ -334,7 +334,7 @@ export abstract class AbstractDashboardContainer {
 
       const route = `/dashboard/${dashboardId}`;
       const navigationResult = await this.router.navigate([route], {
-        queryParams: params
+        queryParams: params,
       });
 
       return navigationResult;
@@ -347,7 +347,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Get current dashboard navigation information.
    * Returns null if Router is not available.
-   * 
+   *
    * @returns Dashboard navigation info or null if Router unavailable
    */
   getCurrentDashboard(): IDashboardNavigationInfo | null {
@@ -391,7 +391,7 @@ export abstract class AbstractDashboardContainer {
         dashboardId,
         route: routePath,
         params,
-        queryParams
+        queryParams,
       };
     } catch (error) {
       console.error('AbstractDashboardContainer: Error getting current dashboard', error);
@@ -401,7 +401,7 @@ export abstract class AbstractDashboardContainer {
 
   /**
    * Check if navigation is available (Router is injected).
-   * 
+   *
    * @returns true if Router is available, false otherwise
    */
   canNavigate(): boolean {
@@ -415,9 +415,9 @@ export abstract class AbstractDashboardContainer {
   /**
    * Validate filter before adding or updating.
    * Returns true if valid, false otherwise.
-   * 
+   *
    * Can be overridden for custom validation logic.
-   * 
+   *
    * @param filter - Filter to validate
    * @returns true if filter is valid, false otherwise
    */
@@ -448,7 +448,7 @@ export abstract class AbstractDashboardContainer {
   /**
    * Clean up resources and subscriptions.
    * Should be called in derived class destroy lifecycle (e.g., ngOnDestroy).
-   * 
+   *
    * This method:
    * - Completes the destroy$ subject to trigger takeUntil cleanup
    * - Completes the filters$ BehaviorSubject
@@ -463,4 +463,3 @@ export abstract class AbstractDashboardContainer {
     }
   }
 }
-

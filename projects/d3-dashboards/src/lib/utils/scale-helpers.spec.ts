@@ -8,7 +8,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'linear',
         domain: [0, 100],
-        range: [0, 800]
+        range: [0, 800],
       };
 
       const scale = createScale(config);
@@ -23,7 +23,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'time',
         domain: [new Date(2020, 0, 1), new Date(2020, 11, 31)],
-        range: [0, 800]
+        range: [0, 800],
       };
 
       const scale = createScale(config);
@@ -36,7 +36,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'ordinal',
         domain: ['A', 'B', 'C'],
-        range: [0, 100, 200] as number[]
+        range: [0, 100, 200] as number[],
       };
 
       const scale = createScale(config);
@@ -52,7 +52,7 @@ describe('Scale Helpers', () => {
         type: 'band',
         domain: ['A', 'B', 'C'],
         range: [0, 800],
-        padding: 0.1
+        padding: 0.1,
       };
 
       const scale = createScale(config);
@@ -66,7 +66,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'log',
         domain: [1, 100],
-        range: [0, 800]
+        range: [0, 800],
       };
 
       const scale = createScale(config);
@@ -79,7 +79,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'pow',
         domain: [0, 100],
-        range: [0, 800]
+        range: [0, 800],
       };
 
       const scale = createScale(config);
@@ -92,7 +92,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'sqrt',
         domain: [0, 100],
-        range: [0, 800]
+        range: [0, 800],
       };
 
       const scale = createScale(config);
@@ -105,7 +105,7 @@ describe('Scale Helpers', () => {
       const config: IScaleConfig = {
         type: 'invalid' as any,
         domain: [0, 100] as [number, number],
-        range: [0, 800] as [number, number]
+        range: [0, 800] as [number, number],
       };
 
       expect(() => createScale(config)).toThrow(InvalidScaleConfigError);
@@ -117,16 +117,15 @@ describe('Scale Helpers', () => {
       const originalConfig: IScaleConfig = {
         type: 'linear',
         domain: [0, 100] as [number, number],
-        range: [0, 800] as [number, number]
+        range: [0, 800] as [number, number],
       };
 
       const originalScale = createScale(originalConfig);
-      const originalValue = originalScale(50);
 
       const updates: Partial<IScaleConfig> = {
         type: 'linear', // Required for update
         domain: [0, 200] as [number, number],
-        range: [0, 800] as [number, number]
+        range: [0, 800] as [number, number],
       };
 
       const updatedScale = updateScale(originalScale, updates);
@@ -137,4 +136,3 @@ describe('Scale Helpers', () => {
     });
   });
 });
-

@@ -9,7 +9,7 @@ import {
   IMargins,
   IValidationResult,
   ScaleType,
-  AxisOrientation
+  AxisOrientation,
 } from '../entities/chart.interface';
 import {
   ChartServiceError,
@@ -18,10 +18,13 @@ import {
   InvalidScaleConfigError,
   InvalidAxisConfigError,
   PaletteNotFoundError,
-  InvalidColorPaletteError
+  InvalidColorPaletteError,
 } from './chart.service.types';
 import { calculateMargins as calculateMarginsUtil } from '../utils/d3-utils';
-import { createScale as createScaleUtil, updateScale as updateScaleUtil } from '../utils/scale-helpers';
+import {
+  createScale as createScaleUtil,
+  updateScale as updateScaleUtil,
+} from '../utils/scale-helpers';
 import { createAxis as createAxisUtil, updateAxis as updateAxisUtil } from '../utils/axis-helpers';
 import { ColorPaletteManager } from '../utils/color-palette';
 
@@ -32,16 +35,13 @@ import { ColorPaletteManager } from '../utils/color-palette';
  * and color palette management for the D3 dashboards application.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChartService {
   /**
    * Chart factory registry - maps chart types to their factory functions
    */
-  private readonly chartFactories: Record<
-    ChartType,
-    (config: IChartConfig) => IChartInstance
-  >;
+  private readonly chartFactories: Record<ChartType, (config: IChartConfig) => IChartInstance>;
 
   /**
    * Color palette manager instance
@@ -63,7 +63,7 @@ export class ChartService {
       treemap: (config) => this.createTreemap(config),
       'force-graph': (config) => this.createForceGraph(config),
       'geo-map': (config) => this.createGeoMap(config),
-      gauge: (config) => this.createGauge(config)
+      gauge: (config) => this.createGauge(config),
     };
 
     // Initialize color palette manager
@@ -86,7 +86,7 @@ export class ChartService {
       'treemap',
       'force-graph',
       'geo-map',
-      'gauge'
+      'gauge',
     ];
     return validTypes.includes(chartType as ChartType);
   }
@@ -129,7 +129,7 @@ export class ChartService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -167,10 +167,7 @@ export class ChartService {
    * @param type Chart type
    * @returns Chart instance
    */
-  private createChartInstance(
-    config: IChartConfig,
-    type: ChartType
-  ): IChartInstance {
+  private createChartInstance(config: IChartConfig, type: ChartType): IChartInstance {
     let container: HTMLElement | null = null;
     let currentData: any[] = config.data || [];
 
@@ -195,8 +192,8 @@ export class ChartService {
       },
       getConfig: () => ({
         ...config,
-        data: currentData
-      })
+        data: currentData,
+      }),
     };
   }
 
@@ -296,6 +293,7 @@ export class ChartService {
    * @returns D3 Scale object
    * @throws InvalidScaleConfigError if configuration is invalid
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createScale(config: IScaleConfig): any {
     // Validate configuration first
     const validation = this.validateScaleConfig(config);
@@ -312,6 +310,7 @@ export class ChartService {
    * @returns D3 Axis object
    * @throws InvalidAxisConfigError if configuration is invalid
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createAxis(config: IAxisConfig): any {
     // Validate configuration first
     const validation = this.validateAxisConfig(config);
@@ -329,7 +328,13 @@ export class ChartService {
    * @returns New scale object with updated configuration (immutable update)
    * @throws InvalidScaleConfigError if updated configuration is invalid
    */
-  updateScale(existingScale: any, updates: Partial<IScaleConfig>): any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateScale(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    existingScale: any,
+    updates: Partial<IScaleConfig>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): any {
     return updateScaleUtil(existingScale, updates);
   }
 
@@ -340,7 +345,13 @@ export class ChartService {
    * @returns Updated axis object with new configuration
    * @throws InvalidAxisConfigError if updated configuration is invalid
    */
-  updateAxis(existingAxis: any, updates: Partial<IAxisConfig>): any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateAxis(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    existingAxis: any,
+    updates: Partial<IAxisConfig>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): any {
     return updateAxisUtil(existingAxis, updates);
   }
 
@@ -389,11 +400,7 @@ export class ChartService {
    * @param marginConfig Optional partial margin configuration to override defaults
    * @returns Complete margins object with top, right, bottom, left values
    */
-  calculateMargins(
-    width: number,
-    height: number,
-    marginConfig?: Partial<IMargins>
-  ): IMargins {
+  calculateMargins(width: number, height: number, marginConfig?: Partial<IMargins>): IMargins {
     return calculateMarginsUtil(width, height, marginConfig);
   }
 
@@ -406,15 +413,7 @@ export class ChartService {
     const errors: string[] = [];
 
     // Validate scale type
-    const validTypes: ScaleType[] = [
-      'linear',
-      'time',
-      'ordinal',
-      'band',
-      'log',
-      'pow',
-      'sqrt'
-    ];
+    const validTypes: ScaleType[] = ['linear', 'time', 'ordinal', 'band', 'log', 'pow', 'sqrt'];
     if (!config.type || !validTypes.includes(config.type)) {
       errors.push(`Invalid scale type: ${config.type || 'undefined'}`);
     }
@@ -448,7 +447,7 @@ export class ChartService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -478,8 +477,7 @@ export class ChartService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
-

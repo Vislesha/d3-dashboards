@@ -1,9 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, defer, of, throwError, timer } from 'rxjs';
-import { catchError, finalize, map, mergeMap, retryWhen, shareReplay, tap, timeout as rxTimeout } from 'rxjs/operators';
+import {
+  catchError,
+  finalize,
+  map,
+  mergeMap,
+  retryWhen,
+  shareReplay,
+  tap,
+  timeout as rxTimeout,
+} from 'rxjs/operators';
 import { TimeoutError } from 'rxjs';
-import { IDataSource, IDataResponse, IValidationResult, IDataServiceError } from '../entities/data-source.interface';
+import {
+  IDataSource,
+  IDataResponse,
+  IValidationResult,
+  IDataServiceError,
+} from '../entities/data-source.interface';
 import { ICacheEntry } from './data.service.types';
 
 /**
@@ -13,7 +27,7 @@ import { ICacheEntry } from './data.service.types';
  * data transformation, caching, error handling, and retry logic.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private static readonly DEFAULT_CACHE_TTL = 300_000;
@@ -98,7 +112,7 @@ export class DataService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -111,8 +125,8 @@ export class DataService {
       return of(
         this.createErrorResponse<T>({
           message: `Validation failed: ${validation.errors.join(', ')}`,
-          retryable: false
-        })
+          retryable: false,
+        }),
       );
     }
 
@@ -155,7 +169,10 @@ export class DataService {
   private handleStaticSource<T>(source: IDataSource): Observable<IDataResponse<T>> {
     try {
       const rawData = (source.data ?? []) as T;
-      const transformed = this.executeTransform<T>(rawData, source.transform as ((payload: T) => T) | undefined);
+      const transformed = this.executeTransform<T>(
+        rawData,
+        source.transform as ((payload: T) => T) | undefined,
+      );
       return of(this.createSuccessResponse<T>(transformed, false));
     } catch (error) {
       return of(this.createErrorResponse<T>(this.createServiceError(error)));
@@ -168,7 +185,9 @@ export class DataService {
       const computed = computeFn(source.data);
       return of(this.createSuccessResponse<T>(computed, false));
     } catch (error) {
-      return of(this.createErrorResponse<T>(this.createServiceError(new TransformExecutionError(error))));
+      return of(
+        this.createErrorResponse<T>(this.createServiceError(new TransformExecutionError(error))),
+      );
     }
   }
 
@@ -183,7 +202,9 @@ export class DataService {
       }
     }
 
-    const existing = this.inFlightRequests.get(requestKey) as Observable<IDataResponse<T>> | undefined;
+    const existing = this.inFlightRequests.get(requestKey) as
+      | Observable<IDataResponse<T>>
+      | undefined;
     if (existing) {
       return existing;
     }
@@ -191,7 +212,9 @@ export class DataService {
     this.incrementLoading();
 
     const response$ = defer(() => this.buildHttpObservable<T>(source)).pipe(
-      map((data) => this.executeTransform<T>(data, source.transform as ((payload: T) => T) | undefined)),
+      map((data) =>
+        this.executeTransform<T>(data, source.transform as ((payload: T) => T) | undefined),
+      ),
       tap((transformed) => {
         if (cacheConfig.enabled) {
           this.setCacheEntry(cacheConfig.key, transformed, cacheConfig.ttl);
@@ -203,7 +226,7 @@ export class DataService {
         this.inFlightRequests.delete(requestKey);
         this.decrementLoading();
       }),
-      shareReplay({ bufferSize: 1, refCount: true })
+      shareReplay({ bufferSize: 1, refCount: true }),
     );
 
     this.inFlightRequests.set(requestKey, response$);
@@ -256,9 +279,9 @@ export class DataService {
             const delayMs = initialDelay * Math.pow(backoffMultiplier, attempt);
             attempt += 1;
             return timer(delayMs);
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -283,7 +306,7 @@ export class DataService {
       return {
         enabled: false,
         ttl: 0,
-        key: requestKey
+        key: requestKey,
       };
     }
 
@@ -293,7 +316,7 @@ export class DataService {
     return {
       enabled: true,
       ttl,
-      key
+      key,
     };
   }
 
@@ -301,7 +324,8 @@ export class DataService {
     const method = source.method ?? 'GET';
     const endpoint = source.endpoint ?? 'static';
     const params = source.params ? this.stableSerialize(source.params) : '';
-    const body = method === 'POST' && source.body !== undefined ? this.stableSerialize(source.body) : '';
+    const body =
+      method === 'POST' && source.body !== undefined ? this.stableSerialize(source.body) : '';
     return `${source.type}:${method}:${endpoint}?${params}|${body}`;
   }
 
@@ -318,7 +342,9 @@ export class DataService {
       return `[${value.map((item) => this.stableSerialize(item)).join(',')}]`;
     }
 
-    const entries = Object.entries(value as Record<string, unknown>).sort(([a], [b]) => a.localeCompare(b));
+    const entries = Object.entries(value as Record<string, unknown>).sort(([a], [b]) =>
+      a.localeCompare(b),
+    );
     return `{${entries.map(([key, val]) => `${key}:${this.stableSerialize(val)}`).join(',')}}`;
   }
 
@@ -342,7 +368,7 @@ export class DataService {
       data,
       timestamp: Date.now(),
       expiration: ttl,
-      key
+      key,
     });
   }
 
@@ -358,13 +384,17 @@ export class DataService {
     }
   }
 
-  private createSuccessResponse<T>(data: T, fromCache: boolean, timestamp: number = Date.now()): IDataResponse<T> {
+  private createSuccessResponse<T>(
+    data: T,
+    fromCache: boolean,
+    timestamp: number = Date.now(),
+  ): IDataResponse<T> {
     return {
       data,
       loading: false,
       error: null,
       timestamp,
-      fromCache
+      fromCache,
     };
   }
 
@@ -374,7 +404,7 @@ export class DataService {
       loading: false,
       error,
       timestamp: Date.now(),
-      fromCache: false
+      fromCache: false,
     };
   }
 
@@ -399,7 +429,7 @@ export class DataService {
       return {
         message: `Transform failed: ${error.message}`,
         originalError: error.originalError ?? error,
-        retryable: false
+        retryable: false,
       };
     }
 
@@ -408,7 +438,7 @@ export class DataService {
         message: 'Request timed out',
         code: 'TIMEOUT',
         originalError: error,
-        retryable: true
+        retryable: true,
       };
     }
 
@@ -418,7 +448,7 @@ export class DataService {
         message: error.message || `HTTP ${error.status}: ${error.statusText}`,
         code: error.status ? error.status.toString() : undefined,
         originalError: error,
-        retryable: isRetryable
+        retryable: isRetryable,
       };
     }
 
@@ -426,14 +456,14 @@ export class DataService {
       return {
         message: error.message || 'Unknown error occurred',
         originalError: error,
-        retryable: true
+        retryable: true,
       };
     }
 
     return {
       message: 'Unknown error occurred',
       originalError: error,
-      retryable: true
+      retryable: true,
     };
   }
 }
@@ -445,9 +475,8 @@ class TransformExecutionError extends Error {
         ? originalError.message
         : typeof originalError === 'string'
           ? originalError
-          : 'Data transformation error'
+          : 'Data transformation error',
     );
     this.name = 'TransformExecutionError';
   }
 }
-

@@ -9,7 +9,7 @@ export class ChartServiceError extends Error {
   constructor(
     message: string,
     public code: string,
-    public originalError?: Error
+    public originalError?: Error,
   ) {
     super(message);
     this.name = 'ChartServiceError';
@@ -24,7 +24,7 @@ export class InvalidChartTypeError extends ChartServiceError {
   constructor(chartType: string) {
     super(
       `Invalid chart type: ${chartType}. Supported types: line, bar, pie, scatter, area, heatmap, treemap, force-graph, geo-map, gauge`,
-      'INVALID_CHART_TYPE'
+      'INVALID_CHART_TYPE',
     );
     this.name = 'InvalidChartTypeError';
     Object.setPrototypeOf(this, InvalidChartTypeError.prototype);
@@ -85,4 +85,3 @@ export class InvalidColorPaletteError extends ChartServiceError {
     Object.setPrototypeOf(this, InvalidColorPaletteError.prototype);
   }
 }
-

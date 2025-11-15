@@ -1,9 +1,6 @@
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { IColorPalette } from '../entities/chart.interface';
-import {
-  PaletteNotFoundError,
-  InvalidColorPaletteError
-} from '../services/chart.service.types';
+import { PaletteNotFoundError, InvalidColorPaletteError } from '../services/chart.service.types';
 
 /**
  * Color Palette Manager
@@ -42,7 +39,7 @@ export class ColorPaletteManager {
     const defaultPalette: IColorPalette = {
       name: 'default',
       colors: [...schemeCategory10],
-      description: 'D3 category10 color scheme'
+      description: 'D3 category10 color scheme',
     };
 
     this.paletteRegistry.set('default', defaultPalette);
@@ -75,7 +72,7 @@ export class ColorPaletteManager {
 
     if (palette.colors.length < 10) {
       throw new InvalidColorPaletteError(
-        `Palette must have at least 10 colors, got ${palette.colors.length}`
+        `Palette must have at least 10 colors, got ${palette.colors.length}`,
       );
     }
 
@@ -146,4 +143,3 @@ export class ColorPaletteManager {
     return colors;
   }
 }
-

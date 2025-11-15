@@ -43,7 +43,21 @@ export interface ID3Widget {
   /** Unique widget identifier (UUID) */
   id: string;
   /** Widget type */
-  type: 'line' | 'bar' | 'pie' | 'scatter' | 'area' | 'heatmap' | 'treemap' | 'force-graph' | 'geo-map' | 'gauge' | 'table' | 'filter' | 'tile' | 'markdown';
+  type:
+    | 'line'
+    | 'bar'
+    | 'pie'
+    | 'scatter'
+    | 'area'
+    | 'heatmap'
+    | 'treemap'
+    | 'force-graph'
+    | 'geo-map'
+    | 'gauge'
+    | 'table'
+    | 'filter'
+    | 'tile'
+    | 'markdown';
   /** Widget position in grid */
   position: GridsterItem;
   /** Widget title */
@@ -57,4 +71,3 @@ export interface ID3Widget {
   /** Optional styling */
   style?: IWidgetStyle;
 }
-

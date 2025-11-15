@@ -10,7 +10,7 @@ describe('Axis Helpers', () => {
     const scaleConfig: IScaleConfig = {
       type: 'linear',
       domain: [0, 100],
-      range: [0, 800]
+      range: [0, 800],
     };
     testScale = createScale(scaleConfig);
   });
@@ -19,7 +19,7 @@ describe('Axis Helpers', () => {
     it('should create an axis with bottom orientation', () => {
       const config: IAxisConfig = {
         scale: testScale,
-        orientation: 'bottom'
+        orientation: 'bottom',
       };
 
       const axis = createAxis(config);
@@ -31,7 +31,7 @@ describe('Axis Helpers', () => {
     it('should create an axis with top orientation', () => {
       const config: IAxisConfig = {
         scale: testScale,
-        orientation: 'top'
+        orientation: 'top',
       };
 
       const axis = createAxis(config);
@@ -43,7 +43,7 @@ describe('Axis Helpers', () => {
     it('should create an axis with left orientation', () => {
       const config: IAxisConfig = {
         scale: testScale,
-        orientation: 'left'
+        orientation: 'left',
       };
 
       const axis = createAxis(config);
@@ -55,7 +55,7 @@ describe('Axis Helpers', () => {
     it('should create an axis with right orientation', () => {
       const config: IAxisConfig = {
         scale: testScale,
-        orientation: 'right'
+        orientation: 'right',
       };
 
       const axis = createAxis(config);
@@ -70,7 +70,7 @@ describe('Axis Helpers', () => {
         orientation: 'bottom',
         ticks: 5,
         tickFormat: (d: any) => `${d}%`,
-        tickSize: 6
+        tickSize: 6,
       };
 
       const axis = createAxis(config);
@@ -82,7 +82,7 @@ describe('Axis Helpers', () => {
     it('should throw InvalidAxisConfigError for invalid config', () => {
       const config = {
         scale: null,
-        orientation: 'bottom' as any
+        orientation: 'bottom' as any,
       };
 
       expect(() => createAxis(config as IAxisConfig)).toThrow(InvalidAxisConfigError);
@@ -94,7 +94,7 @@ describe('Axis Helpers', () => {
       const originalConfig: IAxisConfig = {
         scale: testScale,
         orientation: 'bottom',
-        ticks: 5
+        ticks: 5,
       };
 
       const originalAxis = createAxis(originalConfig);
@@ -103,7 +103,7 @@ describe('Axis Helpers', () => {
         scale: testScale, // Required for update
         orientation: 'bottom', // Required for update
         ticks: 10,
-        tickFormat: (d: any) => `${d}%`
+        tickFormat: (d: any) => `${d}%`,
       };
 
       const updatedAxis = updateAxis(originalAxis, updates);
@@ -113,4 +113,3 @@ describe('Axis Helpers', () => {
     });
   });
 });
-

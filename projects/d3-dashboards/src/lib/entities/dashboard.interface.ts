@@ -11,4 +11,3 @@ export interface IDashboardNavigationInfo {
   /** Query parameters */
   queryParams: Record<string, any>;
 }
-

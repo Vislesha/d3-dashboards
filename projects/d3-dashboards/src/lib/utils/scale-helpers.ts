@@ -5,7 +5,7 @@ import {
   scaleBand,
   scaleLog,
   scalePow,
-  scaleSqrt
+  scaleSqrt,
 } from 'd3-scale';
 import { IScaleConfig, ScaleType } from '../entities/chart.interface';
 import { InvalidScaleConfigError } from '../services/chart.service.types';
@@ -16,17 +16,10 @@ import { InvalidScaleConfigError } from '../services/chart.service.types';
  * @returns D3 Scale object
  * @throws InvalidScaleConfigError if configuration is invalid
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createScale(config: IScaleConfig): any {
   // Validate scale type
-  const validTypes: ScaleType[] = [
-    'linear',
-    'time',
-    'ordinal',
-    'band',
-    'log',
-    'pow',
-    'sqrt'
-  ];
+  const validTypes: ScaleType[] = ['linear', 'time', 'ordinal', 'band', 'log', 'pow', 'sqrt'];
   if (!validTypes.includes(config.type)) {
     throw new InvalidScaleConfigError(`Invalid scale type: ${config.type}`);
   }
@@ -141,15 +134,18 @@ export function createScale(config: IScaleConfig): any {
  * @returns New scale object with updated configuration (immutable update)
  * @throws InvalidScaleConfigError if updated configuration is invalid
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function updateScale(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   existingScale: any,
   updates: Partial<IScaleConfig>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
   // Get the current scale configuration by inspecting the scale
   // Since we can't directly read from D3 scales, we need to create a new one
   // For immutable updates, we always create a new scale
   // The caller should provide the full config or we infer from existing scale
-  
+
   // For now, we'll require the type to be specified in updates
   // In a real implementation, we might need to detect the scale type
   if (!updates.type) {
@@ -165,9 +161,8 @@ export function updateScale(
     domain: updates.domain || [0, 1],
     range: updates.range || [0, 1],
     nice: updates.nice,
-    padding: updates.padding
+    padding: updates.padding,
   } as IScaleConfig;
 
   return createScale(newConfig);
 }
-

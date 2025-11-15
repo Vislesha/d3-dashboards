@@ -17,7 +17,7 @@ export {
   IDataSource as IDataServiceDataSource,
   IDataResponse,
   IDataServiceError,
-  IValidationResult
+  IValidationResult,
 } from './lib/entities/data-source.interface';
 export * from './lib/entities/chart.interface';
 

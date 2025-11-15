@@ -10,7 +10,7 @@ describe('DataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [DataService]
+      providers: [DataService],
     });
     service = TestBed.inject(DataService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -29,8 +29,8 @@ describe('DataService', () => {
         method: 'GET',
         cache: {
           enabled: true,
-          ttl: 1_000
-        }
+          ttl: 1_000,
+        },
       };
 
       let firstResponse: IDataResponse<typeof mockData> | undefined;
@@ -65,12 +65,12 @@ describe('DataService', () => {
         params: { page: 1, limit: 10 },
         cache: {
           enabled: true,
-          ttl: 5_000
-        }
+          ttl: 5_000,
+        },
       };
       const sourceB: IDataSource = {
         ...sourceA,
-        params: { limit: 10, page: 1 }
+        params: { limit: 10, page: 1 },
       };
 
       let firstResponse: IDataResponse<typeof mockData> | undefined;
@@ -103,8 +103,8 @@ describe('DataService', () => {
         method: 'GET',
         cache: {
           enabled: true,
-          ttl: 500
-        }
+          ttl: 500,
+        },
       };
 
       let firstResponse: IDataResponse<typeof mockData1> | undefined;
@@ -143,8 +143,8 @@ describe('DataService', () => {
         cache: {
           enabled: true,
           ttl: 5_000,
-          key: 'custom-key'
-        }
+          key: 'custom-key',
+        },
       };
 
       service.fetchData<typeof mockData>(source).subscribe();
@@ -153,12 +153,14 @@ describe('DataService', () => {
       tick();
 
       let cachedResponse: IDataResponse<typeof mockData> | undefined;
-      service.fetchData<typeof mockData>({
-        ...source,
-        endpoint: '/api/custom-key-ignored'
-      }).subscribe((response) => {
-        cachedResponse = response;
-      });
+      service
+        .fetchData<typeof mockData>({
+          ...source,
+          endpoint: '/api/custom-key-ignored',
+        })
+        .subscribe((response) => {
+          cachedResponse = response;
+        });
       tick();
 
       expect(cachedResponse?.data).toEqual(mockData);
@@ -174,8 +176,8 @@ describe('DataService', () => {
         method: 'GET',
         cache: {
           enabled: true,
-          ttl: 5_000
-        }
+          ttl: 5_000,
+        },
       };
 
       service.fetchData<typeof mockData>(source).subscribe();
@@ -206,8 +208,8 @@ describe('DataService', () => {
         cache: {
           enabled: true,
           ttl: 5_000,
-          key: 'A'
-        }
+          key: 'A',
+        },
       };
       const sourceB: IDataSource = {
         type: 'api',
@@ -216,8 +218,8 @@ describe('DataService', () => {
         cache: {
           enabled: true,
           ttl: 5_000,
-          key: 'B'
-        }
+          key: 'B',
+        },
       };
 
       service.fetchData<typeof mockData>(sourceA).subscribe();
@@ -256,7 +258,7 @@ describe('DataService', () => {
       const source: IDataSource = {
         type: 'api',
         endpoint: '/api/loading',
-        method: 'GET'
+        method: 'GET',
       };
 
       const states: boolean[] = [];
@@ -278,7 +280,7 @@ describe('DataService', () => {
   describe('Validation Rules', () => {
     it('should validate required fields for API sources', () => {
       const invalidSource = {
-        type: 'api'
+        type: 'api',
       } as unknown as IDataSource;
 
       const result = service.validateDataSource(invalidSource);
@@ -288,22 +290,26 @@ describe('DataService', () => {
 
     it('should validate static data source requires data array', () => {
       const source = {
-        type: 'static'
+        type: 'static',
       } as unknown as IDataSource;
 
       const result = service.validateDataSource(source);
       expect(result.valid).toBe(false);
-      expect(result.errors.some((message) => message.includes('Data array is required'))).toBe(true);
+      expect(result.errors.some((message) => message.includes('Data array is required'))).toBe(
+        true,
+      );
     });
 
     it('should validate computed data source requires transform function', () => {
       const source = {
-        type: 'computed'
+        type: 'computed',
       } as unknown as IDataSource;
 
       const result = service.validateDataSource(source);
       expect(result.valid).toBe(false);
-      expect(result.errors.some((message) => message.includes('Transform function is required'))).toBe(true);
+      expect(
+        result.errors.some((message) => message.includes('Transform function is required')),
+      ).toBe(true);
     });
 
     it('should validate retry configuration when enabled', () => {
@@ -312,13 +318,17 @@ describe('DataService', () => {
         endpoint: '/api/retry',
         retry: {
           enabled: true,
-          maxAttempts: 0
-        }
+          maxAttempts: 0,
+        },
       };
 
       const result = service.validateDataSource(source);
       expect(result.valid).toBe(false);
-      expect(result.errors.some((message) => message.includes('Retry maxAttempts must be a positive number'))).toBe(true);
+      expect(
+        result.errors.some((message) =>
+          message.includes('Retry maxAttempts must be a positive number'),
+        ),
+      ).toBe(true);
     });
 
     it('should validate cache configuration when enabled', () => {
@@ -327,13 +337,15 @@ describe('DataService', () => {
         endpoint: '/api/cache-validation',
         cache: {
           enabled: true,
-          ttl: 0
-        }
+          ttl: 0,
+        },
       };
 
       const result = service.validateDataSource(source);
       expect(result.valid).toBe(false);
-      expect(result.errors.some((message) => message.includes('Cache TTL must be a positive number'))).toBe(true);
+      expect(
+        result.errors.some((message) => message.includes('Cache TTL must be a positive number')),
+      ).toBe(true);
     });
 
     it('should return valid result when all configurations are correct', () => {
@@ -344,14 +356,14 @@ describe('DataService', () => {
         params: { page: 1 },
         cache: {
           enabled: true,
-          ttl: 1_000
+          ttl: 1_000,
         },
         retry: {
           enabled: true,
           maxAttempts: 3,
           initialDelay: 100,
-          backoffMultiplier: 2
-        }
+          backoffMultiplier: 2,
+        },
       };
 
       const result = service.validateDataSource(source);
@@ -371,8 +383,8 @@ describe('DataService', () => {
           enabled: true,
           maxAttempts: 3,
           initialDelay: 100,
-          backoffMultiplier: 1
-        }
+          backoffMultiplier: 1,
+        },
       };
 
       let finalResponse: IDataResponse<typeof successfulPayload> | undefined;
@@ -405,8 +417,8 @@ describe('DataService', () => {
           enabled: true,
           maxAttempts: 3,
           initialDelay: 50,
-          backoffMultiplier: 1
-        }
+          backoffMultiplier: 1,
+        },
       };
 
       let response: IDataResponse<any> | undefined;
@@ -424,7 +436,7 @@ describe('DataService', () => {
       const source: IDataSource = {
         type: 'api',
         endpoint: '/api/dedup',
-        method: 'GET'
+        method: 'GET',
       };
 
       const responses: IDataResponse<any>[] = [];
@@ -444,7 +456,7 @@ describe('DataService', () => {
       const source: IDataSource = {
         type: 'api',
         endpoint: '/api/inflight',
-        method: 'GET'
+        method: 'GET',
       };
 
       const responseA: IDataResponse<any>[] = [];
@@ -474,8 +486,8 @@ describe('DataService', () => {
         method: 'GET',
         timeout: 50,
         retry: {
-          enabled: false
-        }
+          enabled: false,
+        },
       };
 
       let response: IDataResponse<any> | undefined;
@@ -510,7 +522,7 @@ describe('DataService', () => {
         const source: IDataSource = {
           type: 'api',
           endpoint: '/api/test',
-          method: 'GET'
+          method: 'GET',
         };
 
         service.fetchData<typeof mockData>(source).subscribe({
@@ -520,7 +532,7 @@ describe('DataService', () => {
             expect(response.error).toBeNull();
             expect(response.fromCache).toBe(false);
             done();
-          }
+          },
         });
 
         const req = httpMock.expectOne('/api/test');
@@ -534,14 +546,14 @@ describe('DataService', () => {
           type: 'api',
           endpoint: '/api/test',
           method: 'GET',
-          params: { page: 1, limit: 10 }
+          params: { page: 1, limit: 10 },
         };
 
         service.fetchData<typeof mockData>(source).subscribe({
           next: (response) => {
             expect(response.data).toEqual(mockData);
             done();
-          }
+          },
         });
 
         const req = httpMock.expectOne('/api/test?limit=10&page=1');
@@ -558,7 +570,7 @@ describe('DataService', () => {
           type: 'api',
           endpoint: '/api/search',
           method: 'POST',
-          body: requestBody
+          body: requestBody,
         };
 
         service.fetchData<typeof mockData>(source).subscribe({
@@ -567,7 +579,7 @@ describe('DataService', () => {
             expect(response.loading).toBe(false);
             expect(response.error).toBeNull();
             done();
-          }
+          },
         });
 
         const req = httpMock.expectOne('/api/search');
@@ -582,7 +594,7 @@ describe('DataService', () => {
         const source: IDataSource = {
           type: 'api',
           endpoint: '/api/error',
-          method: 'GET'
+          method: 'GET',
         };
 
         service.fetchData<any>(source).subscribe({
@@ -593,7 +605,7 @@ describe('DataService', () => {
             expect(response.error?.message).toBeTruthy();
             expect(response.error?.retryable).toBeDefined();
             done();
-          }
+          },
         });
 
         const req = httpMock.expectOne('/api/error');
@@ -604,7 +616,7 @@ describe('DataService', () => {
         const source: IDataSource = {
           type: 'api',
           endpoint: '/api/notfound',
-          method: 'GET'
+          method: 'GET',
         };
 
         service.fetchData<any>(source).subscribe({
@@ -613,7 +625,7 @@ describe('DataService', () => {
             expect(response.error?.code).toBe('404');
             expect(response.error?.retryable).toBe(false);
             done();
-          }
+          },
         });
 
         const req = httpMock.expectOne('/api/notfound');
@@ -626,11 +638,11 @@ describe('DataService', () => {
     it('should return static data immediately without HTTP request', (done) => {
       const staticData = [
         { id: 1, label: 'One' },
-        { id: 2, label: 'Two' }
+        { id: 2, label: 'Two' },
       ];
       const source: IDataSource = {
         type: 'static',
-        data: staticData
+        data: staticData,
       };
 
       service.fetchData<typeof staticData>(source).subscribe({
@@ -640,18 +652,18 @@ describe('DataService', () => {
           expect(response.error).toBeNull();
           expect(response.fromCache).toBe(false);
           done();
-        }
+        },
       });
     });
 
     it('should execute computed data source transform and return computed data', (done) => {
       const computedResult = Array.from({ length: 3 }, (_, index) => ({
         id: index + 1,
-        value: index * 10
+        value: index * 10,
       }));
       const source: IDataSource = {
         type: 'computed',
-        transform: () => computedResult
+        transform: () => computedResult,
       };
 
       service.fetchData<typeof computedResult>(source).subscribe({
@@ -661,7 +673,7 @@ describe('DataService', () => {
           expect(response.error).toBeNull();
           expect(response.fromCache).toBe(false);
           done();
-        }
+        },
       });
     });
   });
@@ -670,7 +682,7 @@ describe('DataService', () => {
     it('should apply transform function to API data before returning response', (done) => {
       const apiData = [
         { id: 1, name: 'Alice', age: 30 },
-        { id: 2, name: 'Bob', age: 28 }
+        { id: 2, name: 'Bob', age: 28 },
       ];
       const source: IDataSource = {
         type: 'api',
@@ -679,19 +691,19 @@ describe('DataService', () => {
         transform: (data: typeof apiData) =>
           data.map((item) => ({
             label: item.name,
-            value: item.age
-          }))
+            value: item.age,
+          })),
       };
 
       service.fetchData<Array<{ label: string; value: number }>>(source).subscribe({
         next: (response) => {
           expect(response.data).toEqual([
             { label: 'Alice', value: 30 },
-            { label: 'Bob', value: 28 }
+            { label: 'Bob', value: 28 },
           ]);
           expect(response.error).toBeNull();
           done();
-        }
+        },
       });
 
       const req = httpMock.expectOne('/api/users');
@@ -706,7 +718,7 @@ describe('DataService', () => {
         method: 'GET',
         transform: () => {
           throw new Error('Transform failed');
-        }
+        },
       };
 
       service.fetchData(source).subscribe({
@@ -715,7 +727,7 @@ describe('DataService', () => {
           expect(response.error).not.toBeNull();
           expect(response.error?.message).toContain('Transform failed');
           done();
-        }
+        },
       });
 
       const req = httpMock.expectOne('/api/transform-error');
@@ -728,7 +740,7 @@ describe('DataService', () => {
         endpoint: '/api/invalid-transform',
         method: 'GET',
         // @ts-expect-error intentional invalid transform for test validation
-        transform: 'not-a-function'
+        transform: 'not-a-function',
       };
 
       service.fetchData(source).subscribe({
@@ -737,9 +749,8 @@ describe('DataService', () => {
           expect(response.error).not.toBeNull();
           expect(response.error?.message).toContain('Transform must be a callable function');
           done();
-        }
+        },
       });
     });
   });
 });
-

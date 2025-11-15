@@ -36,7 +36,7 @@ class MockDashboard extends AbstractDashboardContainer {
   }
 
   removeWidget(widgetId: string): void {
-    const index = this.widgets.findIndex(w => w.id === widgetId);
+    const index = this.widgets.findIndex((w) => w.id === widgetId);
     if (index !== -1) {
       this.onWidgetDestroy(widgetId);
       this.widgets.splice(index, 1);
@@ -44,7 +44,7 @@ class MockDashboard extends AbstractDashboardContainer {
   }
 
   updateWidget(widget: ID3Widget): void {
-    const index = this.widgets.findIndex(w => w.id === widget.id);
+    const index = this.widgets.findIndex((w) => w.id === widget.id);
     if (index !== -1) {
       this.widgets[index] = widget;
       this.onWidgetUpdate(widget);
@@ -79,7 +79,7 @@ describe('AbstractDashboardContainer', () => {
     type: 'line',
     position: { cols: 4, rows: 3, x: 0, y: 0 } as GridsterItem,
     title,
-    config: {}
+    config: {},
   });
 
   beforeEach(() => {
@@ -91,10 +91,10 @@ describe('AbstractDashboardContainer', () => {
           root: {
             params: { id: 'test' },
             queryParams: {},
-            firstChild: null
-          }
-        }
-      }
+            firstChild: null,
+          },
+        },
+      },
     };
 
     dashboard = new MockDashboard(mockRouter);
@@ -181,7 +181,7 @@ describe('AbstractDashboardContainer', () => {
 
     it('should provide observable stream of filters', (done) => {
       const filter: IFilterValues = { key: 'test', value: 'value' };
-      dashboard.getFilters$().subscribe(filters => {
+      dashboard.getFilters$().subscribe((filters) => {
         expect(filters).toContain(filter);
         done();
       });
@@ -232,7 +232,7 @@ describe('AbstractDashboardContainer', () => {
     it('should handle errors in lifecycle hooks gracefully', () => {
       const widget = createMockWidget('widget1');
       const consoleSpy = jest.spyOn(console, 'error');
-      
+
       // Set flag to throw error in addWidget
       dashboard.errorInInit = true;
 
@@ -255,10 +255,9 @@ describe('AbstractDashboardContainer', () => {
     it('should navigate to dashboard when Router is available', async () => {
       mockRouter.navigate.mockResolvedValue(true);
       const result = await dashboard.navigateToDashboard('test-dashboard', { param: 'value' });
-      expect(mockRouter.navigate).toHaveBeenCalledWith(
-        ['/dashboard/test-dashboard'],
-        { queryParams: { param: 'value' } }
-      );
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/test-dashboard'], {
+        queryParams: { param: 'value' },
+      });
       expect(result).toBe(true);
     });
 
@@ -320,7 +319,7 @@ describe('AbstractDashboardContainer', () => {
       dashboard.getFilters$().subscribe({
         complete: () => {
           completed = true;
-        }
+        },
       });
       // Note: BehaviorSubject completes, so subscription may not be immediately closed
       // but cleanup should prevent memory leaks
@@ -333,7 +332,7 @@ describe('AbstractDashboardContainer', () => {
       const filter: IFilterValues = {
         key: 'test',
         value: 'value',
-        operator: 'equals'
+        operator: 'equals',
       };
       dashboard.addFilter(filter);
       expect(dashboard.getFilters()).toContain(filter);
@@ -343,7 +342,7 @@ describe('AbstractDashboardContainer', () => {
       const filter = {
         key: 'test',
         value: 'value',
-        operator: 'invalid' as any
+        operator: 'invalid' as any,
       };
       const consoleSpy = jest.spyOn(console, 'warn');
       dashboard.addFilter(filter);
@@ -352,4 +351,3 @@ describe('AbstractDashboardContainer', () => {
     });
   });
 });
-

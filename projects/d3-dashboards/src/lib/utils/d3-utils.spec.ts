@@ -1,8 +1,4 @@
-import {
-  calculateMargins,
-  calculateInnerDimensions,
-  extent
-} from './d3-utils';
+import { calculateMargins, calculateInnerDimensions, extent } from './d3-utils';
 import { IMargins } from '../entities/chart.interface';
 
 describe('D3 Utils', () => {
@@ -20,7 +16,7 @@ describe('D3 Utils', () => {
     it('should calculate margins with custom values', () => {
       const customMargins: Partial<IMargins> = {
         top: 30,
-        left: 50
+        left: 50,
       };
 
       const margins = calculateMargins(800, 400, customMargins);
@@ -38,13 +34,13 @@ describe('D3 Utils', () => {
         top: 20,
         right: 20,
         bottom: 40,
-        left: 40
+        left: 40,
       };
 
       const dimensions = {
         width: 800,
         height: 400,
-        margins
+        margins,
       };
 
       const inner = calculateInnerDimensions(dimensions);
@@ -56,12 +52,7 @@ describe('D3 Utils', () => {
 
   describe('extent', () => {
     it('should calculate extent for numeric data', () => {
-      const data = [
-        { value: 10 },
-        { value: 20 },
-        { value: 5 },
-        { value: 30 }
-      ];
+      const data = [{ value: 10 }, { value: 20 }, { value: 5 }, { value: 30 }];
 
       const [min, max] = extent(data, (d) => d.value);
 
@@ -79,4 +70,3 @@ describe('D3 Utils', () => {
     });
   });
 });
-

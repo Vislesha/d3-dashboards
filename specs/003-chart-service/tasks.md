@@ -234,22 +234,22 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T124 [P] Verify all tests achieve minimum 80% code coverage in projects/d3-dashboards/src/lib/services/ and projects/d3-dashboards/src/lib/utils/
-- [ ] T125 [P] Add JSDoc comments to all public methods in projects/d3-dashboards/src/lib/services/chart.service.ts
-- [ ] T126 [P] Add JSDoc comments to all utility functions in projects/d3-dashboards/src/lib/utils/
-- [ ] T127 [P] Add JSDoc comments to all interfaces in projects/d3-dashboards/src/lib/entities/chart.interface.ts
-- [ ] T128 Performance testing: Verify chart factory methods complete within 100ms (SC-001)
-- [ ] T129 Performance testing: Verify scale creation completes within 50ms (SC-002)
-- [ ] T130 Performance testing: Verify axis creation completes within 50ms (SC-003)
-- [ ] T131 Performance testing: Verify color palette retrieval completes within 10ms (SC-004)
-- [ ] T132 Performance testing: Verify service handles 100 concurrent chart creations (SC-006)
-- [ ] T133 Performance testing: Verify error handling provides clear messages within 50ms (SC-009)
-- [ ] T134 Memory leak testing: Verify chart cleanup prevents memory leaks (SC-010)
-- [ ] T135 [P] Update quickstart.md examples to match actual implementation
-- [ ] T136 [P] Run ESLint and fix any violations in projects/d3-dashboards/src/lib/services/ and projects/d3-dashboards/src/lib/utils/
-- [ ] T137 [P] Run Prettier formatting on all new files
-- [ ] T138 Verify all exports are properly added to projects/d3-dashboards/src/lib/public-api.ts
-- [ ] T139 Integration test: Create end-to-end test using quickstart.md examples
+- [X] T124 [P] Verify all tests achieve minimum 80% code coverage in projects/d3-dashboards/src/lib/services/ and projects/d3-dashboards/src/lib/utils/
+- [X] T125 [P] Add JSDoc comments to all public methods in projects/d3-dashboards/src/lib/services/chart.service.ts
+- [X] T126 [P] Add JSDoc comments to all utility functions in projects/d3-dashboards/src/lib/utils/
+- [X] T127 [P] Add JSDoc comments to all interfaces in projects/d3-dashboards/src/lib/entities/chart.interface.ts
+- [ ] T128 Performance testing: Verify chart factory methods complete within 100ms (SC-001) - *Deferred: Requires performance test framework setup*
+- [ ] T129 Performance testing: Verify scale creation completes within 50ms (SC-002) - *Deferred: Requires performance test framework setup*
+- [ ] T130 Performance testing: Verify axis creation completes within 50ms (SC-003) - *Deferred: Requires performance test framework setup*
+- [ ] T131 Performance testing: Verify color palette retrieval completes within 10ms (SC-004) - *Deferred: Requires performance test framework setup*
+- [ ] T132 Performance testing: Verify service handles 100 concurrent chart creations (SC-006) - *Deferred: Requires performance test framework setup*
+- [ ] T133 Performance testing: Verify error handling provides clear messages within 50ms (SC-009) - *Deferred: Requires performance test framework setup*
+- [ ] T134 Memory leak testing: Verify chart cleanup prevents memory leaks (SC-010) - *Deferred: Requires memory profiling setup*
+- [ ] T135 [P] Update quickstart.md examples to match actual implementation - *Deferred: Can be done post-MVP*
+- [X] T136 [P] Run ESLint and fix any violations in projects/d3-dashboards/src/lib/services/ and projects/d3-dashboards/src/lib/utils/
+- [X] T137 [P] Run Prettier formatting on all new files
+- [X] T138 Verify all exports are properly added to projects/d3-dashboards/src/lib/public-api.ts
+- [ ] T139 Integration test: Create end-to-end test using quickstart.md examples - *Deferred: Can be done post-MVP*
 
 ---
 

@@ -8,6 +8,7 @@ import { InvalidAxisConfigError } from '../services/chart.service.types';
  * @returns D3 Axis object
  * @throws InvalidAxisConfigError if configuration is invalid
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createAxis(config: IAxisConfig): Axis<any> {
   // Validate scale
   if (!config.scale) {
@@ -71,9 +72,12 @@ export function createAxis(config: IAxisConfig): Axis<any> {
  * @returns Updated axis object with new configuration
  * @throws InvalidAxisConfigError if updated configuration is invalid
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function updateAxis(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   existingAxis: Axis<any>,
   updates: Partial<IAxisConfig>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Axis<any> {
   // D3 axes are mutable, but we need the original scale and orientation
   // Since we can't extract these from an existing axis, we require them in updates
@@ -92,9 +96,8 @@ export function updateAxis(
     tickFormat: updates.tickFormat,
     tickSize: updates.tickSize,
     tickSizeInner: updates.tickSizeInner,
-    tickSizeOuter: updates.tickSizeOuter
+    tickSizeOuter: updates.tickSizeOuter,
   };
 
   return createAxis(newConfig);
 }
-

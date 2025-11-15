@@ -15,4 +15,3 @@ export interface ICacheEntry<T> {
   /** Cache key identifier */
   key: string;
 }
-

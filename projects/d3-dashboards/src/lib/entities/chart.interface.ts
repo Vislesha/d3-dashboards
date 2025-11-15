@@ -88,14 +88,7 @@ export interface IChartInstance {
 /**
  * Scale type definition - all supported D3 scale types
  */
-export type ScaleType =
-  | 'linear'
-  | 'time'
-  | 'ordinal'
-  | 'band'
-  | 'log'
-  | 'pow'
-  | 'sqrt';
+export type ScaleType = 'linear' | 'time' | 'ordinal' | 'band' | 'log' | 'pow' | 'sqrt';
 
 /**
  * Scale configuration interface
@@ -211,4 +204,3 @@ export interface IAnimationOptions {
   /** Additional animation options */
   [key: string]: any;
 }
-

@@ -1,6 +1,6 @@
 /**
  * Data Source interface for Data Service
- * 
+ *
  * This is a new interface separate from the existing IDataSource in widget.interface.ts
  * to provide enhanced functionality for the data service.
  */
@@ -96,4 +96,3 @@ export interface IValidationResult {
   /** Array of validation error messages */
   errors: string[];
 }
-
