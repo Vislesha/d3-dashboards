@@ -131,6 +131,12 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
     height: number;
   } | null = null;
 
+  /** Tooltip elements */
+  private tooltipGroup: d3.Selection<SVGGElement, unknown, null, undefined> | null = null;
+  private tooltipRect: d3.Selection<SVGRectElement, unknown, null, undefined> | null = null;
+  private tooltipText: d3.Selection<SVGTextElement, unknown, null, undefined> | null = null;
+  private currentHoveredPoint: { point: ILineChartDataPoint; series: ILineChartSeries } | null = null;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private dataService: DataService
@@ -447,6 +453,11 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
 
     // Render lines
     this.renderLines();
+
+    // Setup tooltips if enabled
+    if (this.getEffectiveConfig().tooltip?.enabled !== false) {
+      this.setupTooltips();
+    }
 
     // Update memoized calculations
     this.updateMemoizedScales();
@@ -890,6 +901,260 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * Sets up tooltip container and event handlers
+   */
+  private setupTooltips(): void {
+    if (!this.g || !this.chartData) {
+      return;
+    }
+
+    // Create tooltip group
+    this.tooltipGroup = this.g.append('g').attr('class', 'tooltip-group').style('pointer-events', 'none').style('opacity', 0);
+
+    // Create tooltip background rectangle
+    this.tooltipRect = this.tooltipGroup.append('rect').attr('class', 'tooltip-rect').attr('rx', 4).attr('ry', 4);
+
+    // Create tooltip text
+    this.tooltipText = this.tooltipGroup.append('text').attr('class', 'tooltip-text').style('font-size', '12px').style('fill', '#333');
+
+    // Setup mouse move handler
+    const config = this.getEffectiveConfig();
+    const positionMode = config.tooltip?.position || 'mouse';
+
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    this.g
+      .append('rect')
+      .attr('class', 'overlay')
+      .attr('width', chartWidth)
+      .attr('height', chartHeight)
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .on('mousemove', (event: MouseEvent) => {
+        this.handleMouseMove(event, positionMode);
+      })
+      .on('mouseleave', () => {
+        this.hideTooltip();
+      });
+  }
+
+  /**
+   * Handles mouse move events for tooltip display
+   */
+  private handleMouseMove(event: MouseEvent, positionMode: 'mouse' | 'point'): void {
+    if (!this.g || !this.xScale || !this.yScale || !this.chartData || !this.tooltipGroup || !this.tooltipText || !this.tooltipRect) {
+      return;
+    }
+
+    // Get mouse position relative to chart
+    const [mouseX, mouseY] = d3.pointer(event, this.g.node() as Element);
+    const config = this.getEffectiveConfig();
+
+    // Find nearest data point
+    const nearest = this.findNearestPoint(mouseX, mouseY);
+    if (!nearest) {
+      this.hideTooltip();
+      return;
+    }
+
+    // Update tooltip content
+    const tooltipContent = this.formatTooltipContent(nearest.point, nearest.series);
+    this.tooltipText.text(tooltipContent);
+
+    // Calculate tooltip position
+    const bbox = this.tooltipText.node()?.getBBox();
+    if (!bbox) {
+      return;
+    }
+
+    const padding = 8;
+    const tooltipWidth = bbox.width + padding * 2;
+    const tooltipHeight = bbox.height + padding * 2;
+
+    let tooltipX: number;
+    let tooltipY: number;
+
+    if (positionMode === 'point') {
+      // Position at data point
+      if (nearest.point.x instanceof Date) {
+        tooltipX = (this.xScale as d3.ScaleTime<number, number>)(nearest.point.x);
+      } else {
+        tooltipX = (this.xScale as d3.ScaleLinear<number, number>)(nearest.point.x as number);
+      }
+      tooltipY = (this.yScale as d3.ScaleLinear<number, number>)(nearest.point.y as number);
+    } else {
+      // Position at mouse cursor
+      tooltipX = mouseX;
+      tooltipY = mouseY;
+    }
+
+    // Boundary checking to prevent overflow
+    const margins = config.margins || DEFAULT_CONFIG.margins;
+    const chartWidth = (this.width || config.width || DEFAULT_CONFIG.width) - margins.left - margins.right;
+    const chartHeight = (this.height || config.height || DEFAULT_CONFIG.height) - margins.top - margins.bottom;
+
+    if (tooltipX + tooltipWidth > chartWidth) {
+      tooltipX = chartWidth - tooltipWidth;
+    }
+    if (tooltipX < 0) {
+      tooltipX = 0;
+    }
+    if (tooltipY + tooltipHeight > chartHeight) {
+      tooltipY = chartHeight - tooltipHeight;
+    }
+    if (tooltipY < 0) {
+      tooltipY = 0;
+    }
+
+    // Update tooltip position and content
+    this.tooltipRect
+      .attr('x', tooltipX - padding)
+      .attr('y', tooltipY - padding)
+      .attr('width', tooltipWidth)
+      .attr('height', tooltipHeight)
+      .attr('fill', 'rgba(0, 0, 0, 0.8)');
+
+    this.tooltipText.attr('x', tooltipX).attr('y', tooltipY + bbox.height / 2);
+
+    // Show tooltip
+    this.tooltipGroup.style('opacity', 1);
+
+    // Emit hover event
+    if (this.currentHoveredPoint?.point !== nearest.point || this.currentHoveredPoint?.series !== nearest.series) {
+      this.currentHoveredPoint = { point: nearest.point, series: nearest.series };
+      this.pointHover.emit({ point: nearest.point, series: nearest.series });
+    }
+  }
+
+  /**
+   * Finds the nearest data point to mouse position
+   */
+  private findNearestPoint(mouseX: number, mouseY: number): { point: ILineChartDataPoint; series: ILineChartSeries } | null {
+    if (!this.xScale || !this.yScale || !this.chartData) {
+      return null;
+    }
+
+    let nearest: { point: ILineChartDataPoint; series: ILineChartSeries; distance: number } | null = null;
+    const threshold = 10; // pixels
+
+    for (const series of this.chartData.series) {
+      if (series.visible === false) {
+        continue;
+      }
+
+      for (const point of series.data) {
+        if (point.y === null || point.y === undefined) {
+          continue;
+        }
+
+        let xPos: number;
+        if (point.x instanceof Date) {
+          xPos = (this.xScale as d3.ScaleTime<number, number>)(point.x);
+        } else {
+          xPos = (this.xScale as d3.ScaleLinear<number, number>)(point.x as number);
+        }
+        const yPos = (this.yScale as d3.ScaleLinear<number, number>)(point.y);
+
+        const distance = Math.sqrt(Math.pow(mouseX - xPos, 2) + Math.pow(mouseY - yPos, 2));
+
+        if (distance < threshold && (!nearest || distance < nearest.distance)) {
+          nearest = { point, series, distance };
+        }
+      }
+    }
+
+    // If no point found within threshold, find nearest by x-value only (for multi-series tooltips)
+    if (!nearest && this.chartData.series.length > 1) {
+      // Find all series with points at similar x-value
+      const xValues = new Map<number | Date, { point: ILineChartDataPoint; series: ILineChartSeries }[]>();
+
+      for (const series of this.chartData.series) {
+        if (series.visible === false) {
+          continue;
+        }
+
+        for (const point of series.data) {
+          if (point.y === null || point.y === undefined) {
+            continue;
+          }
+
+          const xKey = point.x instanceof Date ? point.x.getTime() : (point.x as number);
+          if (!xValues.has(xKey)) {
+            xValues.set(xKey, []);
+          }
+          xValues.get(xKey)!.push({ point, series });
+        }
+      }
+
+      // Find x-value closest to mouse
+      let closestX: number | Date | null = null;
+      let minXDistance = Infinity;
+
+      for (const xVal of xValues.keys()) {
+        let xPos: number;
+        if (xVal instanceof Date) {
+          xPos = (this.xScale as d3.ScaleTime<number, number>)(xVal);
+        } else {
+          xPos = (this.xScale as d3.ScaleLinear<number, number>)(xVal);
+        }
+
+        const xDistance = Math.abs(mouseX - xPos);
+        if (xDistance < minXDistance && xDistance < threshold * 2) {
+          minXDistance = xDistance;
+          closestX = xVal instanceof Date ? new Date(xVal) : xVal;
+        }
+      }
+
+      if (closestX !== null) {
+        const xKey = closestX instanceof Date ? closestX.getTime() : closestX;
+        const pointsAtX = xValues.get(xKey);
+        if (pointsAtX && pointsAtX.length > 0) {
+          // Return first point (will show multi-series tooltip)
+          nearest = { point: pointsAtX[0].point, series: pointsAtX[0].series, distance: minXDistance };
+        }
+      }
+    }
+
+    return nearest ? { point: nearest.point, series: nearest.series } : null;
+  }
+
+  /**
+   * Formats tooltip content
+   */
+  private formatTooltipContent(point: ILineChartDataPoint, series: ILineChartSeries): string {
+    const config = this.getEffectiveConfig();
+
+    // Use custom formatter if provided
+    if (config.tooltip?.formatter) {
+      return config.tooltip.formatter(point, series);
+    }
+
+    // Default formatting
+    let xValue: string;
+    if (point.x instanceof Date) {
+      xValue = point.x.toLocaleDateString();
+    } else {
+      xValue = String(point.x);
+    }
+
+    const yValue = point.y !== null && point.y !== undefined ? String(point.y) : 'No data';
+
+    return `${series.name}: ${yValue} (${xValue})`;
+  }
+
+  /**
+   * Hides the tooltip
+   */
+  private hideTooltip(): void {
+    if (this.tooltipGroup) {
+      this.tooltipGroup.style('opacity', 0);
+    }
+    this.currentHoveredPoint = null;
+  }
+
+  /**
    * Cleans up D3 selections and observers
    */
   private cleanup(): void {
@@ -898,6 +1163,13 @@ export class LineChartComponent implements OnInit, OnChanges, OnDestroy {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }
+
+    // Clean up tooltip
+    this.hideTooltip();
+    this.tooltipGroup = null;
+    this.tooltipRect = null;
+    this.tooltipText = null;
+    this.currentHoveredPoint = null;
 
     // Clean up D3 selections
     if (this.g) {

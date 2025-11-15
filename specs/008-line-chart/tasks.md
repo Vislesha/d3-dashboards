@@ -159,17 +159,17 @@ This document provides an actionable, dependency-ordered task breakdown for impl
 
 ### Tooltip Implementation Tasks
 
-- [ ] T051 [US2] Implement tooltip container: create tooltip SVG element or DOM element for tooltip display in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T052 [US2] Implement mouse hover detection: detect mouse position over chart using d3.pointer in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T053 [US2] Implement nearest point calculation: find nearest data point to mouse position using d3.bisector in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T054 [US2] Implement tooltip positioning: position tooltip relative to mouse cursor with boundary checking to prevent overflow in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T055 [US2] Implement tooltip content: display point value, series name, and formatted x-value in tooltip in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T056 [US2] Implement multi-series tooltip: show information for all series at the same x-value when hovering in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T057 [US2] Implement tooltip formatter: support custom formatter function from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T058 [US2] Implement tooltip visibility: show tooltip on hover, hide on mouse leave in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T059 [US2] Implement tooltip position mode: support both 'mouse' and 'point' positioning modes from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T060 [US2] Implement tooltip performance: ensure tooltips appear within 50ms of mouse hover (SC-002) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
-- [ ] T061 [US2] Implement pointHover event emission: emit pointHover event with point and series data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T051 [US2] Implement tooltip container: create tooltip SVG element or DOM element for tooltip display in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T052 [US2] Implement mouse hover detection: detect mouse position over chart using d3.pointer in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T053 [US2] Implement nearest point calculation: find nearest data point to mouse position using d3.bisector in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T054 [US2] Implement tooltip positioning: position tooltip relative to mouse cursor with boundary checking to prevent overflow in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T055 [US2] Implement tooltip content: display point value, series name, and formatted x-value in tooltip in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T056 [US2] Implement multi-series tooltip: show information for all series at the same x-value when hovering in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T057 [US2] Implement tooltip formatter: support custom formatter function from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T058 [US2] Implement tooltip visibility: show tooltip on hover, hide on mouse leave in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T059 [US2] Implement tooltip position mode: support both 'mouse' and 'point' positioning modes from configuration in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T060 [US2] Implement tooltip performance: ensure tooltips appear within 50ms of mouse hover (SC-002) in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
+- [X] T061 [US2] Implement pointHover event emission: emit pointHover event with point and series data in `projects/d3-dashboards/src/lib/charts/line-chart/line-chart.component.ts`
 
 ## Phase 5: User Story 3 - Zoom and Pan Capabilities (P2)
 
