@@ -1,0 +1,30 @@
+<div class="dashboard-container">
+  <gridster [options]="gridsterOptions">
+    @if (isEmpty) {
+      <div class="empty-dashboard-message">
+        <div class="empty-message-content">
+          <i class="pi pi-inbox" aria-hidden="true"></i>
+          <p>No widgets to display</p>
+        </div>
+      </div>
+    } @else {
+      @for (widget of validatedWidgets; track widget.id) {
+        <gridster-item [item]="widget.position">
+          <div class="widget-wrapper">
+            <!-- Widget component will be dynamically loaded here -->
+            <div class="widget-placeholder">
+              <div class="widget-header">
+                <h3>{{ widget.title }}</h3>
+                <span class="widget-type">{{ widget.type }}</span>
+              </div>
+              <div class="widget-content">
+                <p>Widget component for {{ widget.type }} will be rendered here</p>
+              </div>
+            </div>
+          </div>
+        </gridster-item>
+      }
+    }
+  </gridster>
+</div>
+
